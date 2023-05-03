@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/*pagination*/
+.pagination {
+    text-align: center;
+    position:relative;
+    clear:both;
+    margin-top:20px;
+    justify-content: center;
+    padding: 30px;
+}
+.pagination ul{
+    display: inline-block;
+    vertical-align: middle;
+    list-style: none;
+}
+.pagination li{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #eee;
+    cursor: pointer;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-right: 5px;
+    float:left;
+}
+.pagination li.active, .pagination li:hover {
+    border:1px solid #575757;
+}
+/*.pagination .direction img { margin-top:5px;}*/
