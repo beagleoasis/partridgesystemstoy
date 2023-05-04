@@ -19,13 +19,38 @@ repositories {
 }
 
 dependencies {
+    /*
+    jpa
+     */
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    /*
+    spring starter-web
+     */
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    /*
+    thymeleaf
+     */
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    /*
+    Security
+     */
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    /*
+    lombok
+     */
     compileOnly 'org.projectlombok:lombok'
+    /*
+    connector
+     */
     runtimeOnly 'com.mysql:mysql-connector-j'
+    /*
+    lombok
+     */
     annotationProcessor 'org.projectlombok:lombok'
+    /*
+    test
+     */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
