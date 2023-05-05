@@ -28,5 +28,7 @@ public class Board extends BaseTimeEntity {
 
     private String state;
 
+    private int likes;
+
 
 }
