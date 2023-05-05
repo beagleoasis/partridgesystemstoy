@@ -20,11 +20,13 @@
             <li class="nav-item">
                 <a id="mbtiBoards" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/mbtiBoards}'|">FRIENDS</a>
             </li>
+            <!--
             <li class="nav-item">
                 <a id="usedSkills" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/usedSkills}'|">사용된 기술 스택</a>
             </li>
+            -->
             <li class="nav-item">
-                <a th:if="${session.user != null}" id="mypage" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/users/mypage}'|">mypage</a>
+                <a th:if="${session.user != null}" id="mypage" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/members/mypage}'|">mypage</a>
                 <!--<a th:if="${session.user == null}" class="nav-link js-scroll-trigger" href="#">login</a>-->
             </li>
         </ul>

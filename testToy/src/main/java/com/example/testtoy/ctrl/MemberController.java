@@ -4,16 +4,15 @@ import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.dto.SaveMemberDto;
 import com.example.testtoy.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.authentication.PasswordEncoderParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
 
@@ -91,5 +90,34 @@ public class MemberController {
 
         return "members/login";
     }
+
+
+    @GetMapping("mypage")
+    public String showMypage(){
+
+        return "members/mypage";
+    }
+
+    @PutMapping("deactive/{name}")
+    public ResponseEntity deleteMember(@PathVariable String name, HttpServletRequest request, HttpServletResponse response){
+
+        System.out.println("name : " + name);
+
+        HttpSession session = request.getSession();
+
+        if(session.getAttribute("user")==null){
+            return ResponseEntity.ok(0);
+        }
+
+        // 탈퇴 회원의 상태값 변경
+        if(memberService.deleteMember(name)){
+            session.invalidate();
+            return ResponseEntity.ok(201);
+        }else{
+            return ResponseEntity.ok(0);
+        }
+
+    }
+
 
 }

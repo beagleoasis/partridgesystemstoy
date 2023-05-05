@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: headFragment"></head>
+
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+
+  <section class="resume-section" id="interests">
+    <div class="resume-section-content" >
+      <h3 class="mb-5" th:text="|회원 아이디 : ${session.user.name}|"></h3>
+
+      <!-- 하단 글작성 버튼 -->
+      <div class="d-flex flex-column flex-md-row justify-content-between">
+        <div class="flex-grow-1">
+        </div>
+        <div class="flex-shrink-0">
+          <button class="text-primary" type="button" th:onclick="deleteUser([[${session.user.name}]])">회원 탈퇴</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <hr class="m-0" />
+
+
+
+</div>
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"><</th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+  function deleteUser(name){
+
+    if(confirm("회원탈퇴를 하시겠습니까?")){
+      alert("!");
+      alert(name);
+
+      $.ajax({
+        type : 'PUT',
+        url : '/members/deactive/'+name,
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json'
+      }).done(function(result) {
+
+        if(result == 0){
+          alert("회원탈퇴를 실패했습니다.")
+        }
+        else{
+          alert("회원탈퇴를 완료했습니다.");
+        }
+
+
+        location.href = "/loginJoin";
+
+      }).fail(function(error) {
+        let message = JSON.parse(error.responseText);
+      });
+    }
+
+  }
+
+
+  $(document).ready(function () {
+
+    // url에 따른 메뉴 탭 active 효과 적용
+    let url = window.location.href;
+
+    let menuTapId = "";
+
+    if (url.indexOf("/mbtiBoards") != -1) {
+      menuTapId = "mbtiBoards";
+    } else if (url.indexOf("/mbtiTest") != -1) {
+      menuTapId = "mbtiTest";
+    } else if (url.indexOf("/loginJoin") != -1) {
+      menuTapId = "loginJoin";
+    } else if (url.indexOf("/usedSkills") != -1) {
+      menuTapId = "usedSkills";
+    } else if (url.indexOf("/mypage") != -1){
+      menuTapId = "mypage";
+    }
+
+
+
+    $("#" + menuTapId).attr("class", "nav-link js-scroll-trigger active");
+
+  });
+
+</script>

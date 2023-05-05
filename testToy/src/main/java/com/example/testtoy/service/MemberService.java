@@ -75,4 +75,16 @@ public class MemberService {
 
     }
 
+    @Transactional
+    public boolean deleteMember(String name){
+        // 삭제 성공
+        if(memberRepository.delete(name)){
+            return true;
+        }
+        // 삭제 실패
+        else{
+            return false;
+        }
+    }
+
 }
