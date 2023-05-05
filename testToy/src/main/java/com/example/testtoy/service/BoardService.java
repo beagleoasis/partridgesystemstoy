@@ -21,6 +21,6 @@ public class BoardService {
     public Page<Board> findAllBoards(Pageable pageable){
 
         // 삭제된 게시글을 제외한 모든 게시글 조회
-        return boardRepository.findBoardsByStatusIsNull(pageable);
+        return boardRepository.findBoardsByStateIsNull(pageable);
     }
 }

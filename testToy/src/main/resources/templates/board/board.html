@@ -19,7 +19,7 @@
     <section class="resume-section" id="education">
         <div class="resume-section-content">
             <!-- MBTI 키워드 추천하기 게시판 타이틀 -->
-            <h2 class="mb-5">MBTI 키워드를 추천해주세요!</h2>
+            <h3 class="mb-5">파트리지시스템즈 토이 프로젝트 게시판</h3>
 
             <!-- 게시글 수정 페이지 post 방식 이동을 위한 폼태그-->
             <form action="" name="gotopage" method="post">
@@ -31,7 +31,13 @@
                         <div class="d-flex flex-column flex-md-row justify-content-between">
                             <!-- 게시물 정보 -->
                             <div class="flex-grow-1">
-                                <div th:text="${boards.content}" class="subheading mb-3"></div>
+                                <h4 th:text="'제목 : ' + ${boards.title}" class="mb-0"></h4>
+                                <!--<div th:text="'내용 : ' + ${boards.content}" class="subheading mb-3"></div>-->
+                                <p th:text="'작성자 : ' + ${boards.memberid}"></p>
+                            </div>
+                            <!-- 게시일자 -->
+                            <div class="flex-shrink-0">
+                                <span th:text="${#temporals.format(boards.createdDate, 'yyyy-MM-dd HH:mm')}" class="text-primary"></span>
                             </div>
 
                         </div><!-- end of div -->
@@ -45,7 +51,7 @@
                 <div class="flex-grow-1">
                 </div>
                 <div class="flex-shrink-0">
-                    <button class="text-primary" type="button" th:onclick="|location.href='@{/boards/post}'|">키워드 작성하기</button>
+                    <button class="text-primary" type="button" th:onclick="|location.href='@{/boards/post}'|">게시글 작성하기</button>
                 </div>
             </div>
         </div>
@@ -53,7 +59,7 @@
     </section>
 
     <!-- Paging -->
-    <!--<th:block th:replace="paging/page :: pageFragment"></th:block>-->
+    <th:block th:replace="paging/page :: pageFragment"></th:block>
 
 
 </div>

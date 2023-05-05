@@ -10,7 +10,7 @@ spring:
     show-sql: true
     hibernate:
       # 데이터베이스 자동 생성 설정
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
