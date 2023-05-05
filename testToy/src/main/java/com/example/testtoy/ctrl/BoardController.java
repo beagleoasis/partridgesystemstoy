@@ -22,7 +22,7 @@ public class BoardController {
     }
 
     @GetMapping("")
-    public String getBoards(@PageableDefault(page = 0, size = 10, sort = "board_id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String getBoards(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             Model model){
 
         Page<Board> boards = boardService.findAllBoards(pageable);
