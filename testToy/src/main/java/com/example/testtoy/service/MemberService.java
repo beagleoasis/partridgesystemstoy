@@ -3,6 +3,7 @@ package com.example.testtoy.service;
 import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ public class MemberService {
 
     private PasswordEncoder passwordEncoder;
 
-    MemberService(MemberRepository memberRepository){
+    MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder){
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -61,11 +63,12 @@ public class MemberService {
         // 사용자 이름으로 사용자 조회
         List<Member> member = memberRepository.findByName(name);
 
-        if(member != null && passwordEncoder.matches(password, member.get(0).getPassword())){
+        // 사용자 일치
+        if(!member.isEmpty() && passwordEncoder.matches(password, member.get(0).getPassword())){
             // 비밀번호 검증
-            System.out.println("일치!");
             return member.get(0);
         }
+        // 사용자 불일치
         else{
             return null;
         }

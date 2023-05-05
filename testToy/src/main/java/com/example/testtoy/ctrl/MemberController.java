@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
 
 @RequestMapping("members")
@@ -60,17 +61,23 @@ public class MemberController {
     }
 
     @PostMapping(value = "/login")
-    public String loginMember(HttpServletRequest request){
+    public String loginMember(HttpServletRequest request, HttpSession session){
 
         String name = request.getParameter("name");
         String password = request.getParameter("password");
-        System.out.println("name : " + name + " , password : " + password);
 
         // 유저 이름과 비밀번호를 통한 사용자 인증
         Member member = memberService.authenticate(name,password);
 
-        System.out.println(member.getPassword());
-        return "";
+        if(member == null){
+            // 인증 실패 시 로그인 페이지 이동
+            return "members/login";
+        }
+
+        // 인증 성공 시, HttpSession에 사용자 정보 저장
+        session.setAttribute("user", member);
+
+        return "index";
     }
 
 }
