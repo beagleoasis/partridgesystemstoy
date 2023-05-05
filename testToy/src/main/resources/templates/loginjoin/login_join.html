@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: headFragment"></head>
+
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+
+    <!-- About-->
+    <section class="resume-section" id="about">
+        <div class="resume-section-content">
+
+            <h2 class="mb-0"  style="text-align: center; margin-top: 30px;">
+                <a href="#" th:onclick="|location.href='@{/members/login}'|"><span class="text-primary">로그인</span></a>
+            </h2>
+
+            <h2 class="mb-0"  style="text-align: center; margin-top: 30px;">
+                <a href="#" th:onclick="|location.href='@{/members/new}'|"><span class="text-primary">회원가입</span></a>
+            </h2>
+
+        </div>
+    </section>
+
+
+</div>
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"><</th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+
+
+    $(document).ready(function () {
+
+        // url에 따른 메뉴 탭 active 효과 적용
+        let url = window.location.href;
+
+        let menuTapId = "";
+
+        if (url.indexOf("/mbtiBoards") != -1) {
+            menuTapId = "mbtiBoards";
+        } else if (url.indexOf("/mbtiTest") != -1) {
+            menuTapId = "mbtiTest";
+        } else if (url.indexOf("/loginJoin") != -1) {
+            menuTapId = "loginJoin";
+        } else if (url.indexOf("/usedSkills") != -1) {
+            menuTapId = "usedSkills";
+        } else if (url.indexOf("/mypage") != -1){
+            menuTapId = "mypage";
+        }
+
+
+
+        $("#" + menuTapId).attr("class", "nav-link js-scroll-trigger active");
+
+    });
+
+</script>

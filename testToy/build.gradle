@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-<<<<<<< HEAD
     /*
     jpa
      */
@@ -37,6 +36,7 @@ dependencies {
     Security
      */
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'junit:junit:4.13.1'
     /*
     lombok
      */

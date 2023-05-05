@@ -1,0 +1,34 @@
+# 서버 포트 번호
+server:
+  port: 8080
+
+# 스프링 관련 세팅
+spring:
+  # JPA 설정
+  jpa:
+    # sql 표시 유무
+    show-sql: true
+    hibernate:
+      # 데이터베이스 자동 생성 설정
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  # 데이터베이스 설정
+  datasource:
+    # MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DB username
+    username: root
+    # DB password
+    password: 2936
+    # DB Source URL
+    url: jdbc:mysql://localhost:3306/test
+    dbcp2:
+      test-on-borrow: true
+      validation-query: select 1
+
+logging:
+  level:
+    org.hibernate.sql: debug

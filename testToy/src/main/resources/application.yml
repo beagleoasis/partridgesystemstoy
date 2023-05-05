@@ -2,7 +2,9 @@
 server:
   port: 8080
 
+# 스프링 관련 세팅
 spring:
+  # JPA 설정
   jpa:
     # sql 표시 유무
     show-sql: true
@@ -13,6 +15,7 @@ spring:
       hibernate:
         format_sql: true
 
+  # 데이터베이스 설정
   datasource:
     # MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -25,3 +28,8 @@ spring:
     dbcp2:
       test-on-borrow: true
       validation-query: select 1
+
+logging:
+  level:
+    org.hibernate.sql: debug
+    org.hibernate.type: trace
