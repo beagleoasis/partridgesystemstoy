@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: headFragment"></head>
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+
+
+    <!--<hr class="m-0" />
+
+    <hr class="m-0" />-->
+
+    <!-- MBTI 키워드 추천하기 -->
+    <section class="resume-section" id="education">
+        <div class="resume-section-content">
+            <!-- MBTI 키워드 추천하기 게시판 타이틀 -->
+            <h2 class="mb-5">MBTI 키워드를 추천해주세요!</h2>
+
+            <!-- 게시글 수정 페이지 post 방식 이동을 위한 폼태그-->
+            <form action="" name="gotopage" method="post">
+                <input type="hidden" id="boardnoid" name="boardno" value=""/>
+
+                <th:block th:each="boards : ${boards}">
+
+                    <th:block th:if="${!#strings.equals(boards.state, 'T')}">
+                        <div class="d-flex flex-column flex-md-row justify-content-between">
+                            <!-- 게시물 정보 -->
+                            <div class="flex-grow-1">
+                                <div th:text="${boards.content}" class="subheading mb-3"></div>
+                            </div>
+
+                        </div><!-- end of div -->
+                        <hr/>
+                    </th:block>
+                </th:block>
+            </form>
+
+            <!-- 하단 글작성 버튼 -->
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+                <div class="flex-grow-1">
+                </div>
+                <div class="flex-shrink-0">
+                    <button class="text-primary" type="button" th:onclick="|location.href='@{/boards/post}'|">키워드 작성하기</button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Paging -->
+    <!--<th:block th:replace="paging/page :: pageFragment"></th:block>-->
+
+
+</div>
+
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"></th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+    // form 태그
+    let form = document.gotopage;
+
+    // 게시글 수정 링크 이동
+    function modify(id){
+
+        if(id==''){
+            return false;
+        }
+
+        $("#boardnoid").val(id);
+
+        form.action = "/boards/revision";
+
+    }
+
+    // 게시글 삭제
+    function deleteMbtiBoard(id){
+
+        if(confirm("해당 게시글을 삭제하시겠습니까?")){
+            // 예
+            $.ajax({
+                type : 'DELETE',
+                url : '/boards/deletion/'+id,
+                contentType : 'application/json; charset=utf-8',
+                dataType : 'json'
+            }).done(function(result) {
+
+                if(result == 0){
+                    alert("게시글 삭제를 실패했습니다.")
+                }
+                else{
+                    alert("게시글 삭제를 완료했습니다.");
+                }
+                location.reload();
+
+            }).fail(function(error) {
+                let message = JSON.parse(error.responseText);
+            });
+
+        }
+
+    }
+
+
+</script>

@@ -23,7 +23,6 @@ public class Member {
     @Column(name="member_password")
     private String password;
 
-    @Column(name="member_state")
     private String state;
 
 }

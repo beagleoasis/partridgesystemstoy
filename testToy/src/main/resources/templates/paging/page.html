@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="pageFragment" class="pagination">
+
+  <ul th:with="start=${(boards.number/10)*10 + 1},
+                end=(${(boards.totalPages == 0) ? 1 : (start + (10 - 1) < boards.totalPages ? start + (10 - 1) : boards.totalPages)})">
+
+    <li th:class="${boards.first} ? 'disabled'">
+      <a th:href="${boards.first} ? '#' :@{/boards(page=${boards.number-1})}" aria-label="Previous">
+        <span aria-hidden="true">&lt;</span>
+      </a>
+    </li>
+
+    <li th:each="page: ${#numbers.sequence(start, end)}">
+      <a th:text="${page}" th:href="@{/boards(page=${page - 1})}"></a>
+    </li>
+
+    <li th:class="${boards.last} ? 'disabled'">
+      <a th:href="${boards.last} ? '#' : @{/boards(page=${boards.number + 1})}" aria-label="Next">
+        <span aria-hidden="true">&gt;</span>
+      </a>
+    </li>
+
+  </ul>
+
+</div>
+
+</html>

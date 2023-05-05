@@ -2,15 +2,11 @@ package com.example.testtoy.service;
 
 import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberService {

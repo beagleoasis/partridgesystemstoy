@@ -30,7 +30,7 @@ public class MemberController {
     }
 
     @GetMapping(value = "/new")
-    public String showJoinForm(Model model){
+    public String getJoinForm(Model model){
         model.addAttribute("memberForm", new SaveMemberDto());
 
         return "members/create_join_form";
@@ -54,7 +54,7 @@ public class MemberController {
     }
 
     @GetMapping(value = "/login")
-    public String showLoginForm(){
+    public String getLoginForm(){
 
         return "members/login";
     }
@@ -93,7 +93,7 @@ public class MemberController {
 
 
     @GetMapping("mypage")
-    public String showMypage(){
+    public String getMypage(){
 
         return "members/mypage";
     }
