@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: headFragment"></head>
+
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+  <section class="resume-section" id="about">
+    <div class="resume-section-content">
+      <!-- 게시글 양식 -->
+      <form action="" name="boardwrite" method="post" onsubmit="return validationCheck()">
+
+        <div class="mb-5"><h3>게시글 제목</h3>
+          <input type="hidden" name="memberid" th:value="|${session.user.id}|">
+          <div>
+            <input type="text" name="title" maxlength="50" placeholder="제목" required/>
+          </div>
+        </div>
+
+        <div class="mb-5"> <h3>게시글 내용</h3>
+          <div>
+            <input type="text" name="content" maxlength="50" placeholder="내용" required/>
+          </div>
+        </div>
+
+        <!-- 하단 글작성 버튼 -->
+        <div class="d-flex flex-column flex-md-row justify-content-between">
+          <div class="flex-grow-1">
+          </div>
+          <div class="flex-shrink-0">
+            <button class="text-primary" type="submit">등록</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"><</th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+  // form 태그
+  let form = document.boardwrite;
+
+
+  // 유효성 검사
+  function validationCheck(){
+    alert("!");
+
+    form.action = "/boards/post";
+
+    return true;
+  }
+
+
+</script>
