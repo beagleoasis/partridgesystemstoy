@@ -49,4 +49,12 @@ public class BoardService {
 
         return id;
     }
+
+    @Transactional
+    public Board findBoard(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+
+        return board;
+    }
 }

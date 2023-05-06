@@ -28,7 +28,7 @@
                 <th:block th:each="boards : ${boards}">
 
                     <th:block th:if="${!#strings.equals(boards.state, 'T')}">
-                        <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="d-flex flex-column flex-md-row justify-content-between" th:onclick="'javascript:location.href=\'/boards/' + ${boards.id} + '\' '">
                             <!-- 게시물 정보 -->
                             <div class="flex-grow-1">
                                 <h4 th:text="'제목 : ' + ${boards.title}" class="mb-0"></h4>

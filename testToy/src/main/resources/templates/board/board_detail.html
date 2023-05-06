@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: headFragment"></head>
+
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+    <section class="resume-section" id="about">
+        <div class="resume-section-content">
+            <!-- 게시글 양식 -->
+            <form>
+
+                <div class="mb-5"><h3>게시글 제목</h3>
+                    <div>
+                        <input type="text" name="title" maxlength="50" th:value="${board.getTitle()}" readonly/>
+                    </div>
+                </div>
+
+                <div class="mb-5"> <h3>게시글 내용</h3>
+                    <div>
+                        <input type="text" name="content" maxlength="50" th:value="${board.getContent()}" readonly/>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"><</th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+
+
+</script>

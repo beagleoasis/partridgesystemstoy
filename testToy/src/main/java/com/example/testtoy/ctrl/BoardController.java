@@ -111,4 +111,14 @@ public class BoardController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/{id}")
+    public String getBoard(@PathVariable Long id, Model model){
+
+        Board board = boardService.findBoard(id);
+
+        model.addAttribute("board", board);
+
+        return "board/board_detail";
+    }
+
 }
