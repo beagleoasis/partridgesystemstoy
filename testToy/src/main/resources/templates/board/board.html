@@ -38,6 +38,9 @@
                             <!-- 게시일자 -->
                             <div class="flex-shrink-0">
                                 <span th:text="${#temporals.format(boards.createdDate, 'yyyy-MM-dd HH:mm')}" class="text-primary"></span>
+                                <div>
+                                    <button th:if="${#strings.equals(boards.memberid,session.user?.id)}" class="text-primary" type="button" th:onclick="deleteMbtiBoard([[${boards.id}]])">삭제</button>
+                                </div>
                             </div>
 
                         </div><!-- end of div -->
@@ -76,21 +79,10 @@
     // form 태그
     let form = document.gotopage;
 
-    // 게시글 수정 링크 이동
-    function modify(id){
-
-        if(id==''){
-            return false;
-        }
-
-        $("#boardnoid").val(id);
-
-        form.action = "/boards/revision";
-
-    }
-
     // 게시글 삭제
     function deleteMbtiBoard(id){
+
+        alert(id);
 
         if(confirm("해당 게시글을 삭제하시겠습니까?")){
             // 예
