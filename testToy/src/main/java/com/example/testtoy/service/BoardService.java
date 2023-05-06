@@ -29,4 +29,24 @@ public class BoardService {
     public Board save(Board board){
         return boardRepository.save(board);
     }
+
+    /**
+    *
+    * @method : deleteBoard
+    *
+    * @explain : 게시물 삭제 처리(상태값을 'd'로 변경
+    * @author : User
+    * @date : 2023-05-06
+    *
+    **/
+    @Transactional
+    public Long deleteBoard(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+
+        // 상태값을 d로 변경
+        board.setState("d");
+
+        return id;
+    }
 }
