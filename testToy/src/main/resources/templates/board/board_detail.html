@@ -14,8 +14,6 @@
     <section class="resume-section" id="about">
         <div class="resume-section-content">
             <!-- 게시글 양식 -->
-            <form>
-
                 <div class="mb-5"><h3>게시글 제목</h3>
                     <div>
                         <input type="text" name="title" maxlength="50" th:value="${board.getTitle()}" readonly/>
@@ -27,7 +25,12 @@
                         <input type="text" name="content" maxlength="50" th:value="${board.getContent()}" readonly/>
                     </div>
                 </div>
-
+            <!-- 댓글 작성 -->
+            <form id="comment-form" method="post" th:if="${#strings.equals(board.memberid,session.user?.id)}">
+                <input type="hidden" name="boardid" th:value="${board.id}">
+                <input type="hidden" name="memberid" th:value="|${session?.user.id}|">
+                <textarea name="comment" rows="5"></textarea>
+                <button type="submit">댓글 작성</button>
             </form>
         </div>
     </section>
@@ -41,7 +44,31 @@
 
 <!-- script -->
 <script th:inline="javascript">
+    function submitComment(event) {
+        event.preventDefault(); // 기본 동작 중단
 
+        const form = document.getElementById("comment-form");
+        const formData = new FormData(form);
+
+        $.ajax({
+            url: "/comments",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (html) {
+                // 댓글 목록 업데이트
+                const commentList = document.getElementById("comment-list");
+                commentList.innerHTML = html;
+
+                // 작성 완료 메시지 표시
+                alert("댓글이 작성되었습니다.");
+            },
+            error: function () {
+                alert("댓글 작성에 실패했습니다.");
+            }
+        });
+    }
 
 
 </script>
