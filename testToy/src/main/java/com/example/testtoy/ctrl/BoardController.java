@@ -1,9 +1,9 @@
 package com.example.testtoy.ctrl;
 
 import com.example.testtoy.domain.board.Board;
-import com.example.testtoy.domain.member.Member;
-import com.example.testtoy.dto.SavePostDto;
+import com.example.testtoy.domain.comment.Comment;
 import com.example.testtoy.service.BoardService;
+import com.example.testtoy.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("boards")
 @Controller
@@ -24,8 +25,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    public BoardController(BoardService boardService) {
+    private final CommentService commentService;
+
+    public BoardController(BoardService boardService, CommentService commentService) {
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     /**
@@ -116,7 +120,10 @@ public class BoardController {
 
         Board board = boardService.findBoard(id);
 
+        List<Comment> comments = commentService.getComments(board.getId());
+
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
 
         return "board/board_detail";
     }

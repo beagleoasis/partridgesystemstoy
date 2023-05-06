@@ -32,6 +32,15 @@
                 <textarea name="comment" rows="5"></textarea>
                 <button type="submit">댓글 작성</button>
             </form>
+
+            <!-- 댓글 목록 -->
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+                <ul id="comment-list">
+                    <li th:each="comment : ${comments}">
+                        <p th:text="${comment.content}"></p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </section>
 
