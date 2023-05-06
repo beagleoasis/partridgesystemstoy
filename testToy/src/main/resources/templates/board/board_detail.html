@@ -26,11 +26,11 @@
                     </div>
                 </div>
             <!-- 댓글 작성 -->
-            <form id="comment-form" method="post" th:if="${#strings.equals(board.memberid,session.user?.id)}">
-                <input type="hidden" name="boardid" th:value="${board.id}">
-                <input type="hidden" name="memberid" th:value="|${session?.user.id}|">
-                <textarea name="comment" rows="5"></textarea>
-                <button type="submit">댓글 작성</button>
+            <form th:if="${#strings.equals(board.memberid,session.user?.id)}">
+                <input type="hidden" id="boardid" th:value="${board.id}">
+                <input type="hidden" id="memberid" th:value="|${session?.user.id}|">
+                <textarea id="comment" rows="5"></textarea>
+                <input th:type="button" th:onclick="submitComment()">댓글 작성</input>
             </form>
 
             <!-- 댓글 목록 -->
@@ -53,28 +53,50 @@
 
 <!-- script -->
 <script th:inline="javascript">
-    function submitComment(event) {
-        event.preventDefault(); // 기본 동작 중단
+    function submitComment() {
 
-        const form = document.getElementById("comment-form");
-        const formData = new FormData(form);
+        let boardid = $("#boardid").val();
+        let memberid = $("#memberid").val();
+        let comment = $("#comment").val();
+
+        alert(boardid);
+        alert(memberid);
+        alert(comment);
 
         $.ajax({
             url: "/comments",
             method: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (html) {
-                // 댓글 목록 업데이트
-                const commentList = document.getElementById("comment-list");
-                commentList.innerHTML = html;
+            contentType: 'application/json',
+            data: JSON.stringify({
+                board_id : boardid,
+                memberid : memberid,
+                content : comment
+            }),
+            success: function (response) {
 
                 // 작성 완료 메시지 표시
                 alert("댓글이 작성되었습니다.");
             },
             error: function () {
                 alert("댓글 작성에 실패했습니다.");
+            }
+        });
+    }
+
+
+    function loadComments() {
+        $.ajax({
+            type: "GET",
+            url: "/comments",
+            success: function(comments) {
+                // 댓글 목록 가져오기 성공 시 동작
+                var template = $("#comment-template").html();
+                var rendered = Mustache.render(template, {comments: comments});
+                $("#comment-list").html(rendered);
+            },
+            error: function(error) {
+                // 댓글 목록 가져오기 실패 시 동작
+                $("#comment-list").html("댓글 목록을 불러오는데 실패하였습니다.");
             }
         });
     }
