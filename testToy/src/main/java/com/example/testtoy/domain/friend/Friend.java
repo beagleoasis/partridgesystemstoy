@@ -16,13 +16,14 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "friend_id")
-    private Member friend;
+    @JoinColumn(name = "member1_id")
+    private Member member1;
+
+    @ManyToOne
+    @JoinColumn(name = "member2_id")
+    private Member member2;
 
 
 }

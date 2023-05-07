@@ -25,7 +25,7 @@ public class FriendRequest {
     @JoinColumn(name = "receiver_id")
     private Member receiver;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
     private FriendStatus state;
 

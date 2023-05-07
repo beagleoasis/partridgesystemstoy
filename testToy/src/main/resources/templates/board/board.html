@@ -28,7 +28,7 @@
                             <div class="flex-grow-1">
                                 <h4 th:text="'제목 : ' + ${boards.title}" class="mb-0"></h4>
                                 <!--<div th:text="'내용 : ' + ${boards.content}" class="subheading mb-3"></div>-->
-                                <p th:text="'작성자 : ' + ${boards.name}"></p>
+
                             </div>
                             <!-- 게시일자 -->
                             <div class="flex-shrink-0">
@@ -39,8 +39,12 @@
                             </div>
 
                         </div><!-- end of div -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between" th:onclick="addFriend([[${boards.memberid}]])">
+                            <p th:text="'작성자 : ' + ${boards.name}"></p>
+                        </div>
                         <hr/>
                     </th:block>
+
                 </th:block>
             </form>
 
@@ -102,5 +106,50 @@
 
     }
 
+
+    function addFriend(id){
+        // 현재 로그인한 유저 세션
+        let sessionId = String([[${session.user?.id}]]);
+
+        // 로그인한 경우,
+        if(sessionId){
+            // 로그인한 유저와 친구 요청을 할 유저가 동일한 경우,
+            if(sessionId===String(id)){
+                alert("자기 자신에게 친구 요청을 할 수 없습니다.");
+            }else{
+                // 친구 요청 보내기 로직
+                alert("친구 요청 보내기");
+
+                $.ajax({
+                    type : 'POST',
+                    url : '/friends/request',
+                    data : JSON.stringify({
+                        senderId : sessionId,
+                        receiverId : id
+                    }),
+                    contentType : 'application/json; charset=utf-8',
+                    dataType : 'json'
+                }).done(function(response) {
+
+                    alert(response);
+                    location.reload();
+
+                }).fail(function(error) {
+                    let message = JSON.parse(error.responseText);
+                });
+
+            }
+        }
+        // 로그인하지 않은 경우,
+        else{
+            alert("로그인한 후에 친구 요청이 가능합니다.");
+        }
+
+
+        // 이미 추가 요청된 경우 -> 알림
+
+        // 친구 요청이 와있는 유저인 경우->친구 관계 성립
+
+    }
 
 </script>
