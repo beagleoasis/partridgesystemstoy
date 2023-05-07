@@ -80,27 +80,22 @@
 
                 // 작성 완료 메시지 표시
                 alert("댓글이 작성되었습니다.");
+
+                let commentList = $('#comment-list');
+
+                commentList.empty();
+
+                for (let i = 0; i < response.length; i++) {
+                    let comment = response[i];
+                    let html = '<li><p>' + comment.name + ' : ' + comment.content + '</p></li>';
+
+                    commentList.append(html);
+                }
+                $('#comment').val('');
+
             },
             error: function () {
                 alert("댓글 작성에 실패했습니다.");
-            }
-        });
-    }
-
-
-    function loadComments() {
-        $.ajax({
-            type: "GET",
-            url: "/comments",
-            success: function(comments) {
-                // 댓글 목록 가져오기 성공 시 동작
-                var template = $("#comment-template").html();
-                var rendered = Mustache.render(template, {comments: comments});
-                $("#comment-list").html(rendered);
-            },
-            error: function(error) {
-                // 댓글 목록 가져오기 실패 시 동작
-                $("#comment-list").html("댓글 목록을 불러오는데 실패하였습니다.");
             }
         });
     }

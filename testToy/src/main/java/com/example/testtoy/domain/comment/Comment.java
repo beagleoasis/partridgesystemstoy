@@ -1,6 +1,7 @@
 package com.example.testtoy.domain.comment;
 
 import com.example.testtoy.domain.board.Board;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;

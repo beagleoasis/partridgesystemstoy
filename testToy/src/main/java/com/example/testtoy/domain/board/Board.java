@@ -2,6 +2,7 @@ package com.example.testtoy.domain.board;
 
 import com.example.testtoy.domain.BaseTimeEntity;
 import com.example.testtoy.domain.comment.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,7 @@ public class Board extends BaseTimeEntity {
 
     private int likes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
