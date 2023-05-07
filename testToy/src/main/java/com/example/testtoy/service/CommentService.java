@@ -18,13 +18,50 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    /**
+    *
+    * @method : getComments
+    *
+    * @explain : 댓글 리스트 조회
+    * @author : User
+    * @date : 2023-05-06
+    *
+    **/
     @Transactional
     public List<Comment> getComments(Long id){
         return commentRepository.findByBoardIdAndStateIsNull(id);
     }
 
+    /**
+    *
+    * @method : save
+    *
+    * @explain : 댓글 저장
+    * @author : User
+    * @date : 2023-05-06
+    *
+    **/
     @Transactional
     public Comment save(Comment comment){
         return commentRepository.save(comment);
+    }
+
+    /**
+    *
+    * @method : deleteComment
+    *
+    * @explain : 댓글 삭제(상태값 'd'로 변경)
+    * @author : User
+    * @date : 2023-05-07
+    *
+    **/
+    @Transactional
+    public Long deleteComment(Long id){
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+
+        comment.setState("d");
+
+        return id;
     }
 }

@@ -4,11 +4,9 @@ import com.example.testtoy.domain.board.Board;
 import com.example.testtoy.domain.comment.Comment;
 import com.example.testtoy.dto.SaveCommentDto;
 import com.example.testtoy.service.CommentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,15 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    /**
+    *
+    * @method : saveComment
+    *
+    * @explain : 게시글에 대한 댓글 작성
+    * @author : User
+    * @date : 2023-05-07
+    *
+    **/
     @PostMapping("")
     @ResponseBody
     public List<Comment> saveComment(@RequestBody SaveCommentDto saveCommentDto){
@@ -39,5 +46,22 @@ public class CommentController {
         Comment savedComment = commentService.save(comment);
 
         return commentService.getComments(saveCommentDto.getBoard_id());
+    }
+
+    /**
+    *
+    * @method : deleteComment
+    *
+    * @explain : 댓글 삭제(상태값 'd'로 변경)
+    * @author : User
+    * @date : 2023-05-07
+    *
+    **/
+    @DeleteMapping("deletion/{id}")
+    public ResponseEntity deleteComment(@PathVariable Long id){
+
+        Long result = commentService.deleteComment(id);
+
+        return ResponseEntity.ok(result);
     }
 }
