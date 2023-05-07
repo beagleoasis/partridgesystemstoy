@@ -31,7 +31,7 @@
                 <input type="hidden" id="memberid" th:value="|${session?.user.id}|">
                 <input type="hidden" id="name" th:value="|${session?.user.name}|">
                 <textarea id="comment" rows="5"></textarea>
-                <input th:type="button" th:onclick="submitComment()">댓글 작성</input>
+                <button type="button" onclick="submitComment();">댓글 작성</button>
             </form>
 
             <!-- 댓글 목록 -->
@@ -60,11 +60,6 @@
         let memberid = $("#memberid").val();
         let name = $("#name").val();
         let comment = $("#comment").val();
-
-        alert(boardid);
-        alert(memberid);
-        alert(name);
-        alert(comment);
 
         $.ajax({
             url: "/comments",
