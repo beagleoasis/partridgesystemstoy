@@ -11,5 +11,7 @@ public class SaveCommentDto {
 
     private Long memberid;
 
+    private String name;
+
     private String content;
 }

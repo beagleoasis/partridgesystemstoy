@@ -22,6 +22,9 @@ public class Board extends BaseTimeEntity {
     @Column(name = "member_id")
     private String memberid;
 
+    @Column(name = "member_name")
+    private String name;
+
     private String title;
 
     private String content;

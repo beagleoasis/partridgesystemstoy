@@ -17,7 +17,8 @@
       <form action="" name="boardwrite" method="post" onsubmit="return validationCheck()">
 
         <div class="mb-5"><h3>게시글 제목</h3>
-          <input type="hidden" name="memberid" th:value="|${session.user.id}|">
+          <input type="hidden" name="memberid" th:value="|${session.user.id}|"/>
+          <input type="hidden" name="name" th:value="|${session.user.name}|"/>
           <div>
             <input type="text" name="title" maxlength="50" placeholder="제목" required/>
           </div>

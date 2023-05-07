@@ -19,6 +19,9 @@ public class Comment {
     @Column(name = "member_id", nullable = false)
     private Long memberid;
 
+    @Column(name = "member_name", nullable = false)
+    private String name;
+
     @Column(nullable = false)
     private String content;
 

@@ -29,6 +29,7 @@
             <form th:if="${#strings.equals(board.memberid,session.user?.id)}">
                 <input type="hidden" id="boardid" th:value="${board.id}">
                 <input type="hidden" id="memberid" th:value="|${session?.user.id}|">
+                <input type="hidden" id="name" th:value="|${session?.user.name}|">
                 <textarea id="comment" rows="5"></textarea>
                 <input th:type="button" th:onclick="submitComment()">댓글 작성</input>
             </form>
@@ -37,7 +38,7 @@
             <div class="d-flex flex-column flex-md-row justify-content-between">
                 <ul id="comment-list">
                     <li th:each="comment : ${comments}">
-                        <p th:text="${comment.content}"></p>
+                        <p th:text="${comment.name + ' : ' + comment.content}"></p>
                     </li>
                 </ul>
             </div>
@@ -57,10 +58,12 @@
 
         let boardid = $("#boardid").val();
         let memberid = $("#memberid").val();
+        let name = $("#name").val();
         let comment = $("#comment").val();
 
         alert(boardid);
         alert(memberid);
+        alert(name);
         alert(comment);
 
         $.ajax({
@@ -70,6 +73,7 @@
             data: JSON.stringify({
                 board_id : boardid,
                 memberid : memberid,
+                name : name,
                 content : comment
             }),
             success: function (response) {
