@@ -26,7 +26,7 @@
                     </div>
                 </div>
             <!-- 댓글 작성 -->
-            <form th:if="${#strings.equals(board.memberid,session.user?.id)}">
+            <form th:if="${session.user?.id}">
                 <input type="hidden" id="boardid" th:value="${board.id}">
                 <input type="hidden" id="memberid" th:value="|${session?.user.id}|">
                 <input type="hidden" id="name" th:value="|${session?.user.name}|">
@@ -39,6 +39,7 @@
                 <ul id="comment-list">
                     <li th:each="comment : ${comments}">
                         <p th:text="${comment.name + ' : ' + comment.content}"></p>
+                        <button th:if="${#strings.equals(comment.memberid,session.user?.id)}" class="text-primary" type="button" th:onclick="deleteComment([[${comment.id}]])">삭제</button>
                     </li>
                 </ul>
             </div>
@@ -82,7 +83,19 @@
 
                 for (let i = 0; i < response.length; i++) {
                     let comment = response[i];
-                    let html = '<li><p>' + comment.name + ' : ' + comment.content + '</p></li>';
+
+                    let html = '<li>';
+                    html += '<p>' + comment.name + ' : ' + comment.content + '</p>';
+
+                    // 댓글 게시자 아이디와 로그인한 유저 아이디 비교 로직
+                    let commentId = String(comment.memberid);
+                    let sessionId = String([[${session.user?.id}]]);
+
+                    if (commentId===sessionId){
+                        html += '<button class="text-primary" type="button" onclick="deleteComment(\'' + comment.id + '\')">삭제</button>';
+                    }
+
+                    html += '</li>';
 
                     commentList.append(html);
                 }
@@ -95,5 +108,8 @@
         });
     }
 
+    function deleteComment(id){
+        alert(id);
+    }
 
 </script>
