@@ -18,11 +18,45 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
+    /**
+    *
+    * @method : findAllBoards
+    *
+    * @explain : 게시판 최신순 조회
+    * @author : User
+    * @date : 2023-05-08
+    *
+    **/
     @Transactional
-    public Page<Board> findAllBoards(Pageable pageable){
+    public Page<Board> findAllBoardsBySortType(Pageable pageable, String sortType){
+
+        // 방문자수 순
+        if(sortType.equals("visiter")){
+
+        }
+        // 게시글 추천수 순
+        else if(sortType.equals("likeBoard")){
+
+        }
+        // 방문자수 + 게시글 추천수 순
+        else if(sortType.equals("visiterAndLikeBoard")){
+
+        }
+        // 댓글 추천수 순
+        else if(sortType.equals("likeComment")){
+
+        }
+        // 게시글 추천수 + 댓글 추천수 순
+        else if(sortType.equals("likeBoardAndLikeComment")){
+
+        }
+        // 최신순 디폴트
+        else{
+            return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
+        }
 
         // 삭제된 게시글을 제외한 모든 게시글 조회
-        return boardRepository.findBoardsByStateIsNull(pageable);
+        return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
     }
 
     @Transactional

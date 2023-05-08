@@ -42,21 +42,23 @@ public class BoardController {
     *
     * @method : getBoards
     *
-    * @explain : 게시판 조회
+    * @explain : 게시판 최신순 조회
     * @author : User
     * @date : 2023-05-04
     *
     **/
     @GetMapping("")
-    public String getBoards(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String getBoards(@RequestParam(name = "sortType", required = false, defaultValue = "latest") String sortType, @PageableDefault(page = 0, size = 10) Pageable pageable,
                             Model model){
 
-        Page<Board> boards = boardService.findAllBoards(pageable);
+        Page<Board> boards = boardService.findAllBoardsBySortType(pageable, sortType);
 
         model.addAttribute("boards", boards);
 
         return "board/board";
     }
+
+
 
 
     /**

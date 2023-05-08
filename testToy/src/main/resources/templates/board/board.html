@@ -10,14 +10,29 @@
 <!-- Page Content-->
 <div class="container-fluid p-0">
 
-    <!-- MBTI 키워드 추천하기 -->
+    <!-- 파트리지시스템즈 토이 프로젝트 게시판 -->
     <section class="resume-section" id="education">
         <div class="resume-section-content">
-            <!-- MBTI 키워드 추천하기 게시판 타이틀 -->
+            <!-- 토이 프로젝트 게시판 -->
             <h3 class="mb-5">파트리지시스템즈 토이 프로젝트 게시판</h3>
+
+            <!-- 게시판 정렬 -->
+            <div class="mb-5"><h3>정렬 조건</h3>
+                <div>
+                    <select id="sortTypeId" name="sortType">
+                        <option value="latest" selected>최신순</option>
+                        <option value="visiter">방문자순</option>
+                        <option value="likeBoard">게시글 추천순</option>
+                        <option value="likeComment">댓글 추천순</option>
+                        <option value="visiterAndLikeBoard">방문자수+게시글 추천수순</option>
+                        <option value="likeBoardAndLikeComment">게시글 추천수+댓글 추천수순</option>
+                    </select>
+                </div>
+            </div>
 
             <!-- 게시글 수정 페이지 post 방식 이동을 위한 폼태그-->
             <form action="" name="gotopage" method="post">
+
                 <input type="hidden" id="boardnoid" name="boardno" value=""/>
 
                 <th:block th:each="boards : ${boards}">
@@ -77,6 +92,20 @@
 
 <!-- script -->
 <script th:inline="javascript">
+
+    // 게시판 정렬 파라미터 전송
+    $(document).ready(function() {
+        $('#sortTypeId').on('change', function() {
+            $.ajax({
+                url: '/boards',
+                type: 'GET',
+                data: { sortType : $(this).val() },
+                success: function(result) {
+
+                }
+            });
+        });
+    });
 
     // form 태그
     let form = document.gotopage;
@@ -154,6 +183,7 @@
         // 친구 요청이 와있는 유저인 경우->친구 관계 성립
 
     }
+
 
 
 </script>
