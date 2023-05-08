@@ -2,8 +2,7 @@ package com.example.testtoy.domain.member;
 
 import com.example.testtoy.domain.friend.Friend;
 import com.example.testtoy.domain.friendrequest.FriendRequest;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,6 +11,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -42,5 +44,10 @@ public class Member {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendRequest> receivedFriendRequests = new HashSet<>();
 
-
+    public static Member createMember(String name, String password){
+        return Member.builder()
+                .name(name)
+                .password(password)
+                .build();
+    }
 }

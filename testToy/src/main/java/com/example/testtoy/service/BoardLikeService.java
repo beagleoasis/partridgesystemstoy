@@ -70,48 +70,18 @@ public class BoardLikeService {
 
     /**
     *
-    * @method : save
+    * @method : likeOrUnlikeBoard
     *
-    * @explain : 게시글 좋아요 생성
+    * @explain : 게시글 추천/추천 취소
     * @author : User
     * @date : 2023-05-08
     *
     **/
     @Transactional
-    public BoardLike save(BoardLike boardLike){
-        // 게시글 좋아요 수 +1 처리를 위한 로직
-        // 추후 동시성 문제 처리 필요
-        Board board = boardRepository.findById(boardLike.getBoard().getId())
-                .orElseThrow(IllegalArgumentException::new);
-
-        board.setLikes(board.getLikes()+1);
-
-        // 게시글 좋아요 생성
-        return boardLikeRepository.save(boardLike);
-    }
-
-
-    @Transactional
-    public void delete(Long boardId, Long memberId){
-
-        // 게시글 좋아요 수 -1 처리를 위한 로직
-        // 추후 동시성 문제 처리 필요
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(IllegalArgumentException::new);
-
-        board.setLikes(board.getLikes()-1);
-
-        // 게시글 좋아요 삭제
-        boardLikeRepository.deleteBoardLikeByBoard_IdAndAndMember_Id(boardId, memberId);
-    }
-
-    @Transactional
     public ResponseEntity likeOrUnlikeBoard(SaveOrDeleteBoardLikeDto saveOrDeleteBoardLikeDto) {
 
         Long boardId = saveOrDeleteBoardLikeDto.getBoardid();
         Long memberId = saveOrDeleteBoardLikeDto.getMemberid();
-        System.out.println("boardId1 : " + boardId);
-        System.out.println("memberId : " + memberId);
 
         // 게시글 존재 여부 확인
         Board board = boardRepository.findById(boardId).orElseThrow(IllegalArgumentException::new);
@@ -121,9 +91,9 @@ public class BoardLikeService {
 
         // 게시글 좋아요가 존재한다면,
         if(boardLike!=null){
-            System.out.println("boardId2 : " + boardId);
-            System.out.println("memberId : " + memberId);
+            // 게시글 좋아요 카운트 -1
             board.setLikes(board.getLikes()-1);
+            // 좋아요 취소
             boardLikeRepository.deleteBoardLikeByBoard_IdAndAndMember_Id(boardId,memberId);
             return ResponseEntity.ok(204);
         }
@@ -131,9 +101,9 @@ public class BoardLikeService {
         else{
 
             Member member = memberRepository.findOne(saveOrDeleteBoardLikeDto.getMemberid());
+            // 게시글 좋아요 카운트 +1
             board.setLikes(board.getLikes()+1);
-            System.out.println("boardId3 : " + boardId);
-            System.out.println("memberId : " + memberId);
+            // 좋아요
             BoardLike saveBoardLike = BoardLike.createBoardLike(board,member);
 
             boardLikeRepository.save(saveBoardLike);

@@ -1,6 +1,7 @@
 package com.example.testtoy.service;
 
 import com.example.testtoy.domain.member.Member;
+import com.example.testtoy.dto.SaveMemberDto;
 import com.example.testtoy.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,12 @@ public class MemberService {
     *
     **/
     @Transactional
-    public Long join(Member member){
+    public Long join(SaveMemberDto saveMemberDto){
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(saveMemberDto.getPassword());
+
+        Member member = Member.createMember(saveMemberDto.getName(),encodedPassword);
 
         // 기존 가입 회원이 아닌 경우,
         if(checkDuplicateMember(member)){

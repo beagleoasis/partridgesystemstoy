@@ -39,16 +39,9 @@ public class MemberController {
     @PostMapping(value = "/new")
     public String saveMember(SaveMemberDto saveMemberDto){
 
-        System.out.println(saveMemberDto.getName() + " , " + saveMemberDto.getPassword());
 
-        // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(saveMemberDto.getPassword());
 
-        Member member = new Member();
-        member.setName(saveMemberDto.getName());
-        member.setPassword(encodedPassword);
-
-        memberService.join(member);
+        memberService.join(saveMemberDto);
 
         return "index";
     }

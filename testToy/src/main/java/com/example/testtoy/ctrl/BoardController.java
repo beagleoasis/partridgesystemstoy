@@ -89,11 +89,12 @@ public class BoardController {
 
         RedirectView redirectView = new RedirectView();
 
-        redirectView.setUrl("/boards");
-
+        // 게시물 작성
         boardService.save(board);
 
         mav.setView(redirectView);
+
+        redirectView.setUrl("/boards");
 
         return mav;
     }
