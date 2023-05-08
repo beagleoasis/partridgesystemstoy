@@ -14,17 +14,26 @@
     <section class="resume-section" id="about">
         <div class="resume-section-content">
             <!-- 게시글 양식 -->
-                <div class="mb-5"><h3>게시글 제목</h3>
-                    <div>
-                        <input type="text" name="title" maxlength="50" th:value="${board.getTitle()}" readonly/>
-                    </div>
+            <div class="mb-5"><h3>게시글 제목</h3>
+                <div>
+                    <input type="text" name="title" maxlength="50" th:value="${board.getTitle()}" readonly/>
                 </div>
+            </div>
 
-                <div class="mb-5"> <h3>게시글 내용</h3>
-                    <div>
-                        <input type="text" name="content" maxlength="50" th:value="${board.getContent()}" readonly/>
-                    </div>
+            <div class="mb-5"> <h3>게시글 내용</h3>
+                <div>
+                    <input type="text" name="content" maxlength="50" th:value="${board.getContent()}" readonly/>
                 </div>
+            </div>
+
+            <!-- 게시글 추천 -->
+            <div class="mb-5"> <h3>추천수</h3>
+                <div>
+                    <h4 th:text="${board.likes}" class="mb-0"></h4>
+                    <button type="button" onclick="recommendBoard();">게시글 추천</button>
+                </div>
+            </div>
+
             <!-- 댓글 작성 -->
             <form th:if="${session.user?.id}">
                 <input type="hidden" id="boardid" th:value="${board.id}">
@@ -133,6 +142,39 @@
             });
 
         }
+
+    }
+
+    // 게시글 추천/비추천
+    function recommendBoard(){
+
+        let boardId = $("#boardid").val();
+        let sessionId = String([[${session.user?.id}]]);
+        alert(boardId);
+        alert(sessionId);
+
+        $.ajax({
+            type : 'POST',
+            url : '/boards/boardLike',
+            data: JSON.stringify({
+                boardid : boardId,
+                memberid : sessionId
+            }),
+            contentType : 'application/json; charset=utf-8',
+            dataType : 'json'
+        }).done(function(result) {
+
+            if(result == 0){
+                alert("게시글 추천을 실패했습니다.")
+            }
+            else{
+                alert("게시글 추천/삭제 완료했습니다.");
+            }
+            location.reload();
+
+        }).fail(function(error) {
+            let message = JSON.parse(error.responseText);
+        });
 
     }
 
