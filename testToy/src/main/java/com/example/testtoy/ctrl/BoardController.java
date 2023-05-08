@@ -115,11 +115,22 @@ public class BoardController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+    *
+    * @method : getBoard
+    *
+    * @explain : 게시글 상세 페이지 조회
+    * @author : User
+    * @date : 2023-05-06
+    *
+    **/
     @GetMapping("/{id}")
     public String getBoard(@PathVariable Long id, Model model){
 
+        // 게시글 조회
         Board board = boardService.findBoard(id);
 
+        // 댓글 리스트
         List<Comment> comments = commentService.getComments(board.getId());
 
         model.addAttribute("board", board);

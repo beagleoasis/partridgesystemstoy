@@ -50,11 +50,26 @@ public class BoardService {
         return id;
     }
 
+    /**
+    *
+    * @method : findBoard
+    *
+    * @explain : 게시글 상세 페이지 조회 및 조회수 +1 처리
+    * @author : User
+    * @date : 2023-05-08
+    *
+    **/
     @Transactional
     public Board findBoard(Long id){
         Board board = boardRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
 
+        if(board!=null){
+            // 게시글 조회수 증가 처리
+            // 동시성 문제 및 조회수 증가 관련 로직 추가 필요
+            board.setVisit(board.getVisit()+1);
+            boardRepository.save(board);
+        }
         return board;
     }
 }
