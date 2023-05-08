@@ -84,7 +84,8 @@ public class BoardLikeService {
         Long memberId = saveOrDeleteBoardLikeDto.getMemberid();
 
         // 게시글 존재 여부 확인
-        Board board = boardRepository.findById(boardId).orElseThrow(IllegalArgumentException::new);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(IllegalArgumentException::new);
 
         // 게시글 좋아요 존재 여부 확인
         BoardLike boardLike = boardLikeRepository.findBoardLikeByBoard_IdAndMember_Id(boardId,memberId);

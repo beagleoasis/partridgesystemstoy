@@ -48,16 +48,18 @@
                 <ul id="comment-list">
                     <li th:each="comment : ${comments}">
                         <p th:text="${comment.name + ' : ' + comment.content}"></p>
+                        <p th:text="'추천수 : ' + ${comment.likes}"></p>
+                        <button th:if="${session.user != null}" class="text-primary" type="button" th:onclick="recommendComment([[${comment.id}]])">댓글추천</button>
                         <button th:if="${#strings.equals(comment.memberid,session.user?.id)}" class="text-primary" type="button" th:onclick="deleteComment([[${comment.id}]])">삭제</button>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
-
 </div>
 
 <!-- common/js -->
+
 <th:block th:replace="common/js :: jsFragment"><</th:block>
 </body>
 </html>
@@ -95,10 +97,15 @@
 
                     let html = '<li>';
                     html += '<p>' + comment.name + ' : ' + comment.content + '</p>';
+                    html += '<p>' + '추천수 : ' + comment.likes + '</p>';
 
                     // 댓글 게시자 아이디와 로그인한 유저 아이디 비교 로직
                     let commentId = String(comment.memberid);
                     let sessionId = String([[${session.user?.id}]]);
+
+                    if(sessionId!=null){
+                        html += '<button class="text-primary" type="button" onclick="recommendComment(\'' + comment.id + '\')">댓글추천</button>';
+                    }
 
                     if (commentId===sessionId){
                         html += '<button class="text-primary" type="button" onclick="deleteComment(\'' + comment.id + '\')">삭제</button>';
@@ -150,8 +157,6 @@
 
         let boardId = $("#boardid").val();
         let sessionId = String([[${session.user?.id}]]);
-        alert(boardId);
-        alert(sessionId);
 
         $.ajax({
             type : 'POST',
@@ -176,6 +181,37 @@
             let message = JSON.parse(error.responseText);
         });
 
+    }
+
+    function recommendComment(commentId){
+        alert("댓글 추천");
+
+        let sessionId = String([[${session.user?.id}]]);
+        alert(commentId);
+        alert(sessionId);
+
+        $.ajax({
+            type : 'POST',
+            url : '/comments/commentLike',
+            data: JSON.stringify({
+                commentid : commentId,
+                memberid : sessionId
+            }),
+            contentType : 'application/json; charset=utf-8',
+            dataType : 'json'
+        }).done(function(result) {
+
+            if(result == 0){
+                alert("댓글 추천을 실패했습니다.")
+            }
+            else{
+                alert("댓글 추천/삭제 완료했습니다.");
+            }
+            location.reload();
+
+        }).fail(function(error) {
+            let message = JSON.parse(error.responseText);
+        });
     }
 
 </script>
