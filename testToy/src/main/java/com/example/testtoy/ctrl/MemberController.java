@@ -38,9 +38,7 @@ public class MemberController {
 
     @PostMapping(value = "/new")
     public String saveMember(SaveMemberDto saveMemberDto){
-
-
-
+        
         memberService.join(saveMemberDto);
 
         return "index";
@@ -88,15 +86,7 @@ public class MemberController {
     }
 
     @PutMapping("deactive/{name}")
-    public ResponseEntity deleteMember(@PathVariable String name, HttpServletRequest request, HttpServletResponse response){
-
-        System.out.println("name : " + name);
-
-        HttpSession session = request.getSession();
-
-        if(session.getAttribute("user")==null){
-            return ResponseEntity.ok(0);
-        }
+    public ResponseEntity deleteMember(@PathVariable String name, HttpServletRequest request, HttpSession session){
 
         // 탈퇴 회원의 상태값 변경
         if(memberService.deleteMember(name)){
