@@ -70,6 +70,12 @@ public class BoardService {
             board.setVisit(board.getVisit()+1);
             boardRepository.save(board);
         }
+
         return board;
+    }
+
+    public Board findById(Long boardId){
+        return boardRepository.findById(boardId)
+                .orElseThrow(()-> new RuntimeException());
     }
 }
