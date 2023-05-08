@@ -30,13 +30,16 @@ public class BoardService {
     @Transactional
     public Page<Board> findAllBoardsBySortType(Pageable pageable, String sortType){
 
+        System.out.println("sortType : " + sortType);
+
         // 방문자수 순
         if(sortType.equals("visiter")){
-
+            System.out.println("visiter 진입 확인");
+            return boardRepository.findBoardsByStateIsNullOrderByVisitDesc(pageable);
         }
         // 게시글 추천수 순
         else if(sortType.equals("likeBoard")){
-
+            return boardRepository.findBoardsByStateIsNullOrderByLikesDesc(pageable);
         }
         // 방문자수 + 게시글 추천수 순
         else if(sortType.equals("visiterAndLikeBoard")){
@@ -52,6 +55,7 @@ public class BoardService {
         }
         // 최신순 디폴트
         else{
+            System.out.println("else 진입 확인");
             return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
         }
 

@@ -49,6 +49,7 @@
                             <div class="flex-shrink-0">
                                 <div>
                                     <p th:text="'조회수 : ' + ${boards.visit}"></p>
+                                    <p th:text="'추천수 : ' + ${boards.likes}"></p>
                                 </div>
                                 <span th:text="${#temporals.format(boards.createdDate, 'yyyy-MM-dd HH:mm')}" class="text-primary"></span>
                                 <div>
@@ -96,15 +97,9 @@
     // 게시판 정렬 파라미터 전송
     $(document).ready(function() {
         $('#sortTypeId').on('change', function() {
-            $.ajax({
-                url: '/boards',
-                type: 'GET',
-                data: { sortType : $(this).val() },
-                success: function(result) {
-
-                }
-            });
+            location.href="/boards?sortType=" + $(this).val();
         });
+
     });
 
     // form 태그
