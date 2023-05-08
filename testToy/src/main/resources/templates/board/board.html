@@ -32,6 +32,9 @@
                             </div>
                             <!-- 게시일자 -->
                             <div class="flex-shrink-0">
+                                <div>
+                                    <p th:text="'조회수 : ' + ${boards.visit}"></p>
+                                </div>
                                 <span th:text="${#temporals.format(boards.createdDate, 'yyyy-MM-dd HH:mm')}" class="text-primary"></span>
                                 <div>
                                     <button th:if="${#strings.equals(boards.memberid,session.user?.id)}" class="text-primary" type="button" th:onclick="deleteBoard([[${boards.id}]])">삭제</button>
