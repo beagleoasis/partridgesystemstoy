@@ -73,13 +73,9 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request){
-        // 현재 세션을 가져오고, 존재하지 않는 경우 null
-        HttpSession session = request.getSession(false);
+    public String logout(HttpSession session){
 
-        if(session!=null){
-            session.invalidate(); // 세션 무효화
-        }
+        session.invalidate(); // 세션 무효화
 
         return "members/login";
     }
