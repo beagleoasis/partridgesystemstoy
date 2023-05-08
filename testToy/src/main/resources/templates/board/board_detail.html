@@ -30,7 +30,7 @@
             <div class="mb-5"> <h3>추천수</h3>
                 <div>
                     <h4 th:text="${board.likes}" class="mb-0"></h4>
-                    <button type="button" onclick="recommendBoard();">게시글 추천</button>
+                    <button type="button" onclick="recommendBoard();" th:if="${session.user != null}">게시글 추천</button>
                 </div>
             </div>
 

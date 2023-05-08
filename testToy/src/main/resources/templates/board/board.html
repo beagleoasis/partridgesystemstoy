@@ -52,7 +52,7 @@
             </form>
 
             <!-- 하단 글작성 버튼 -->
-            <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="d-flex flex-column flex-md-row justify-content-between" th:if="${session.user != null}">
                 <div class="flex-grow-1">
                 </div>
                 <div class="flex-shrink-0">
