@@ -47,7 +47,7 @@ public class BoardService {
         }
         // 댓글 추천수 순
         else if(sortType.equals("likeComment")){
-
+            return boardRepository.findBoardsByStateIsNullOrderByCommentsLikes(pageable);
         }
         // 게시글 추천수 + 댓글 추천수 순
         else if(sortType.equals("likeBoardAndLikeComment")){
