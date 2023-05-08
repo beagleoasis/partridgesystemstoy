@@ -70,12 +70,6 @@ public class BoardController {
     **/
     @GetMapping("post")
     public String getPost(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-
-        if(session.getAttribute("user")==null){
-            return "members/login";
-        }
         return "board/board_post";
     }
 

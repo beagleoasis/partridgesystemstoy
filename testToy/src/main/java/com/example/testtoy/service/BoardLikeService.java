@@ -6,6 +6,7 @@ import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.dto.SaveOrDeleteBoardLikeDto;
 import com.example.testtoy.repository.BoardLikeRepository;
 import com.example.testtoy.repository.BoardRepository;
+import com.example.testtoy.repository.MemberRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +21,13 @@ public class BoardLikeService {
 
     private final BoardRepository boardRepository;
 
-    public BoardLikeService(BoardLikeRepository boardLikeRepository, BoardRepository boardRepository) {
+    private final MemberRepository memberRepository;
+
+
+    public BoardLikeService(BoardLikeRepository boardLikeRepository, BoardRepository boardRepository, MemberRepository memberRepository) {
         this.boardLikeRepository = boardLikeRepository;
         this.boardRepository = boardRepository;
+        this.memberRepository = memberRepository;
     }
 
 
@@ -105,22 +110,32 @@ public class BoardLikeService {
 
         Long boardId = saveOrDeleteBoardLikeDto.getBoardid();
         Long memberId = saveOrDeleteBoardLikeDto.getMemberid();
+        System.out.println("boardId1 : " + boardId);
+        System.out.println("memberId : " + memberId);
 
         // 게시글 존재 여부 확인
-        Board board = boardRepository.findById(boardId).orElseThrow();
+        Board board = boardRepository.findById(boardId).orElseThrow(IllegalArgumentException::new);
 
         // 게시글 좋아요 존재 여부 확인
         BoardLike boardLike = boardLikeRepository.findBoardLikeByBoard_IdAndMember_Id(boardId,memberId);
 
         // 게시글 좋아요가 존재한다면,
         if(boardLike!=null){
+            System.out.println("boardId2 : " + boardId);
+            System.out.println("memberId : " + memberId);
+            board.setLikes(board.getLikes()-1);
             boardLikeRepository.deleteBoardLikeByBoard_IdAndAndMember_Id(boardId,memberId);
             return ResponseEntity.ok(204);
         }
         // 게시글 좋아요가 존재하지 않는다면,
         else{
-            Member member = new Member();
-            BoardLike saveBoardLike = BoardLike.createBoardLike(board, member);
+
+            Member member = memberRepository.findOne(saveOrDeleteBoardLikeDto.getMemberid());
+            board.setLikes(board.getLikes()+1);
+            System.out.println("boardId3 : " + boardId);
+            System.out.println("memberId : " + memberId);
+            BoardLike saveBoardLike = BoardLike.createBoardLike(board,member);
+
             boardLikeRepository.save(saveBoardLike);
             return ResponseEntity.ok(201);
         }

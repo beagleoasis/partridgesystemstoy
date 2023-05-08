@@ -42,7 +42,13 @@ public class CommentService {
     *
     **/
     @Transactional
-    public Comment save(Comment comment){
+    public Comment save(SaveCommentDto saveCommentDto){
+
+        Board board = Board.createBoardForComment(saveCommentDto.getBoard_id());
+
+        Comment comment = Comment.createComment(board, saveCommentDto.getName(), saveCommentDto.getContent(), saveCommentDto.getMemberid());
+
+
         return commentRepository.save(comment);
     }
 

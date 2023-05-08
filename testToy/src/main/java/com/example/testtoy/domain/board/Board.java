@@ -3,8 +3,7 @@ package com.example.testtoy.domain.board;
 import com.example.testtoy.domain.BaseTimeEntity;
 import com.example.testtoy.domain.comment.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +12,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseTimeEntity {
 
     @Id
@@ -39,5 +41,11 @@ public class Board extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     private int visit;
+
+    public static Board createBoardForComment(Long boardid){
+        return Board.builder()
+                .id(boardid)
+                .build();
+    }
 
 }

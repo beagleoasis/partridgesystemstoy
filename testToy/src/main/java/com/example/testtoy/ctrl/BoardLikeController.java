@@ -23,8 +23,6 @@ public class BoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
-    //private final MemberService memberService;
-
     public BoardLikeController(BoardService boardService, BoardLikeService boardLikeService) {
         this.boardService = boardService;
         this.boardLikeService = boardLikeService;

@@ -35,15 +35,8 @@ public class CommentController {
 
         // 이 부분에서 Comment Entity의 board_id 부분을 어떻게 처리할지
         // 비효율 원인 : Comment Entity 내의 board_id를 Board 객체로 받기 때문
-        Comment comment = new Comment();
-        Board board = new Board();
-        board.setId(saveCommentDto.getBoard_id());
-        comment.setBoard(board);
-        comment.setName(saveCommentDto.getName());
-        comment.setContent(saveCommentDto.getContent());
-        comment.setMemberid(saveCommentDto.getMemberid());
 
-        Comment savedComment = commentService.save(comment);
+        Comment savedComment = commentService.save(saveCommentDto);
 
         return commentService.getComments(saveCommentDto.getBoard_id());
     }
