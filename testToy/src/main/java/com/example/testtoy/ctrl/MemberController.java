@@ -38,7 +38,7 @@ public class MemberController {
 
     @PostMapping(value = "/new")
     public String saveMember(SaveMemberDto saveMemberDto){
-        
+
         memberService.join(saveMemberDto);
 
         return "index";
