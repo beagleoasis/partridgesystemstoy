@@ -1,5 +1,6 @@
 package com.example.testtoy.service;
 
+import com.example.testtoy.domain.friend.Friend;
 import com.example.testtoy.domain.friend.FriendStatus;
 import com.example.testtoy.domain.friendrequest.FriendRequest;
 import com.example.testtoy.domain.member.Member;
@@ -59,7 +60,9 @@ public class FriendService {
             fromReceiverToSender.updateFriendRequestStatus(FriendStatus.FRIEND);
             friendRequestRepository.save(fromReceiverToSender);
 
-            // Friend 테이블에 추가
+            // Friend 테이블에 친구 생성
+            Friend friend = Friend.createFriend(sender, receiver);
+            friendRepository.save(friend);
 
             result = "친구 요청을 수락했습니다.";
 

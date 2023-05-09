@@ -1,14 +1,16 @@
 package com.example.testtoy.domain.friend;
 
 import com.example.testtoy.domain.member.Member;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "friend")
 public class Friend {
 
@@ -25,5 +27,11 @@ public class Friend {
     @JoinColumn(name = "friend_member_id")
     private Member friendMember;
 
+    public static Friend createFriend(Member member, Member friendMember){
+        return Friend.builder()
+                .member(member)
+                .friendMember(friendMember)
+                .build();
+    }
 
 }
