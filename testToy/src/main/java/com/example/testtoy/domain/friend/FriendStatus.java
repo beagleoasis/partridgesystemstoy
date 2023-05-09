@@ -1,5 +1,6 @@
 package com.example.testtoy.domain.friend;
 
 public enum FriendStatus {
-    FRIEND, BLOCKED, PENDING, REQUEST
+    // 친구 상태, 거절, 요청 중
+    FRIEND, BLOCKED, REQUEST
 }

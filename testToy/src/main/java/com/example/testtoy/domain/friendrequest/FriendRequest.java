@@ -39,5 +39,6 @@ public class FriendRequest {
                 .state(state)
                 .build();
     }
+
 }
 

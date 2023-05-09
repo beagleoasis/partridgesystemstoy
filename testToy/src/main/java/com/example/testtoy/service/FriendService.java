@@ -40,12 +40,27 @@ public class FriendService {
 
         if(fromSenderToReceiver!=null && fromReceiverToSender!=null){
             System.out.println("친구 관계!");
+
         } else if (fromSenderToReceiver!=null && fromReceiverToSender==null) {
             System.out.println("이미 친구 요청을 보냈습니다.");
+            // 대기
+
         } else if (fromSenderToReceiver==null && fromReceiverToSender!=null) {
             System.out.println("이미 친구 요청을 받은 상태입니다.");
+            // 친구 수락 후 친구 관계 처리
+            FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.FRIEND);
+
+            // 기존 유저 친구 관계 FRIEND로 변경 작업 필요
+
+
+            friendRequestRepository.save(friendRequest);
+
         } else{
             System.out.println("서로 간 친구 요청 내역 없음.");
+            // 친구 요청 생성
+            FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.REQUEST);
+            friendRequestRepository.save(friendRequest);
+
         }
 
 
