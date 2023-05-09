@@ -34,7 +34,6 @@ public class BoardService {
 
         // 방문자수 순
         if(sortType.equals("visiter")){
-            System.out.println("visiter 진입 확인");
             return boardRepository.findBoardsByStateIsNullOrderByVisitDesc(pageable);
         }
         // 게시글 추천수 순
@@ -43,7 +42,7 @@ public class BoardService {
         }
         // 방문자수 + 게시글 추천수 순
         else if(sortType.equals("visiterAndLikeBoard")){
-
+            return boardRepository.findBoardsByStateIsNullOrderByVisitAndBoardLikeDesc(pageable);
         }
         // 댓글 추천수 순
         else if(sortType.equals("likeComment")){
@@ -55,7 +54,6 @@ public class BoardService {
         }
         // 최신순 디폴트
         else{
-            System.out.println("else 진입 확인");
             return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
         }
 

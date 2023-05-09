@@ -38,8 +38,6 @@ public class CommentController {
 
         Comment savedComment = commentService.save(saveCommentDto);
 
-        System.out.println("확인용 : " + savedComment.getLikes());
-
         return commentService.getComments(saveCommentDto.getBoard_id());
     }
 
