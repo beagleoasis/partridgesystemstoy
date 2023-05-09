@@ -19,6 +19,15 @@ public class CommentLikeController {
         this.commentLikeService = commentLikeService;
     }
 
+    /**
+    *
+    * @method : likeComment
+    *
+    * @explain : 게시글 좋아요 처리
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @PostMapping("")
     @ResponseBody
     public ResponseEntity likeComment(@RequestBody SaveOrDeleteCommentLikeDto saveOrDeleteCommentLikeDto){

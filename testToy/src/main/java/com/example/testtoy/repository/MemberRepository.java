@@ -30,16 +30,43 @@ public class MemberRepository {
         em.persist(member);
     }
 
+    /**
+    *
+    * @method : findOne
+    *
+    * @explain : 멤버 id로 조회
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public Member findOne(Long id){
         return em.find(Member.class, id);
     }
 
+    /**
+    *
+    * @method : findByName
+    *
+    * @explain : 멤버이름으로 멤버 리스트 조회
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public List<Member> findByName(String name){
         return em.createQuery("select m from Member m where m.name = :name and m.state is null", Member.class)
                 .setParameter("name",name)
                 .getResultList();
     }
 
+    /**
+    *
+    * @method : delete
+    *
+    * @explain : 멤버 삭제
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public boolean delete(String name){
         // 삭제할 유저 찾기
         List<Member> findMember = em.createQuery("select m from Member m where m.name = :name", Member.class)

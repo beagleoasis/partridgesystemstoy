@@ -29,6 +29,15 @@ public class MemberController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+    *
+    * @method : getJoinForm
+    *
+    * @explain : 회원가입 페이지 이동
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @GetMapping(value = "/new")
     public String getJoinForm(Model model){
         model.addAttribute("memberForm", new SaveMemberDto());
@@ -36,6 +45,15 @@ public class MemberController {
         return "members/create_join_form";
     }
 
+    /**
+    *
+    * @method : saveMember
+    *
+    * @explain : 회원가입 처리
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @PostMapping(value = "/new")
     public String saveMember(SaveMemberDto saveMemberDto){
 
@@ -44,12 +62,30 @@ public class MemberController {
         return "index";
     }
 
+    /**
+    *
+    * @method : getLoginForm
+    *
+    * @explain : 로그인 페이지 이동
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @GetMapping(value = "/login")
     public String getLoginForm(){
 
         return "members/login";
     }
 
+    /**
+    *
+    * @method : loginMember
+    *
+    * @explain : 로그인 처리
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @PostMapping(value = "/login")
     public String loginMember(HttpServletRequest request, HttpSession session){
 
@@ -70,6 +106,15 @@ public class MemberController {
         return "index";
     }
 
+    /**
+    *
+    * @method : logout
+    *
+    * @explain : 로그아웃 처리
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @GetMapping("/logout")
     public String logout(HttpSession session){
 
@@ -78,13 +123,30 @@ public class MemberController {
         return "members/login";
     }
 
-
+    /**
+    *
+    * @method : getMypage
+    *
+    * @explain : 마이페이지 이동
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @GetMapping("mypage")
     public String getMypage(){
 
         return "members/mypage";
     }
 
+    /**
+    *
+    * @method : deleteMember
+    *
+    * @explain : 마이페이지-회원 탈퇴 처리
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @PutMapping("deactive/{name}")
     public ResponseEntity deleteMember(@PathVariable String name, HttpServletRequest request, HttpSession session){
 

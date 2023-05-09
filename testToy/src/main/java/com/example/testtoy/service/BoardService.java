@@ -22,15 +22,13 @@ public class BoardService {
     *
     * @method : findAllBoards
     *
-    * @explain : 게시판 최신순 조회
+    * @explain : 게시판 정렬 조회
     * @author : User
     * @date : 2023-05-08
     *
     **/
     @Transactional
     public Page<Board> findAllBoardsBySortType(Pageable pageable, String sortType){
-
-        System.out.println("sortType : " + sortType);
 
         // 방문자수 순
         if(sortType.equals("visiter")){
@@ -59,6 +57,15 @@ public class BoardService {
 
     }
 
+    /**
+    *
+    * @method : save
+    *
+    * @explain : 게시글 저장
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @Transactional
     public Board save(Board board){
         return boardRepository.save(board);
@@ -68,7 +75,7 @@ public class BoardService {
     *
     * @method : deleteBoard
     *
-    * @explain : 게시물 삭제 처리(상태값을 'd'로 변경
+    * @explain : 게시물 삭제 처리(상태값을 'd'로 변경)
     * @author : User
     * @date : 2023-05-06
     *
@@ -108,6 +115,15 @@ public class BoardService {
         return board;
     }
 
+    /**
+    *
+    * @method : findById
+    *
+    * @explain : 게시글 id로 조회
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public Board findById(Long boardId){
         return boardRepository.findById(boardId)
                 .orElseThrow(()-> new RuntimeException());
