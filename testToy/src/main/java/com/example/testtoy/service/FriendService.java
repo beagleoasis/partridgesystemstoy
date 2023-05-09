@@ -83,10 +83,13 @@ public class FriendService {
         // receiver가 받은 친구 요청 목록 중에서, sender가 발신한 친구 요청이 존재하는지 확인
         // receiver가 이미 sender로부터 친구 요청을 받았는지 여부 확인
         if (receiver.getReceivedFriendRequests().stream().anyMatch(fr -> fr.getSender().equals(sender))) {
+            // 친구 요청 수락 및 친구 관계 맺기 작업 수행
+
             throw new RuntimeException("이미 해당 사용자로부터 친구 요청을 받았습니다.");
         }
 
         // 4)친구 요청을 보내지도, 받지도 않은 상태
+        // 친구 요청 전송 작업 수행
 
 
 
