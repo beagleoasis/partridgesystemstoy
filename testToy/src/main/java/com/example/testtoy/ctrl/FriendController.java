@@ -26,16 +26,20 @@ public class FriendController {
         this.friendRequestService = friendRequestService;
     }
 
-
+    /**
+    *
+    * @method : sendFriendRequest
+    *
+    * @explain : 친구 요청 및 수락
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @PostMapping("request")
     @ResponseBody
     public ResponseEntity sendFriendRequest(@RequestBody SendFriendRequestDto sendFriendRequestDto){
 
-        System.out.println(sendFriendRequestDto.getSenderId() + " , " + sendFriendRequestDto.getReceiverId());
-
-        friendService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId());
-
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok(friendService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId()));
     }
 
 }

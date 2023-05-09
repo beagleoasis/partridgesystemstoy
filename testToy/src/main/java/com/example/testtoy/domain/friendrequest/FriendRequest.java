@@ -40,5 +40,9 @@ public class FriendRequest {
                 .build();
     }
 
+    public void updateFriendRequestStatus(FriendStatus state){
+        this.state = state;
+    }
+
 }
 

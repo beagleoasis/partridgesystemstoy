@@ -26,7 +26,10 @@ public class FriendService {
         this.friendRequestRepository = friendRequestRepository;
     }
 
-    public ResponseEntity sendFriendRequest(Long senderId, Long receiverId){
+    public String sendFriendRequest(Long senderId, Long receiverId){
+
+        // 응답값
+        String result = "";
 
         // 친구 요청을 보내는 유저(로그인한 현재 유저)
         Member sender = memberRepository.findOne(senderId);
@@ -34,38 +37,40 @@ public class FriendService {
         // 친구 요청을 받는 유저
         Member receiver = memberRepository.findOne(receiverId);
 
+        // 친구 요청을 했거나, 받은 적이 있는지 확인하기 위한 객체 2개 생성
         FriendRequest fromSenderToReceiver = friendRequestRepository.existsFriendRequestsBySender_IdAndAndReceiver_Id(senderId,receiverId);
         FriendRequest fromReceiverToSender = friendRequestRepository.existsFriendRequestsBySender_IdAndAndReceiver_Id(receiverId,senderId);
-        System.out.println("fromSenderToReceiver : " + fromSenderToReceiver + " , fromReceiverToSender : " + fromReceiverToSender);
 
         if(fromSenderToReceiver!=null && fromReceiverToSender!=null){
-            System.out.println("친구 관계!");
+
+            result = "이미 친구 관계입니다.";
 
         } else if (fromSenderToReceiver!=null && fromReceiverToSender==null) {
-            System.out.println("이미 친구 요청을 보냈습니다.");
-            // 대기
+
+            result = "이미 친구 요청을 보냈습니다.";
 
         } else if (fromSenderToReceiver==null && fromReceiverToSender!=null) {
-            System.out.println("이미 친구 요청을 받은 상태입니다.");
+
             // 친구 수락 후 친구 관계 처리
             FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.FRIEND);
-
-            // 기존 유저 친구 관계 FRIEND로 변경 작업 필요
-
-
             friendRequestRepository.save(friendRequest);
 
+            // 기존 유저 친구 관계 FRIEND로 변경
+            fromReceiverToSender.updateFriendRequestStatus(FriendStatus.FRIEND);
+            friendRequestRepository.save(fromReceiverToSender);
+
+            // Friend 테이블에 추가
+
+            result = "친구 요청을 수락했습니다.";
+
         } else{
-            System.out.println("서로 간 친구 요청 내역 없음.");
             // 친구 요청 생성
             FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.REQUEST);
             friendRequestRepository.save(friendRequest);
-
+            result = "친구 요청을 완료했습니다.";
         }
 
-
-        return ResponseEntity.ok(200);
-
+        return result;
     }
 
 
