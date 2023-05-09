@@ -37,9 +37,11 @@ public class FriendController {
     **/
     @PostMapping("request")
     @ResponseBody
-    public ResponseEntity sendFriendRequest(@RequestBody SendFriendRequestDto sendFriendRequestDto){
+    public ResponseEntity<String> sendFriendRequest(@RequestBody SendFriendRequestDto sendFriendRequestDto){
 
-        return ResponseEntity.ok(friendService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId()));
+        String result = friendService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId());
+
+        return ResponseEntity.ok(result);
     }
 
 }

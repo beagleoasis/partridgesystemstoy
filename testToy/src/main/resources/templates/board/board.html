@@ -174,14 +174,13 @@
                         receiverId : id
                     }),
                     contentType : 'application/json; charset=utf-8',
-                    dataType : 'json'
-                }).done(function(response) {
-
-                    alert(response);
-                    location.reload();
-
-                }).fail(function(error) {
-                    let message = JSON.parse(error.responseText);
+                    dataType : 'json',
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function(error) {
+                        let message = JSON.parse(error.responseText);
+                    }
                 });
 
             }
