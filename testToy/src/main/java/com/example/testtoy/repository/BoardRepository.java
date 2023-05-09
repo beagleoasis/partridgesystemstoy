@@ -28,6 +28,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 방문자수+게시글 추천수 순
 
+
     // 게시글 추천수+댓글 추천수 순
 
 

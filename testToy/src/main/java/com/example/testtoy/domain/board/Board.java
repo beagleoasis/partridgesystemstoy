@@ -4,6 +4,8 @@ import com.example.testtoy.domain.BaseTimeEntity;
 import com.example.testtoy.domain.comment.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 public class Board extends BaseTimeEntity {
 
     @Id
@@ -34,13 +37,15 @@ public class Board extends BaseTimeEntity {
 
     private String state;
 
-    private int likes;
+    @ColumnDefault("0")
+    private Integer likes;
 
     @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    private int visit;
+    @ColumnDefault("0")
+    private Integer visit;
 
     public static Board createBoardForComment(Long boardid){
         return Board.builder()

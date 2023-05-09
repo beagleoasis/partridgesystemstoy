@@ -91,6 +91,8 @@ public class BoardController {
 
         RedirectView redirectView = new RedirectView();
 
+        System.out.println(board.toString());
+
         // 게시물 작성
         boardService.save(board);
 
