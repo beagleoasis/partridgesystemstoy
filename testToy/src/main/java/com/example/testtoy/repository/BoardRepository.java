@@ -35,6 +35,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findBoardsByStateIsNullOrderByVisitAndBoardLikeDesc(Pageable pageable);
 
     // 게시글 추천수+댓글 추천수 순
-
+    @Query("SELECT b " +
+            " FROM Board b " +
+            " LEFT JOIN Comment c " +
+            " ON b.id = c.board.id " +
+            " WHERE b.state IS NULL " +
+            " GROUP BY b.id " +
+            " ORDER BY b.likes + SUM(c.likes) DESC ")
+    Page<Board> findBoardsByStateIsNullOrderByBoardLikeANDCommentsLikesDesc(Pageable pageable);
 
 }
