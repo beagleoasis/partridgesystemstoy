@@ -6,8 +6,10 @@ import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.repository.FriendRepository;
 import com.example.testtoy.repository.FriendRequestRepository;
 import com.example.testtoy.repository.MemberRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,7 @@ public class FriendService {
         this.friendRequestRepository = friendRequestRepository;
     }
 
-    public void sendFriendRequest(Long senderId, Long receiverId){
+    public ResponseEntity sendFriendRequest(Long senderId, Long receiverId){
 
         // 친구 요청을 보내는 유저(로그인한 현재 유저)
         Member sender = memberRepository.findOne(senderId);
@@ -61,7 +63,7 @@ public class FriendService {
 
         if(sender.equals(receiver)){
             // 자기 자신에게 친구 요청을 보낸 경우,
-
+            System.out.println("자기자신에게 친구 요청을 전송");
         }
 
 
@@ -70,34 +72,56 @@ public class FriendService {
         // 경우의수 1)이미 친구 2)친구 요청을 보낸 상태 3)친구 요청을 받은 상태 4)요청을 보내지도, 받지도 않은 상태
 
         // 1)이미 친구인 경우,
-        if (sender.getFriends1().contains(receiver) && sender.getFriends2().contains(receiver)) {
+
+        if (sender.getFriends().stream().anyMatch(friend1 -> friend1.getFriendMember().getId().equals(receiver.getId()))
+                && receiver.getFriends().stream().anyMatch(friend2 -> friend2.getFriendMember().getId().equals(sender.getId()))) {
+
+            System.out.println("이미 친구. receiver : " + receiver.getId() + " , sender : " + sender.getId());
             throw new RuntimeException("해당 사용자와 이미 친구입니다.");
         }
 
+
+        System.out.println("바로 위 쿼리는 이미 친구인 경우 확인");
+
         // 2)친구 요청을 보낸 상태,
-        if (sender.getSentFriendRequests().stream().anyMatch(fr -> fr.getReceiver().equals(receiver))) {
+        if (sender.getSentFriendRequests().stream().anyMatch(request -> request.getReceiver().equals(receiver))) {
+            System.out.println("이미 친구 요청 보냄. receiver : " + receiver.getId() + " , sender : " + sender.getId());
             throw new RuntimeException("이미 해당 사용자에게 친구 요청을 보냈습니다.");
         }
+
+        System.out.println("바로 위 쿼리는 이미 친구 요청을 보낸 경우 확인");
 
         // 3)친구 요청을 받은 상태,
         // receiver가 받은 친구 요청 목록 중에서, sender가 발신한 친구 요청이 존재하는지 확인
         // receiver가 이미 sender로부터 친구 요청을 받았는지 여부 확인
-        if (receiver.getReceivedFriendRequests().stream().anyMatch(fr -> fr.getSender().equals(sender))) {
-            // 친구 요청 수락 및 친구 관계 맺기 작업 수행
+        System.out.println("receiver 확인 : " + receiver.getName() + ", sender 확인 : " + sender.getName());
+        System.out.println("receiver id : "+ receiver.getId()+ " sender id : " + sender.getId());
 
+
+
+        if (sender.getReceivedFriendRequests().stream().anyMatch(request -> request.getReceiver().equals(sender))) {
+            // 친구 요청 수락 및 친구 관계 맺기 작업 수행
+            System.out.println("이미 receiver로부터 친구 요청을 받음. receiver : " + receiver.getId() + " , sender : " + sender.getId());
             throw new RuntimeException("이미 해당 사용자로부터 친구 요청을 받았습니다.");
         }
 
+
+        System.out.println("바로 위 쿼리는 이미 친구 요청을 받은 경우 확인");
+
         // 4)친구 요청을 보내지도, 받지도 않은 상태
         // 친구 요청 전송 작업 수행
+        FriendRequest friendRequest = FriendRequest.createFriendRequest(sender, receiver, FriendStatus.REQUEST);
+
+        friendRequestRepository.save(friendRequest);
 
 
 
 
 
 
-
+        return ResponseEntity.ok(200);
 
     }
+
 
 }

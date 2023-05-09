@@ -18,12 +18,12 @@ public class Friend {
 
 
     @ManyToOne
-    @JoinColumn(name = "member1_id")
-    private Member member1;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "member2_id")
-    private Member member2;
+    @JoinColumn(name = "friend_member_id")
+    private Member friendMember;
 
 
 }
