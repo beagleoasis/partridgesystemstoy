@@ -53,4 +53,5 @@ public class Member {
                 .password(password)
                 .build();
     }
+
 }
