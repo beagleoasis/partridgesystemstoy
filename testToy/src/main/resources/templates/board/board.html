@@ -20,12 +20,12 @@
             <div class="mb-5"><h3>정렬 조건</h3>
                 <div>
                     <select id="sortTypeId" name="sortType">
-                        <option value="latest" selected>최신순</option>
-                        <option value="visiter">방문자순</option>
-                        <option value="likeBoard">게시글 추천순</option>
-                        <option value="likeComment">댓글 추천순</option>
-                        <option value="visiterAndLikeBoard">방문자수+게시글 추천수순</option>
-                        <option value="likeBoardAndLikeComment">게시글 추천수+댓글 추천수순</option>
+                        <option value="latest" selected th:selected="${#request.getParameter('sortType') == 'latest'}">최신순</option>
+                        <option value="visiter" th:selected="${#request.getParameter('sortType') == 'visiter'}">방문자순</option>
+                        <option value="likeBoard" th:selected="${#request.getParameter('sortType') == 'likeBoard'}">게시글 추천순</option>
+                        <option value="likeComment" th:selected="${#request.getParameter('sortType') == 'likeComment'}">댓글 추천순</option>
+                        <option value="visiterAndLikeBoard" th:selected="${#request.getParameter('sortType') == 'visiterAndLikeBoard'}">방문자수+게시글 추천수순</option>
+                        <option value="likeBoardAndLikeComment" th:selected="${#request.getParameter('sortType') == 'likeBoardAndLikeComment'}">게시글 추천수+댓글 추천수순</option>
                     </select>
                 </div>
             </div>
@@ -94,11 +94,30 @@
 <!-- script -->
 <script th:inline="javascript">
 
-    // 게시판 정렬 파라미터 전송
     $(document).ready(function() {
+
+        // 게시판 정렬 파라미터 전송
         $('#sortTypeId').on('change', function() {
             location.href="/boards?sortType=" + $(this).val();
         });
+
+        // url에 따른 메뉴 탭 active 효과 적용
+        let url = window.location.href;
+
+        let menuTapId = "";
+
+        if (url.indexOf("/mbtiBoards") != -1) {
+            menuTapId = "mbtiBoards";
+        } else if (url.indexOf("/mbtiTest") != -1) {
+            menuTapId = "mbtiTest";
+        } else if (url.indexOf("/loginJoin") != -1) {
+            menuTapId = "loginJoin";
+        } else if (url.indexOf("/usedSkills") != -1) {
+            menuTapId = "usedSkills";
+        } else if (url.indexOf("/mypage") != -1){
+            menuTapId = "mypage";
+        }
+
 
     });
 
@@ -155,14 +174,13 @@
                         receiverId : id
                     }),
                     contentType : 'application/json; charset=utf-8',
-                    dataType : 'json'
-                }).done(function(response) {
-
-                    alert(response);
-                    location.reload();
-
-                }).fail(function(error) {
-                    let message = JSON.parse(error.responseText);
+                    dataType : 'json',
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function(error) {
+                        let message = JSON.parse(error.responseText);
+                    }
                 });
 
             }

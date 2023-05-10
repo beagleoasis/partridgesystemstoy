@@ -21,12 +21,22 @@ public class CommentLikeService {
 
     private final MemberRepository memberRepository;
 
+
     public CommentLikeService(CommentRepository commentRepository, CommentLikeRepository commentLikeRepository, MemberRepository memberRepository) {
         this.commentRepository = commentRepository;
         this.commentLikeRepository = commentLikeRepository;
         this.memberRepository = memberRepository;
     }
 
+    /**
+    *
+    * @method : likeOrUnlikeComment
+    *
+    * @explain : 댓글의 좋아요/좋아요 취소
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @Transactional
     public ResponseEntity likeOrUnlikeComment(SaveOrDeleteCommentLikeDto saveOrDeleteCommentLikeDto){
 

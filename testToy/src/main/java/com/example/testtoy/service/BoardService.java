@@ -22,7 +22,7 @@ public class BoardService {
     *
     * @method : findAllBoards
     *
-    * @explain : 게시판 최신순 조회
+    * @explain : 게시판 정렬 조회
     * @author : User
     * @date : 2023-05-08
     *
@@ -30,11 +30,8 @@ public class BoardService {
     @Transactional
     public Page<Board> findAllBoardsBySortType(Pageable pageable, String sortType){
 
-        System.out.println("sortType : " + sortType);
-
         // 방문자수 순
         if(sortType.equals("visiter")){
-            System.out.println("visiter 진입 확인");
             return boardRepository.findBoardsByStateIsNullOrderByVisitDesc(pageable);
         }
         // 게시글 추천수 순
@@ -43,7 +40,7 @@ public class BoardService {
         }
         // 방문자수 + 게시글 추천수 순
         else if(sortType.equals("visiterAndLikeBoard")){
-
+            return boardRepository.findBoardsByStateIsNullOrderByVisitAndBoardLikeDesc(pageable);
         }
         // 댓글 추천수 순
         else if(sortType.equals("likeComment")){
@@ -51,18 +48,24 @@ public class BoardService {
         }
         // 게시글 추천수 + 댓글 추천수 순
         else if(sortType.equals("likeBoardAndLikeComment")){
-
+            return boardRepository.findBoardsByStateIsNullOrderByBoardLikeANDCommentsLikesDesc(pageable);
         }
         // 최신순 디폴트
         else{
-            System.out.println("else 진입 확인");
             return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
         }
 
-        // 삭제된 게시글을 제외한 모든 게시글 조회
-        return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
     }
 
+    /**
+    *
+    * @method : save
+    *
+    * @explain : 게시글 저장
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @Transactional
     public Board save(Board board){
         return boardRepository.save(board);
@@ -72,7 +75,7 @@ public class BoardService {
     *
     * @method : deleteBoard
     *
-    * @explain : 게시물 삭제 처리(상태값을 'd'로 변경
+    * @explain : 게시물 삭제 처리(상태값을 'd'로 변경)
     * @author : User
     * @date : 2023-05-06
     *
@@ -112,6 +115,15 @@ public class BoardService {
         return board;
     }
 
+    /**
+    *
+    * @method : findById
+    *
+    * @explain : 게시글 id로 조회
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public Board findById(Long boardId){
         return boardRepository.findById(boardId)
                 .orElseThrow(()-> new RuntimeException());

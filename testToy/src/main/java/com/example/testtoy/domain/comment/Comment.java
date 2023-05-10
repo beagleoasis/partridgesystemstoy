@@ -3,6 +3,8 @@ package com.example.testtoy.domain.comment;
 import com.example.testtoy.domain.board.Board;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -12,6 +14,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 public class Comment {
 
     @Id
@@ -35,7 +38,8 @@ public class Comment {
 
     private String state;
 
-    private int likes;
+    @ColumnDefault("0")
+    private Integer likes;
 
     public static Comment createComment(Board board, String name, String content, Long memberid){
         return Comment.builder()

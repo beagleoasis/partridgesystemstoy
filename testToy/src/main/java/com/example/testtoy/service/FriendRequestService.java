@@ -18,6 +18,7 @@ public class FriendRequestService {
 
     public void saveFriendRequest(Member sender, Member receiver){
 
+/*
         // 이미 친구 요청을 보낸 경우, 예외 처리
         if(friendRequestRepository.existsBySenderAndReceiver(sender, receiver)){
             throw new DuplicateRequestException("친구 요청이 이미 전송되었습니다.");
@@ -30,6 +31,7 @@ public class FriendRequestService {
         friendRequest.setState(FriendStatus.PENDING);
 
         friendRequestRepository.save(friendRequest);
+*/
 
     }
 

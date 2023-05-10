@@ -49,6 +49,15 @@ public class MemberService {
         return member.getId();
     }
 
+    /**
+    *
+    * @method : checkDuplicateMember
+    *
+    * @explain : 중복 유저 확인
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     private boolean checkDuplicateMember(Member member){
         List<Member> findMember = memberRepository.findByName(member.getName());
 
@@ -60,6 +69,15 @@ public class MemberService {
         }
     }
 
+    /**
+    *
+    * @method : authenticate
+    *
+    * @explain : 유저 인증
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     public Member authenticate(String name, String password){
 
         // 사용자 이름으로 사용자 조회
@@ -77,6 +95,15 @@ public class MemberService {
 
     }
 
+    /**
+    *
+    * @method : deleteMember
+    *
+    * @explain : 유저 삭제 
+    * @author : User
+    * @date : 2023-05-09
+    *
+    **/
     @Transactional
     public boolean deleteMember(String name){
         // 삭제 성공

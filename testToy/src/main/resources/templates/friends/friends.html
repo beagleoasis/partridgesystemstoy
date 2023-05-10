@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: headFragment"></head>
+<body id="page-top">
+
+<!-- Navigation-->
+<th:block th:replace="fragments/menu"></th:block>
+
+<!-- Page Content-->
+<div class="container-fluid p-0">
+
+  <!-- 파트리지시스템즈 토이 프로젝트 게시판 -->
+  <section class="resume-section" id="education">
+    <div class="resume-section-content">
+      <!-- 토이 프로젝트 게시판 -->
+      <h3 class="mb-5">파트리지시스템즈 토이 프로젝트 게시판</h3>
+
+
+        <th:block th:each="friends : ${friends}">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+              <!-- 게시물 정보 -->
+              <div class="flex-grow-1">
+                <h4 th:unless="${#strings.equals(friends.friendMember.id,session.user?.id)}" th:text="'친구 아이디 : ' + ${friends.friendMember.id}" class="mb-0"></h4>
+                <h4 th:unless="${#strings.equals(friends.member.id,session.user?.id)}" th:text="'친구 아이디 : ' + ${friends.member.id}" class="mb-0"></h4>
+
+              </div>
+
+            </div><!-- end of div -->
+
+
+        </th:block>
+
+    </div>
+  </section>
+
+  <!-- Paging -->
+  <th:block th:replace="paging/friends_page :: pageFragment"></th:block>
+
+
+</div>
+
+
+<!-- common/js -->
+<th:block th:replace="common/js :: jsFragment"></th:block>
+</body>
+</html>
+
+<!-- script -->
+<script th:inline="javascript">
+
+
+
+
+</script>

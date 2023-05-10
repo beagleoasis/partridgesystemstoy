@@ -97,7 +97,11 @@
 
                     let html = '<li>';
                     html += '<p>' + comment.name + ' : ' + comment.content + '</p>';
-                    html += '<p>' + '추천수 : ' + comment.likes + '</p>';
+                    if(comment.likes===null){
+                        html += '<p>' + '추천수 : 0' + '</p>';
+                    }else{
+                        html += '<p>' + '추천수 : ' + comment.likes + '</p>';
+                    }
 
                     // 댓글 게시자 아이디와 로그인한 유저 아이디 비교 로직
                     let commentId = String(comment.memberid);
