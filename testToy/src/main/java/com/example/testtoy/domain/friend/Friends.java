@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "friend")
-public class Friend {
+public class Friends {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +27,8 @@ public class Friend {
     @JoinColumn(name = "friend_member_id")
     private Member friendMember;
 
-    public static Friend createFriend(Member member, Member friendMember){
-        return Friend.builder()
+    public static Friends createFriend(Member member, Member friendMember){
+        return Friends.builder()
                 .member(member)
                 .friendMember(friendMember)
                 .build();

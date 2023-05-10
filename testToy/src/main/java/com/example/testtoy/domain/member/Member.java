@@ -1,6 +1,6 @@
 package com.example.testtoy.domain.member;
 
-import com.example.testtoy.domain.friend.Friend;
+import com.example.testtoy.domain.friend.Friends;
 import com.example.testtoy.domain.friendrequest.FriendRequest;
 import lombok.*;
 
@@ -37,7 +37,7 @@ public class Member {
     private Set<Friend> friends2 = new HashSet<>();*/
 
     @OneToMany(mappedBy = "member")
-    private List<Friend> friends = new ArrayList<>();
+    private List<Friends> friends = new ArrayList<>();
 
     // 사용자가 보낸 친구 요청을 나타내는 FriendRequest 엔티티와 1:N
     @OneToMany(mappedBy = "sender")

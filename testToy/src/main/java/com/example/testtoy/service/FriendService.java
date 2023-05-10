@@ -1,17 +1,15 @@
 package com.example.testtoy.service;
 
-import com.example.testtoy.domain.friend.Friend;
+import com.example.testtoy.domain.friend.Friends;
 import com.example.testtoy.domain.friend.FriendStatus;
 import com.example.testtoy.domain.friendrequest.FriendRequest;
 import com.example.testtoy.domain.member.Member;
 import com.example.testtoy.repository.FriendRepository;
 import com.example.testtoy.repository.FriendRequestRepository;
 import com.example.testtoy.repository.MemberRepository;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
-import java.util.Optional;
 
 @Service
 public class FriendService {
@@ -27,6 +25,15 @@ public class FriendService {
         this.friendRequestRepository = friendRequestRepository;
     }
 
+    /**
+    *
+    * @method : sendFriendRequest
+    *
+    * @explain : 친구 요청 및 수락
+    * @author : User
+    * @date : 2023-05-10
+    *
+    **/
     public String sendFriendRequest(Long senderId, Long receiverId){
 
         // 응답값
@@ -61,7 +68,7 @@ public class FriendService {
             friendRequestRepository.save(fromReceiverToSender);
 
             // Friend 테이블에 친구 생성
-            Friend friend = Friend.createFriend(sender, receiver);
+            Friends friend = Friends.createFriend(sender, receiver);
             friendRepository.save(friend);
 
             result = "친구 요청을 수락했습니다.";
@@ -74,6 +81,11 @@ public class FriendService {
         }
 
         return result;
+    }
+
+    public Page<Friends> findAllFriends(Pageable pageable, Long memberId){
+
+        return friendRepository.findFriendsByMember_Id(pageable, memberId);
     }
 
 
