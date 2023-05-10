@@ -58,31 +58,4 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    /**
-    *
-    * @method : delete
-    *
-    * @explain : 멤버 삭제
-    * @author : User
-    * @date : 2023-05-09
-    *
-    **/
-    public boolean delete(String name){
-        // 삭제할 유저 찾기
-        List<Member> findMember = em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", name)
-                .getResultList();
-
-        // 삭제할 유저가 존재하는 경우,
-        if(!findMember.isEmpty()){
-            // 삭제된 유저 'd' 상태 처리
-            findMember.get(0).setState("d");
-            em.flush(); // 데이터베이스에 변경 내역 적용
-            return true;
-        }
-        // 삭제할 유저가 존재하지 않는 경우,
-        else{
-            return false;
-        }
-    }
 }

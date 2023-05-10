@@ -86,7 +86,7 @@ public class BoardService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // 상태값을 d로 변경
-        board.setState("d");
+        board.updateBoardState("d");
 
         return id;
     }
@@ -108,8 +108,7 @@ public class BoardService {
         if(board!=null){
             // 게시글 조회수 증가 처리
             // 동시성 문제 및 조회수 증가 관련 로직 추가 필요
-            board.setVisit(board.getVisit()+1);
-            boardRepository.save(board);
+            board.updateBoardVisit(board.getVisit()+1);
         }
 
         return board;

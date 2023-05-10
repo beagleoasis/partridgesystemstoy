@@ -66,7 +66,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
 
-        comment.setState("d");
+        comment.updateCommentState("d");
 
         return id;
     }

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,4 +52,15 @@ public class Board extends BaseTimeEntity {
                 .build();
     }
 
+    public void updateBoardState(String state){
+        this.state = state;
+    }
+
+    public void updateBoardVisit(Integer visit){
+        this.visit = visit;
+    }
+
+    public void updateBoardLikes(Integer likes){
+        this.likes = likes;
+    }
 }

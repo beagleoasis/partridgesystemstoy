@@ -106,12 +106,17 @@ public class MemberService {
     **/
     @Transactional
     public boolean deleteMember(String name){
-        // 삭제 성공
-        if(memberRepository.delete(name)){
+        // 멤버 리스트 조회
+        List<Member> members = memberRepository.findByName(name);
+
+        if(!members.isEmpty()){
+            // 회원 탈퇴 처리
+            members.get(0).updateMemberState("d");
             return true;
         }
         // 삭제 실패
         else{
+
             return false;
         }
     }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -52,6 +51,10 @@ public class Member {
                 .name(name)
                 .password(password)
                 .build();
+    }
+
+    public void updateMemberState(String state){
+        this.state = state;
     }
 
 }

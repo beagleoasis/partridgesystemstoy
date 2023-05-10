@@ -53,7 +53,7 @@ public class CommentLikeService {
         // 댓글 좋아요가 존재한다면,
         if(commentLike!=null){
             // 댓글 좋아요 카운트 -1
-            comment.setLikes(comment.getLikes()-1);
+            comment.updateCommentLikes(comment.getLikes()-1);
             commentLikeRepository.deleteCommentLikeByComment_IdAndMember_Id(commentId,memberId);
 
             return ResponseEntity.ok(204);
@@ -62,7 +62,7 @@ public class CommentLikeService {
         else{
             Member member = memberRepository.findOne(saveOrDeleteCommentLikeDto.getMemberid());
             // 댓글 좋아요 카운트 +1
-            comment.setLikes(comment.getLikes()+1);
+            comment.updateCommentLikes(comment.getLikes()+1);
             // 댓글 좋아요
             CommentLike saveCommentLike = CommentLike.createCommentLike(comment,member);
 

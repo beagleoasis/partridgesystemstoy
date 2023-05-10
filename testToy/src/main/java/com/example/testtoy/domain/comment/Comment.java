@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,4 +49,11 @@ public class Comment {
                 .build();
     }
 
+    public void updateCommentState(String state){
+        this.state = state;
+    }
+
+    public void updateCommentLikes(Integer likes){
+        this.likes = likes;
+    }
 }
