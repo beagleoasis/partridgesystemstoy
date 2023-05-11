@@ -1,13 +1,11 @@
 package com.example.testtoy.service;
 
-import com.example.testtoy.domain.member.Member;
-import com.example.testtoy.repository.MemberRepository;
-import org.junit.jupiter.api.DisplayName;
+import com.example.testtoy.domain.member.repository.MemberRepository;
+import com.example.testtoy.domain.member.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -19,7 +17,8 @@ import static org.junit.Assert.*;
 @Transactional // 롤백 가능하도록
 class MemberServiceTest {
 
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired MemberRepository memberRepository;
 
     @Test
