@@ -55,8 +55,12 @@ public class Comment {
         this.state = state;
     }
 
-    public void updateCommentLikes(Integer likes){
-        this.likes = likes;
+    public void increaseCommentLikes(){
+        this.likes += INCREMENT;
+    }
+
+    public void decreaseCommentLikes(){
+        this.likes += DECREMENT;
     }
 
 

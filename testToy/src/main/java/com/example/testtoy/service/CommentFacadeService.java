@@ -45,7 +45,7 @@ public class CommentFacadeService {
         // 댓글 좋아요가 존재한다면,
         if(commentLike!=null){
             // 댓글 좋아요 -1 카운트
-            comment.updateCommentLikes(comment.getLikes()-1);
+            comment.decreaseCommentLikes();
             commentLikeService.deleteCommentLikeByCommentIdAndMemberId(commentId,memberId);
 
             return ResponseEntity.ok(204);
@@ -54,7 +54,7 @@ public class CommentFacadeService {
         else {
             Member member = memberService.findOneById(memberId);
             // 댓글 좋아요 +1 카운트
-            comment.updateCommentLikes(comment.getLikes()+1);
+            comment.increaseCommentLikes();
             // 댓글 좋아요
             CommentLike saveCommentLike = CommentLike.createCommentLike(comment,member);
 

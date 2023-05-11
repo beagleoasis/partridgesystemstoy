@@ -26,15 +26,6 @@ public class Member {
     private String password;
 
     private String state;
-
-/*    // 사용자가 추가한 친구들을 나타내는 Friend 엔티티와 1:N
-    @OneToMany(mappedBy = "member1")
-    private Set<Friend> friends1 = new HashSet<>();
-
-    // 사용자를 추가한 친구들을 나타내는 Friend 엔티티와 1:N
-    @OneToMany(mappedBy = "member2")
-    private Set<Friend> friends2 = new HashSet<>();*/
-
     @OneToMany(mappedBy = "member")
     private List<Friends> friends = new ArrayList<>();
 

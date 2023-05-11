@@ -58,10 +58,6 @@ public class Board extends BaseTimeEntity {
         this.state = state;
     }
 
-    public void updateBoardLikes(Integer likes){
-        this.likes = likes;
-    }
-
     public void increaseBoardVisit(){
         this.visit += INCREMENT;
     }
