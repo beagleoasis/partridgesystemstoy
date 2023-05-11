@@ -2,6 +2,8 @@ package com.example.testtoy.domain.board.service;
 
 import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.board.repository.BoardRepository;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,7 +98,7 @@ public class BoardService {
     @Transactional
     public Long deleteBoard(Long id){
         Board board = boardRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new CustomException(ErrorCode.PAGE_NOT_FOUND)); // ID에 해당하는 게시글이 없습니다.
 
         // 상태값을 d로 변경
         board.updateBoardState("d");
