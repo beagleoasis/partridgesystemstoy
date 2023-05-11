@@ -46,6 +46,7 @@ public class FriendRequestFacadeService {
 
         // 친구 요청을 했거나, 받은 적이 있는지 확인하기 위한 객체 2개 생성
         Optional<FriendRequest> fromSenderToReceiver = friendRequestService.getFriendRequest(senderId,receiverId);
+
         Optional<FriendRequest> fromReceiverToSender = friendRequestService.getFriendRequest(receiverId,senderId);
 
         if(fromSenderToReceiver.isPresent() && fromReceiverToSender.isPresent()){
@@ -63,7 +64,7 @@ public class FriendRequestFacadeService {
             friendRequestService.save(friendRequest);
 
             // 기존 유저 친구 관계 FRIEND로 변경
-            fromReceiverToSender.get().updateFriendRequestStatus(FriendStatus.FRIEND);
+            fromReceiverToSender.orElseThrow().updateFriendRequestStatus(FriendStatus.FRIEND);
 
             // Friend 테이블에 친구 생성
             Friends friends = Friends.createFriend(sender,receiver);

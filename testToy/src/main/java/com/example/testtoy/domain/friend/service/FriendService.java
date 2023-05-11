@@ -25,8 +25,8 @@ public class FriendService {
     * @date : 2023-05-11
     *
     **/
-    public Friends save(Friends friends){
-        return friendRepository.save(friends);
+    public void save(Friends friends){
+        friendRepository.save(friends);
     }
 
     /**

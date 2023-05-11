@@ -2,6 +2,7 @@ package com.example.testtoy.domain.board.service;
 
 import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.board.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,15 +10,12 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
-
-    public BoardService(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
-    }
 
     /**
     *
@@ -122,8 +120,6 @@ public class BoardService {
 
         if(board!=null){
             // 게시글 조회수 증가 처리
-            // 동시성 문제 및 조회수 증가 관련 로직 추가 필요
-            //board.updateBoardVisit(board.getVisit()+1);
             board.increaseBoardVisit();
         }
 

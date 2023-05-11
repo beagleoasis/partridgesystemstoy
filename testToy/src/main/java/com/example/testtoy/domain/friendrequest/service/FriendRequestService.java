@@ -2,18 +2,18 @@ package com.example.testtoy.domain.friendrequest.service;
 
 import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
 import com.example.testtoy.domain.friendrequest.repository.FriendRequestRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class FriendRequestService {
 
     private final FriendRequestRepository friendRequestRepository;
-
-    public FriendRequestService(FriendRequestRepository friendRequestRepository) {
-        this.friendRequestRepository = friendRequestRepository;
-    }
 
     /**
     *
@@ -37,8 +37,8 @@ public class FriendRequestService {
     * @date : 2023-05-11
     *
     **/
-    public FriendRequest save(FriendRequest friendRequest){
-        return friendRequestRepository.save(friendRequest);
+    public void save(FriendRequest friendRequest){
+        friendRequestRepository.save(friendRequest);
     }
 
 

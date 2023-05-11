@@ -4,9 +4,8 @@ import com.example.testtoy.domain.friend.domain.Friends;
 import com.example.testtoy.domain.friendrequest.service.FriendRequestFacadeService;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.friendrequest.domain.SendFriendRequestDto;
-import com.example.testtoy.domain.friendrequest.service.FriendRequestService;
 import com.example.testtoy.domain.friend.service.FriendService;
-import com.example.testtoy.domain.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,22 +18,12 @@ import javax.servlet.http.HttpSession;
 
 @RequestMapping("friends")
 @Controller
+@RequiredArgsConstructor
 public class FriendController {
-
-    private final MemberService memberService;
 
     private final FriendRequestFacadeService friendRequestFacadeService;
 
     private final FriendService friendService;
-
-    private final FriendRequestService friendRequestService;
-
-    public FriendController(MemberService memberService, FriendRequestFacadeService friendRequestFacadeService, FriendService friendService, FriendRequestService friendRequestService) {
-        this.memberService = memberService;
-        this.friendRequestFacadeService = friendRequestFacadeService;
-        this.friendService = friendService;
-        this.friendRequestService = friendRequestService;
-    }
 
     /**
     *
