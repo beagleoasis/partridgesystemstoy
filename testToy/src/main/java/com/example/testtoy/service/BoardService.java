@@ -108,7 +108,8 @@ public class BoardService {
         if(board!=null){
             // 게시글 조회수 증가 처리
             // 동시성 문제 및 조회수 증가 관련 로직 추가 필요
-            board.updateBoardVisit(board.getVisit()+1);
+            //board.updateBoardVisit(board.getVisit()+1);
+            board.increaseBoardVisit();
         }
 
         return board;

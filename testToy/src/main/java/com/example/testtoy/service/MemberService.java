@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
 public class MemberService {
 
@@ -16,9 +17,24 @@ public class MemberService {
 
     private PasswordEncoder passwordEncoder;
 
-    MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder){
+    // 필드 주입 방식으로 의존성을 주입 받는 경우 값을 못가지고 오는 문제 발생
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+    *
+    * @method : findOneById
+    *
+    * @explain : 멤버 단일 조회
+    * @author : User
+    * @date : 2023-05-11
+    *
+    **/
+    @Transactional
+    public Member findOneById(Long memberId){
+        return memberRepository.findOneById(memberId);
     }
 
     /**
@@ -84,9 +100,13 @@ public class MemberService {
         List<Member> member = memberRepository.findByName(name);
 
         // 사용자 일치
-        if(!member.isEmpty() && passwordEncoder.matches(password, member.get(0).getPassword())){
+        if(!member.isEmpty()){
             // 비밀번호 검증
-            return member.get(0);
+            if(passwordEncoder.matches(password, member.get(0).getPassword())){
+                return member.get(0);
+            } else{
+                return null;
+            }
         }
         // 사용자 불일치
         else{

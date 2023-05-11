@@ -39,7 +39,7 @@ public class MemberRepository {
     * @date : 2023-05-09
     *
     **/
-    public Member findOne(Long id){
+    public Member findOneById(Long id){
         return em.find(Member.class, id);
     }
 

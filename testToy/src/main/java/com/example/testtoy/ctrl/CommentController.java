@@ -3,7 +3,9 @@ package com.example.testtoy.ctrl;
 import com.example.testtoy.domain.board.Board;
 import com.example.testtoy.domain.comment.Comment;
 import com.example.testtoy.dto.SaveCommentDto;
+import com.example.testtoy.service.CommentFacadeService;
 import com.example.testtoy.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +14,14 @@ import java.util.List;
 
 @RequestMapping("comments")
 @Controller
+@RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
+    private final CommentFacadeService commentFacadeService;
+
+
 
     /**
     *

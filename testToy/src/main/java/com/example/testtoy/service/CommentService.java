@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
 public class CommentService {
 
@@ -16,6 +17,23 @@ public class CommentService {
 
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+    }
+
+    /**
+    *
+    * @method : getCommentById
+    *
+    * @explain : 댓글 조회
+    * @author : User
+    * @date : 2023-05-11
+    *
+    **/
+    @Transactional
+    public Comment getCommentById(Long commentId){
+
+        return commentRepository.findById(commentId)
+                .orElseThrow(IllegalArgumentException::new);
+        // 추후 CustomException으로 예외 처리
     }
 
     /**
@@ -28,8 +46,8 @@ public class CommentService {
     *
     **/
     @Transactional
-    public List<Comment> getComments(Long id){
-        return commentRepository.findByBoardIdAndStateIsNull(id);
+    public List<Comment> getComments(Long commentId){
+        return commentRepository.findByBoardIdAndStateIsNull(commentId);
     }
 
     /**

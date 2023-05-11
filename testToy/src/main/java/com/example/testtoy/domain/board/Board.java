@@ -18,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 public class Board extends BaseTimeEntity {
+    public static final int INCREMENT = 1;
+    public static final int DECREMENT = -1;
 
     @Id
     @GeneratedValue
@@ -56,11 +58,20 @@ public class Board extends BaseTimeEntity {
         this.state = state;
     }
 
-    public void updateBoardVisit(Integer visit){
-        this.visit = visit;
-    }
-
     public void updateBoardLikes(Integer likes){
         this.likes = likes;
     }
+
+    public void increaseBoardVisit(){
+        this.visit += INCREMENT;
+    }
+
+    public void increaseBoardLikes(){
+        this.likes += INCREMENT;
+    }
+
+    public void decreaseBoardLikes(){
+        this.likes += DECREMENT;
+    }
+
 }

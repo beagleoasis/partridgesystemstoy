@@ -15,6 +15,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 public class Comment {
+    public static final int INCREMENT = 1;
+    public static final int DECREMENT = -1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,4 +58,6 @@ public class Comment {
     public void updateCommentLikes(Integer likes){
         this.likes = likes;
     }
+
+
 }
