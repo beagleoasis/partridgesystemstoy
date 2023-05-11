@@ -4,6 +4,8 @@ import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.comment.domain.SaveCommentDto;
 import com.example.testtoy.domain.comment.repository.CommentRepository;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class CommentService {
     public Comment getCommentById(Long commentId){
 
         return commentRepository.findById(commentId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
         // 추후 CustomException으로 예외 처리
     }
 
@@ -80,7 +82,7 @@ public class CommentService {
     @Transactional
     public Long deleteComment(Long id){
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         comment.updateCommentState("d");
 

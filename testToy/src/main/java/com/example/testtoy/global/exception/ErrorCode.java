@@ -15,7 +15,7 @@ public enum ErrorCode {
     // 403 Forbidden : 접근 권한이 없음
     FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
     // 404 Not Found : 요청한 자원을 찾을 수 없음
-    PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "페이지를 찾을 수 없습니다."),
+    ID_NOT_FOUND(HttpStatus.NOT_FOUND, "ID에 해당하는 결과가 없습니다."),
     // 500 Internal Server Error : 서버 내부 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류"),
     //

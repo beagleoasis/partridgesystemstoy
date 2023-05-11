@@ -5,6 +5,7 @@ import com.example.testtoy.domain.board.repository.BoardRepository;
 import com.example.testtoy.global.CustomException;
 import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -98,7 +100,7 @@ public class BoardService {
     @Transactional
     public Long deleteBoard(Long id){
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PAGE_NOT_FOUND)); // ID에 해당하는 게시글이 없습니다.
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         // 상태값을 d로 변경
         board.updateBoardState("d");
@@ -118,7 +120,7 @@ public class BoardService {
     @Transactional
     public Board findBoard(Long id){
         Board board = boardRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         if(board!=null){
             // 게시글 조회수 증가 처리
@@ -139,6 +141,6 @@ public class BoardService {
     **/
     public Board findById(Long boardId){
         return boardRepository.findById(boardId)
-                .orElseThrow(()-> new RuntimeException());
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
     }
 }
