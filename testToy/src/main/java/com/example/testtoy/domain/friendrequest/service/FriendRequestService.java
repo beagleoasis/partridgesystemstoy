@@ -1,8 +1,10 @@
 package com.example.testtoy.domain.friendrequest.service;
 
-import com.example.testtoy.domain.member.domain.Member;
+import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
 import com.example.testtoy.domain.friendrequest.repository.FriendRequestRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class FriendRequestService {
@@ -13,23 +15,31 @@ public class FriendRequestService {
         this.friendRequestRepository = friendRequestRepository;
     }
 
-    public void saveFriendRequest(Member sender, Member receiver){
-
-/*
-        // 이미 친구 요청을 보낸 경우, 예외 처리
-        if(friendRequestRepository.existsBySenderAndReceiver(sender, receiver)){
-            throw new DuplicateRequestException("친구 요청이 이미 전송되었습니다.");
-        }
-
-        // 친구 요청 생성
-        FriendRequest friendRequest = new FriendRequest();
-        friendRequest.setSender(sender);
-        friendRequest.setReceiver(receiver);
-        friendRequest.setState(FriendStatus.PENDING);
-
-        friendRequestRepository.save(friendRequest);
-*/
-
+    /**
+    *
+    * @method : getFriendRequest
+    *
+    * @explain : 친구 요청 내역 조회
+    * @author : User
+    * @date : 2023-05-11
+    *
+    **/
+    public Optional<FriendRequest> getFriendRequest(Long senderId, Long receiverId){
+        return friendRequestRepository.existsFriendRequestsBySender_IdAndAndReceiver_Id(senderId, receiverId);
     }
+
+    /**
+    *
+    * @method : save
+    *
+    * @explain : 친구 요청 생성
+    * @author : User
+    * @date : 2023-05-11
+    *
+    **/
+    public FriendRequest save(FriendRequest friendRequest){
+        return friendRequestRepository.save(friendRequest);
+    }
+
 
 }

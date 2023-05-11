@@ -4,20 +4,18 @@ import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.comment.domain.SaveCommentDto;
 import com.example.testtoy.domain.comment.repository.CommentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
-
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
 
     /**
     *

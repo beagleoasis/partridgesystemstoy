@@ -1,6 +1,7 @@
 package com.example.testtoy.domain.friend.controller;
 
 import com.example.testtoy.domain.friend.domain.Friends;
+import com.example.testtoy.domain.friendrequest.service.FriendRequestFacadeService;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.friendrequest.domain.SendFriendRequestDto;
 import com.example.testtoy.domain.friendrequest.service.FriendRequestService;
@@ -22,12 +23,15 @@ public class FriendController {
 
     private final MemberService memberService;
 
+    private final FriendRequestFacadeService friendRequestFacadeService;
+
     private final FriendService friendService;
 
     private final FriendRequestService friendRequestService;
 
-    public FriendController(MemberService memberService, FriendService friendService, FriendRequestService friendRequestService) {
+    public FriendController(MemberService memberService, FriendRequestFacadeService friendRequestFacadeService, FriendService friendService, FriendRequestService friendRequestService) {
         this.memberService = memberService;
+        this.friendRequestFacadeService = friendRequestFacadeService;
         this.friendService = friendService;
         this.friendRequestService = friendRequestService;
     }
@@ -45,7 +49,7 @@ public class FriendController {
     @ResponseBody
     public ResponseEntity<String> sendFriendRequest(@RequestBody SendFriendRequestDto sendFriendRequestDto){
 
-        String result = friendService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId());
+        String result = friendRequestFacadeService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId());
 
         return ResponseEntity.ok(result);
     }

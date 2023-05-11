@@ -15,11 +15,6 @@ public class BoardLikeService {
 
     private final BoardLikeRepository boardLikeRepository;
 
-    public Optional<BoardLike> getBoardLike(Long boardId){
-
-        return boardLikeRepository.findById(boardId);
-    }
-
     public Optional<BoardLike> getBoardLike(Long boardId, Long memberId){
         return boardLikeRepository.findBoardLikeByBoard_IdAndMember_Id(boardId,memberId);
     }

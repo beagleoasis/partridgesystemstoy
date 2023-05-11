@@ -9,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class MemberRepository {
 

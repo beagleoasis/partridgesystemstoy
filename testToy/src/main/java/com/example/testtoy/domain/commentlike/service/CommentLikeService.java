@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentLikeService {
 
