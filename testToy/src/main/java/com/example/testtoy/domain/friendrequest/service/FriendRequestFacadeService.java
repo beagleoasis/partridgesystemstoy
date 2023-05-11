@@ -6,6 +6,8 @@ import com.example.testtoy.domain.friend.service.FriendService;
 import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.service.MemberService;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +41,12 @@ public class FriendRequestFacadeService {
         String result = "";
 
         // 친구 요청을 보내는 유저(로그인한 현재 유저)
-        Member sender = memberService.findOneById(senderId);
+        Member sender = memberService.findOneById(senderId)
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         // 친구 요청을 받는 유저
-        Member receiver = memberService.findOneById(receiverId);
+        Member receiver = memberService.findOneById(receiverId)
+                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         // 친구 요청을 했거나, 받은 적이 있는지 확인하기 위한 객체 2개 생성
         Optional<FriendRequest> fromSenderToReceiver = friendRequestService.getFriendRequest(senderId,receiverId);

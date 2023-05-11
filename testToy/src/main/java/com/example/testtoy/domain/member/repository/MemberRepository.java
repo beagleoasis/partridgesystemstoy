@@ -1,47 +1,26 @@
 package com.example.testtoy.domain.member.repository;
 
 import com.example.testtoy.domain.member.domain.Member;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@Transactional
-@RequiredArgsConstructor
-public class MemberRepository {
-
-    @PersistenceContext
-    private final EntityManager em;
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     /**
     *
-    * @method : save
+    * @method : findById
     *
-    * @explain : member 생성
+    * @explain : 멤버 아이디로 조회
     * @author : User
-    * @date : 2023-05-05
+    * @date : 2023-05-11
     *
     **/
-    public void save(Member member){
-        em.persist(member);
-    }
+    Optional<Member> findById(Long memberId);
 
-    /**
-    *
-    * @method : findOne
-    *
-    * @explain : 멤버 id로 조회
-    * @author : User
-    * @date : 2023-05-09
-    *
-    **/
-    public Member findOneById(Long id){
-        return em.find(Member.class, id);
-    }
 
     /**
     *
@@ -52,10 +31,8 @@ public class MemberRepository {
     * @date : 2023-05-09
     *
     **/
-    public List<Member> findByName(String name){
-        return em.createQuery("select m from Member m where m.name = :name and m.state is null", Member.class)
-                .setParameter("name",name)
-                .getResultList();
-    }
+
+    List<Member> findByName(String name);
+
 
 }

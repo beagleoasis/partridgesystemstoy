@@ -6,6 +6,8 @@ import com.example.testtoy.domain.commentlike.domain.CommentLike;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.service.MemberService;
 import com.example.testtoy.domain.commentlike.domain.SaveOrDeleteCommentLikeDto;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,8 @@ public class CommentLikeFacadeService {
         }
         // 댓글 좋아요가 존재하지 않는다면,
         else {
-            Member member = memberService.findOneById(memberId);
+            Member member = memberService.findOneById(memberId)
+                    .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
             // 댓글 좋아요 +1 카운트
             comment.increaseCommentLikes();
             // 댓글 좋아요
