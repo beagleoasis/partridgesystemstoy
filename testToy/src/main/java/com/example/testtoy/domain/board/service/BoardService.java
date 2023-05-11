@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
+@Transactional
 @Service
 public class BoardService {
 
@@ -15,6 +17,20 @@ public class BoardService {
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
+    }
+
+    /**
+    *
+    * @method : getBoard
+    *
+    * @explain : 게시글 조회
+    * @author : User
+    * @date : 2023-05-11
+    *
+    **/
+    public Optional<Board> getBoard(Long boardId){
+
+        return boardRepository.findByIdAndStateIsNull(boardId);
     }
 
     /**

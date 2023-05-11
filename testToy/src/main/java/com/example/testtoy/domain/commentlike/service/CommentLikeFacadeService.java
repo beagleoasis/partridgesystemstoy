@@ -1,8 +1,8 @@
-package com.example.testtoy.domain.comment.service;
+package com.example.testtoy.domain.commentlike.service;
 
 import com.example.testtoy.domain.comment.domain.Comment;
+import com.example.testtoy.domain.comment.service.CommentService;
 import com.example.testtoy.domain.commentlike.domain.CommentLike;
-import com.example.testtoy.domain.commentlike.service.CommentLikeService;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.service.MemberService;
 import com.example.testtoy.domain.commentlike.domain.SaveOrDeleteCommentLikeDto;
@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class CommentFacadeService {
+public class CommentLikeFacadeService {
 
     private final CommentService commentService;
 

@@ -1,7 +1,7 @@
 package com.example.testtoy.domain.commentlike.controller;
 
 import com.example.testtoy.domain.commentlike.domain.SaveOrDeleteCommentLikeDto;
-import com.example.testtoy.domain.comment.service.CommentFacadeService;
+import com.example.testtoy.domain.commentlike.service.CommentLikeFacadeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class CommentLikeController {
 
-    private final CommentFacadeService commentFacadeService;
+    private final CommentLikeFacadeService commentLikeFacadeService;
 
     /**
     *
@@ -30,6 +30,6 @@ public class CommentLikeController {
     @ResponseBody
     public ResponseEntity likeComment(@RequestBody SaveOrDeleteCommentLikeDto saveOrDeleteCommentLikeDto){
 
-        return commentFacadeService.likeOrUnlikeComment(saveOrDeleteCommentLikeDto);
+        return commentLikeFacadeService.likeOrUnlikeComment(saveOrDeleteCommentLikeDto);
     }
 }

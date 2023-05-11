@@ -2,7 +2,7 @@ package com.example.testtoy.domain.comment.controller;
 
 import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.comment.domain.SaveCommentDto;
-import com.example.testtoy.domain.comment.service.CommentFacadeService;
+import com.example.testtoy.domain.commentlike.service.CommentLikeFacadeService;
 import com.example.testtoy.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    private final CommentFacadeService commentFacadeService;
+    private final CommentLikeFacadeService commentLikeFacadeService;
 
 
 
