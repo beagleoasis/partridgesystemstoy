@@ -3,6 +3,7 @@ package com.example.testtoy.domain.member.service;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +13,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    private PasswordEncoder passwordEncoder;
-
-    // 필드 주입 방식으로 의존성을 주입 받는 경우 값을 못가지고 오는 문제 발생
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    // final 키워드를 붙여야 인식한다...
+    private final PasswordEncoder passwordEncoder;
 
     /**
     *
@@ -61,7 +57,7 @@ public class MemberService {
         }
         // 기존 가입 회원인 경우,
         else{
-            System.out.println("기존 회원");
+            throw new IllegalStateException("이미 존재하는 회원");
         }
         return member.getId();
     }

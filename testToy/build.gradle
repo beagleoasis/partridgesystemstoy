@@ -50,7 +50,7 @@ dependencies {
      */
     annotationProcessor 'org.projectlombok:lombok'
     /*
-    test
+    junit-test
      */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     /*
