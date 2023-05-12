@@ -29,6 +29,10 @@ spring:
       test-on-borrow: true
       validation-query: select 1
 
+    # Connection Pool 사이즈
+    hikari:
+      maximum-pool-size: 20
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

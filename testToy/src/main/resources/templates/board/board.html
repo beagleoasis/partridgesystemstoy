@@ -38,9 +38,9 @@
                 <th:block th:each="boards : ${boards}">
 
                     <th:block th:if="${!#strings.equals(boards.state, 'T')}">
-                        <div class="d-flex flex-column flex-md-row justify-content-between" th:onclick="'javascript:location.href=\'/boards/' + ${boards.id} + '\' '">
+                        <div class="d-flex flex-column flex-md-row justify-content-between">
                             <!-- 게시물 정보 -->
-                            <div class="flex-grow-1">
+                            <div class="flex-grow-1"  th:onclick="'javascript:location.href=\'/boards/' + ${boards.id} + '\' '">
                                 <h4 th:text="'제목 : ' + ${boards.title}" class="mb-0"></h4>
                                 <!--<div th:text="'내용 : ' + ${boards.content}" class="subheading mb-3"></div>-->
 
@@ -128,24 +128,23 @@
     function deleteBoard(id){
 
         if(confirm("해당 게시글을 삭제하시겠습니까?")){
-            // 예
+
             $.ajax({
-                type : 'DELETE',
-                url : '/boards/deletion/'+id,
-                contentType : 'application/json; charset=utf-8',
-                dataType : 'json'
-            }).done(function(result) {
-
-                if(result == 0){
-                    alert("게시글 삭제를 실패했습니다.")
+                url: '/boards/deletion/'+id,
+                method: "PUT",
+                contentType: 'application/json',
+                success: function (response) {
+                    if(response == 0){
+                        alert("게시글 삭제를 실패했습니다.")
+                    }
+                    else{
+                        alert("게시글 삭제를 완료했습니다.");
+                    }
+                    location.reload();
+                },
+                error: function () {
+                    alert("댓글 작성에 실패했습니다.");
                 }
-                else{
-                    alert("게시글 삭제를 완료했습니다.");
-                }
-                location.reload();
-
-            }).fail(function(error) {
-                let message = JSON.parse(error.responseText);
             });
 
         }

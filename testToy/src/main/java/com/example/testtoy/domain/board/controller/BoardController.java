@@ -106,12 +106,12 @@ public class BoardController {
     * @date : 2023-05-06
     *
     **/
-    @DeleteMapping("deletion/{id}")
+    @PutMapping("deletion/{id}")
     public ResponseEntity deleteBoard(@PathVariable Long id){
 
         boardService.deleteBoard(id);
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok(201);
     }
 
     /**
