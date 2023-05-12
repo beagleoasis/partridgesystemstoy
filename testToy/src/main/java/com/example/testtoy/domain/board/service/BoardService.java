@@ -22,6 +22,20 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     /**
+     *
+     * @method : save
+     *
+     * @explain : 게시글 저장
+     * @author : User
+     * @date : 2023-05-09
+     *
+     **/
+    @Transactional
+    public Board save(Board board){
+        return boardRepository.save(board);
+    }
+
+    /**
     *
     * @method : getBoard
     *
@@ -72,20 +86,6 @@ public class BoardService {
             return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
         }
 
-    }
-
-    /**
-    *
-    * @method : save
-    *
-    * @explain : 게시글 저장
-    * @author : User
-    * @date : 2023-05-09
-    *
-    **/
-    @Transactional
-    public Board save(Board board){
-        return boardRepository.save(board);
     }
 
     /**
