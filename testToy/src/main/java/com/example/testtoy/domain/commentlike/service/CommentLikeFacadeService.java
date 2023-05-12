@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -43,11 +44,11 @@ public class CommentLikeFacadeService {
         Comment comment = commentService.getCommentById(commentId);
 
         // 댓글 좋아요 존재 여부 확인
-        CommentLike commentLike = commentLikeService.getCommentLikeByCommentIdAndMemberId(commentId,memberId);
+        Optional<CommentLike> commentLike = commentLikeService.getCommentLikeByCommentIdAndMemberId(commentId,memberId);
 
 
         // 댓글 좋아요가 존재한다면,
-        if(commentLike!=null){
+        if(commentLike.isPresent()){
             // 댓글 좋아요 -1 카운트
             comment.decreaseCommentLikes();
             commentLikeService.deleteCommentLikeByCommentIdAndMemberId(commentId,memberId);

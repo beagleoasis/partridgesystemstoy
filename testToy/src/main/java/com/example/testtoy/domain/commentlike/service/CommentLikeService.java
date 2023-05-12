@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,7 +25,7 @@ public class CommentLikeService {
     *
     **/
     @Transactional
-    public CommentLike getCommentLikeByCommentIdAndMemberId(Long commentId, Long memberId){
+    public Optional<CommentLike> getCommentLikeByCommentIdAndMemberId(Long commentId, Long memberId){
         return commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(commentId,memberId);
     }
 

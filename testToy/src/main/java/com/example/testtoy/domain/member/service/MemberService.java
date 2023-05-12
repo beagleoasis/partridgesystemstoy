@@ -76,9 +76,9 @@ public class MemberService {
     *
     **/
     private boolean checkDuplicateMember(Member member){
-        List<Member> findMember = memberRepository.findByName(member.getName());
+        Optional<Member> findMember = memberRepository.findByName(member.getName());
 
-        if(!findMember.isEmpty()){
+        if(findMember.isPresent()){
             return false;
         }
         else{
@@ -98,13 +98,13 @@ public class MemberService {
     public Member authenticate(String name, String password){
 
         // 사용자 이름으로 사용자 조회
-        List<Member> member = memberRepository.findByName(name);
+        Optional<Member> member = memberRepository.findByName(name);
 
         // 사용자 일치
-        if(!member.isEmpty()){
+        if(member.isPresent()){
             // 비밀번호 검증
-            if(passwordEncoder.matches(password, member.get(0).getPassword())){
-                return member.get(0);
+            if(passwordEncoder.matches(password, member.get().getPassword())){
+                return member.get();
             } else{
                 return null;
             }
@@ -128,11 +128,11 @@ public class MemberService {
     @Transactional
     public boolean deleteMember(String name){
         // 멤버 리스트 조회
-        List<Member> members = memberRepository.findByName(name);
+        Optional<Member> members = memberRepository.findByName(name);
 
-        if(!members.isEmpty()){
+        if(members.isPresent()){
             // 회원 탈퇴 처리
-            members.get(0).updateMemberState("d");
+            members.orElseThrow().updateMemberState("d");
             return true;
         }
         // 삭제 실패

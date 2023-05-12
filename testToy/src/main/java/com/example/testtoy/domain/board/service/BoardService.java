@@ -98,14 +98,12 @@ public class BoardService {
     *
     **/
     @Transactional
-    public Long deleteBoard(Long id){
+    public void deleteBoard(Long id){
         Board board = boardRepository.findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         // 상태값을 d로 변경
         board.updateBoardState("d");
-
-        return id;
     }
 
     /**

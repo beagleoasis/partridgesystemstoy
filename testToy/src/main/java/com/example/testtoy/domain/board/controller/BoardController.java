@@ -109,9 +109,9 @@ public class BoardController {
     @DeleteMapping("deletion/{id}")
     public ResponseEntity deleteBoard(@PathVariable Long id){
 
-        Long result = boardService.deleteBoard(id);
+        boardService.deleteBoard(id);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(200);
     }
 
     /**
@@ -129,14 +129,10 @@ public class BoardController {
         // 게시글 조회
         Board board = boardService.findBoard(boardId);
 
-        // 게시글 추천 유무 조회
-        //String boardLikeFlag = boardLikeService.getBoardLikeByBoardAndUser(boardId);
-
         // 댓글 리스트
         List<Comment> comments = commentService.getComments(board.getId());
 
         model.addAttribute("board", board);
-        //model.addAttribute("boardLikeFlag", boardLikeFlag);
         model.addAttribute("comments", comments);
 
         return "board/board_detail";

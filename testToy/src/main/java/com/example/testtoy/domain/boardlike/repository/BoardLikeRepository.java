@@ -2,9 +2,11 @@ package com.example.testtoy.domain.boardlike.repository;
 
 import com.example.testtoy.domain.boardlike.domain.BoardLike;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
 
 
