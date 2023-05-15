@@ -63,28 +63,19 @@ public class BoardService {
     public Page<Board> findAllBoardsBySortType(Pageable pageable, String sortType){
 
         // 방문자수 순
-        if(sortType.equals("visiter")){
-            return boardRepository.findBoardsByStateIsNullOrderByVisitDesc(pageable);
-        }
-        // 게시글 추천수 순
-        else if(sortType.equals("likeBoard")){
-            return boardRepository.findBoardsByStateIsNullOrderByLikesDesc(pageable);
-        }
-        // 방문자수 + 게시글 추천수 순
-        else if(sortType.equals("visiterAndLikeBoard")){
-            return boardRepository.findBoardsByStateIsNullOrderByVisitAndBoardLikeDesc(pageable);
-        }
-        // 댓글 추천수 순
-        else if(sortType.equals("likeComment")){
-            return boardRepository.findBoardsByStateIsNullOrderByCommentsLikes(pageable);
-        }
-        // 게시글 추천수 + 댓글 추천수 순
-        else if(sortType.equals("likeBoardAndLikeComment")){
-            return boardRepository.findBoardsByStateIsNullOrderByBoardLikeANDCommentsLikesDesc(pageable);
-        }
-        // 최신순 디폴트
-        else{
-            return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
+        switch (sortType){
+            case "visiter":
+                return boardRepository.findBoardsByStateIsNullOrderByVisitDesc(pageable);
+            case "likeBoard":
+                return boardRepository.findBoardsByStateIsNullOrderByLikesDesc(pageable);
+            case "visiterAndLikeBoard":
+                return boardRepository.findBoardsByStateIsNullOrderByVisitAndBoardLikeDesc(pageable);
+            case "likeComment":
+                return boardRepository.findBoardsByStateIsNullOrderByCommentsLikes(pageable);
+            case "likeBoardAndLikeComment":
+                return boardRepository.findBoardsByStateIsNullOrderByBoardLikeANDCommentsLikesDesc(pageable);
+            default:
+                return boardRepository.findBoardsByStateIsNullOrderByIdDesc(pageable);
         }
 
     }

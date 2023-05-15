@@ -46,8 +46,8 @@ public class CommentService {
     *
     **/
     @Transactional
-    public List<Comment> getComments(Long commentId){
-        return commentRepository.findByBoardIdAndStateIsNull(commentId);
+    public List<Comment> getComments(Long boardId){
+        return commentRepository.findByBoardIdAndStateIsNull(boardId);
     }
 
     /**
