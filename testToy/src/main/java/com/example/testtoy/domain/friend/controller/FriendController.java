@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 
 @RequestMapping("friends")
 @Controller
@@ -52,7 +53,13 @@ public class FriendController {
 
         Page<Friends> friends = friendService.findAllFriends(pageable, member.getId());
 
-        model.addAttribute("friends", friends);
+
+        if(friends!=null && friends.hasContent()){
+            model.addAttribute("friends", friends);
+        } else{
+            model.addAttribute("friends", Collections.emptyList());
+        }
+
 
         return "friends/friends";
     }

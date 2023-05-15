@@ -18,7 +18,7 @@
                 <a id="mbtiTest" class="nav-link js-scroll-trigger" th:href="@{/boards(sortType='latest')}">POST</a>
             </li>
             <li class="nav-item">
-                <a id="mbtiBoards" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/friends}'|">FRIENDS</a>
+                <a th:if="${session.user != null}" id="mbtiBoards" class="nav-link js-scroll-trigger" href="#" th:onclick="|location.href='@{/friends}'|">FRIENDS</a>
             </li>
             <!--
             <li class="nav-item">

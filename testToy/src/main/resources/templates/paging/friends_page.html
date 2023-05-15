@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="pageFragment" class="pagination">
+<div th:fragment="pageFragment" class="pagination" th:unless="${friends!=null}">
 
   <ul th:with="start=${(friends.number/10)*10 + 1},
                 end=(${(friends.totalPages == 0) ? 1 : (start + (10 - 1) < friends.totalPages ? start + (10 - 1) : friends.totalPages)})">
