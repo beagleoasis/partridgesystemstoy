@@ -58,7 +58,7 @@ public class BoardServiceTest {
         setUpMember();
         Member member = memberRepository.findByName("kjm").orElseThrow();
         Board board = Board.builder()
-                .memberid(String.valueOf(member.getId()))
+                .memberid(member.getId())
                 .name(member.getName())
                 .title("test")
                 .content("test")
@@ -85,7 +85,7 @@ public class BoardServiceTest {
                 .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
-                    .memberid(String.valueOf(member.getId()))
+                    .memberid(member.getId())
                     .name(member.getName())
                     .title("test")
                     .content("test")
@@ -131,7 +131,7 @@ public class BoardServiceTest {
                 .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
-                .memberid(String.valueOf(member.getId()))
+                .memberid(member.getId())
                 .name(member.getName())
                 .title("test")
                 .content("test")
@@ -159,7 +159,7 @@ public class BoardServiceTest {
                 .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
-                .memberid(String.valueOf(member.getId()))
+                .memberid(member.getId())
                 .name(member.getName())
                 .title("test")
                 .content("test")
@@ -189,7 +189,7 @@ public class BoardServiceTest {
                 .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
-                .memberid(String.valueOf(member.getId()))
+                .memberid(member.getId())
                 .name(member.getName())
                 .title("test")
                 .content("test")

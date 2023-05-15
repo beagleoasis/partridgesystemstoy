@@ -44,7 +44,7 @@ public class BoardLikeFacadeService {
 
             // 좋아요 취소
             boardLikeService.deleteBoardLike(boardId,memberId);
-            return ResponseEntity.ok(204);
+            return ResponseEntity.noContent().build();
         }
         // 게시글 좋아요가 존재하지 않는다면,
         else{
@@ -58,7 +58,7 @@ public class BoardLikeFacadeService {
 
             boardLikeService.save(saveBoardLike);
 
-            return ResponseEntity.ok(201);
+            return ResponseEntity.status(201).build();
         }
 
     }
