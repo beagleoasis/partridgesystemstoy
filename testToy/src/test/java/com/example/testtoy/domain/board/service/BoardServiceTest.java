@@ -6,6 +6,10 @@ import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.repository.MemberRepository;
 import com.example.testtoy.domain.member.service.MemberService;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 
-import static org.junit.Assert.*;
-
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -64,11 +67,12 @@ public class BoardServiceTest {
         //when
         boardService.save(board);
 
-        Board getBoard = boardService.getBoard(board.getId()).orElseThrow();
+        Board getBoard = boardService.getBoard(board.getId())
+                .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
 
         //then
-        assertEquals(board.getTitle(),getBoard.getTitle());
-        assertEquals(board.getContent(),getBoard.getContent());
+        Assertions.assertThat(board).isEqualTo(getBoard); // 확인 필요
+
     }
 
     @Test
@@ -77,7 +81,8 @@ public class BoardServiceTest {
 
         //given
         setUpMember();
-        Member member = memberRepository.findByName("kjm").orElseThrow();
+        Member member = memberRepository.findByName("kjm")
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
                     .memberid(String.valueOf(member.getId()))
@@ -89,10 +94,11 @@ public class BoardServiceTest {
         boardRepository.save(board);
 
         //when
-        Board getBoard = boardService.getBoard(board.getId()).orElseThrow();
+        Board getBoard = boardService.getBoard(board.getId())
+                .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
 
         //then
-        assertEquals(board,getBoard);
+        Assertions.assertThat(board).isEqualTo(getBoard);
 
     }
 
@@ -109,9 +115,9 @@ public class BoardServiceTest {
         Page<Board> boards = boardService.findAllBoardsBySortType(pageable,sortType);
 
         //then
-        assertNotNull(boards);
-        assertFalse(boards.isEmpty());
-        assertTrue(boards.getContent().size()<=10);
+        Assertions.assertThat(boards).isNotNull();
+        Assertions.assertThat(boards).isNotEmpty();
+        Assertions.assertThat(boards.getContent()).size().isLessThanOrEqualTo(10);
 
     }
 
@@ -121,7 +127,8 @@ public class BoardServiceTest {
 
         //given
         setUpMember();
-        Member member = memberRepository.findByName("kjm").orElseThrow();
+        Member member = memberRepository.findByName("kjm")
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         Board board = Board.builder()
                 .memberid(String.valueOf(member.getId()))
@@ -138,7 +145,66 @@ public class BoardServiceTest {
         //then
         Board deletedBoard = boardRepository.findByIdAndStateIsNull(board.getId()).orElse(null);
 
-        assertNull(deletedBoard);
+        Assertions.assertThat(deletedBoard).isNull();
+
+    }
+
+    @Test
+    @DisplayName("Board-게시글 상세 페이지 조회")
+    void testFindBoard(){
+
+        //given
+        setUpMember();
+        Member member = memberRepository.findByName("kjm")
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+
+        Board board = Board.builder()
+                .memberid(String.valueOf(member.getId()))
+                .name(member.getName())
+                .title("test")
+                .content("test")
+                .build();
+
+        int getBoardVisitCount = board.getVisit();
+
+        boardRepository.save(board);
+
+        //when
+        Board foundBoard = boardService.findBoard(board.getId());
+
+        //then
+        Assertions.assertThat(foundBoard.getName()).isEqualTo(member.getName());
+        Assertions.assertThat(foundBoard.getTitle()).isEqualTo("test");
+        Assertions.assertThat(getBoardVisitCount+Board.INCREMENT).isEqualTo(foundBoard.getVisit());
+
+    }
+
+    @Test
+    @DisplayName("Board-게시글 id로 조회")
+    void testFindById(){
+
+        //given
+        setUpMember();
+        Member member = memberRepository.findByName("kjm")
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+
+        Board board = Board.builder()
+                .memberid(String.valueOf(member.getId()))
+                .name(member.getName())
+                .title("test")
+                .content("test")
+                .build();
+
+        boardRepository.save(board);
+
+        //when
+        Board foundBoard = boardService.findById(board.getId());
+
+        //then
+        Assertions.assertThat(foundBoard).isNotNull();
+        Assertions.assertThat(foundBoard.getTitle()).isEqualTo("test");
+        Assertions.assertThat(foundBoard.getName()).isEqualTo(member.getName());
+
     }
 
 }

@@ -43,10 +43,12 @@ public class Board extends BaseTimeEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @ColumnDefault("0")
-    private Integer visit;
+    @Builder.Default
+    private Integer visit = 0;
 
     public static Board createBoardForComment(Long boardid){
         return Board.builder()

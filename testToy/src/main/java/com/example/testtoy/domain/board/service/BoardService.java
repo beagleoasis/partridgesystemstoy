@@ -100,7 +100,7 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Long id){
         Board board = boardRepository.findById(id)
-                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         // 상태값을 d로 변경
         board.updateBoardState("d");
@@ -120,10 +120,8 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
-        if(board!=null){
-            // 게시글 조회수 증가 처리
-            board.increaseBoardVisit();
-        }
+        // 게시글 조회수 증가 처리
+        board.increaseBoardVisit();
 
         return board;
     }
