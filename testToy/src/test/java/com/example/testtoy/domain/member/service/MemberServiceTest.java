@@ -3,6 +3,9 @@ package com.example.testtoy.domain.member.service;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.repository.MemberRepository;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,16 +36,20 @@ public class MemberServiceTest {
     void testFindOneById(){
 
         //given
-        Member member = Member.createMember("kjm","123");
+        String name = "kjm";
+        String password = "123";
+
+        Member member = Member.createMember(name,password);
         memberRepository.save(member);
 
         //when
-        Member foundMember = memberService.findOneById(member.getId()).orElseThrow();
+        Member foundMember = memberService.findOneById(member.getId())
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
 
         //then
-        assertNotNull(foundMember);
-        assertEquals("kjm", foundMember.getName());
-        assertEquals("123",foundMember.getPassword());
+        Assertions.assertThat(foundMember).isNotNull();
+        Assertions.assertThat(name).isEqualTo(foundMember.getName());
+        Assertions.assertThat(password).isEqualTo(foundMember.getPassword());
 
     }
 
@@ -53,16 +58,19 @@ public class MemberServiceTest {
     void testJoin(){
 
         //given
+        String name = "kjm";
+        String password = "123";
+
         SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName("kjm");
-        saveMemberDto.setPassword("123");
+        saveMemberDto.setName(name);
+        saveMemberDto.setPassword(password);
 
         //when
         memberService.join(saveMemberDto);
 
         //then
-        assertEquals(saveMemberDto.getName(),memberRepository.findByName("kjm").orElseThrow().getName());
-
+        Assertions.assertThat(saveMemberDto.getName()).isEqualTo(memberRepository.findByName(name)
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND)));
     }
 
 
@@ -71,13 +79,16 @@ public class MemberServiceTest {
     void testCheckDuplicateMember(){
 
         //given
+        String name = "kjm";
+        String password = "123";
+
         SaveMemberDto member1 = new SaveMemberDto();
-        member1.setName("kjm");
-        member1.setPassword("123");
+        member1.setName(name);
+        member1.setPassword(password);
 
         SaveMemberDto member2 = new SaveMemberDto();
-        member2.setName("kjm");
-        member2.setPassword("123");
+        member2.setName(name);
+        member2.setPassword(password);
 
         //when
         memberService.join(member1);
@@ -89,7 +100,7 @@ public class MemberServiceTest {
         }
 
         //then
-        fail("예외 발생");
+        Assertions.fail("예외 발생");
 
     }
 
@@ -98,9 +109,12 @@ public class MemberServiceTest {
     void testAuthenticate(){
 
         //given
+        String name = "kjm";
+        String password = "123";
+
         SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName("kjm");
-        saveMemberDto.setPassword("123");
+        saveMemberDto.setName(name);
+        saveMemberDto.setPassword(password);
 
         memberService.join(saveMemberDto);
 
@@ -108,7 +122,7 @@ public class MemberServiceTest {
         Member member = memberService.authenticate(saveMemberDto.getName(),saveMemberDto.getPassword());
 
         //then
-        assertNotNull(member);
+        Assertions.assertThat(member).isNotNull();
 
     }
 
@@ -117,9 +131,12 @@ public class MemberServiceTest {
     void testDeleteMember(){
 
         //given
+        String name = "kjm";
+        String password = "123";
+
         SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName("kjm");
-        saveMemberDto.setPassword("123");
+        saveMemberDto.setName(name);
+        saveMemberDto.setPassword(password);
 
         memberService.join(saveMemberDto);
 
@@ -127,7 +144,7 @@ public class MemberServiceTest {
         boolean result = memberService.deleteMember(saveMemberDto.getName());
 
         //then
-        assertTrue(result);
+        Assertions.assertThat(result).isTrue();
 
     }
 
