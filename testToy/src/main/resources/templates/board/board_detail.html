@@ -169,15 +169,14 @@
                 boardid : boardId,
                 memberid : sessionId
             }),
-            contentType : 'application/json; charset=utf-8',
-            dataType : 'json'
+            contentType : 'application/json; charset=utf-8'
         }).done(function(result) {
 
-            if(result == 0){
-                alert("게시글 추천을 실패했습니다.")
+            if(result == 0 || result == 201){
+                alert("게시글 추천/삭제 완료했습니다.");
             }
             else{
-                alert("게시글 추천/삭제 완료했습니다.");
+                alert("게시글 추천을 실패했습니다.")
             }
             location.reload();
 
@@ -202,6 +201,7 @@
             contentType : 'application/json; charset=utf-8',
             dataType : 'json'
         }).done(function(result) {
+            alert(result);
 
             if(result == 0){
                 alert("댓글 추천을 실패했습니다.")
