@@ -3,6 +3,8 @@ package com.example.testtoy.domain.member.service;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.repository.MemberRepository;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,9 @@ public class MemberService {
     *
     **/
     @Transactional
-    public Optional<Member> findOneById(Long memberId){
-        return memberRepository.findById(memberId);
+    public Member findOneById(Long memberId){
+        return memberRepository.findById(memberId)
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
     }
 
     /**

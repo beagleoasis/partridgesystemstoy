@@ -41,12 +41,10 @@ public class FriendRequestFacadeService {
         String result = "";
 
         // 친구 요청을 보내는 유저(로그인한 현재 유저)
-        Member sender = memberService.findOneById(senderId)
-                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
+        Member sender = memberService.findOneById(senderId);
 
         // 친구 요청을 받는 유저
-        Member receiver = memberService.findOneById(receiverId)
-                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
+        Member receiver = memberService.findOneById(receiverId);
 
         // 친구 요청을 했거나, 받은 적이 있는지 확인하기 위한 객체 2개 생성
         Optional<FriendRequest> fromSenderToReceiver = friendRequestService.getFriendRequest(senderId,receiverId);

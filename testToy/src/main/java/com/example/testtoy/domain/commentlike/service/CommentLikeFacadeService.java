@@ -57,8 +57,8 @@ public class CommentLikeFacadeService {
         }
         // 댓글 좋아요가 존재하지 않는다면,
         else {
-            Member member = memberService.findOneById(memberId)
-                    .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
+            Member member = memberService.findOneById(memberId);
+
             // 댓글 좋아요 +1 카운트
             comment.increaseCommentLikes();
             // 댓글 좋아요
