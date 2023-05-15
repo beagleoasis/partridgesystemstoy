@@ -67,8 +67,7 @@ public class BoardServiceTest {
         //when
         boardService.save(board);
 
-        Board getBoard = boardService.getBoard(board.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
+        Board getBoard = boardService.getBoard(board.getId());
 
         //then
         Assertions.assertThat(board).isEqualTo(getBoard); // 확인 필요
@@ -94,8 +93,7 @@ public class BoardServiceTest {
         boardRepository.save(board);
 
         //when
-        Board getBoard = boardService.getBoard(board.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
+        Board getBoard = boardService.getBoard(board.getId());
 
         //then
         Assertions.assertThat(board).isEqualTo(getBoard);

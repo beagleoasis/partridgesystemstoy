@@ -44,9 +44,10 @@ public class BoardService {
     * @date : 2023-05-11
     *
     **/
-    public Optional<Board> getBoard(Long boardId){
+    public Board getBoard(Long boardId){
 
-        return boardRepository.findByIdAndStateIsNull(boardId);
+        return boardRepository.findByIdAndStateIsNull(boardId)
+                .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
     }
 
     /**

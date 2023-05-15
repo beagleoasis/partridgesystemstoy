@@ -33,14 +33,14 @@ public class BoardLikeFacadeService {
         Long memberId = saveOrDeleteBoardLikeDto.getMemberid();
 
         // 게시글 좋아요 존재 여부 확인
-        Optional<Board> board = boardService.getBoard(boardId);
+        Board board = boardService.getBoard(boardId);
 
         Optional<BoardLike> boardLike = boardLikeService.getBoardLike(boardId,memberId);
 
         // 게시글 좋아요가 존재한다면,
         if(boardLike.isPresent()){
             // 게시글 좋아요 카운트 -1
-            board.get().decreaseBoardLikes();
+            board.decreaseBoardLikes();
 
             // 좋아요 취소
             boardLikeService.deleteBoardLike(boardId,memberId);
@@ -52,9 +52,9 @@ public class BoardLikeFacadeService {
                     .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
             // 게시글 좋아요 카운트 +1
-            board.get().increaseBoardLikes();
+            board.increaseBoardLikes();
             // 좋아요
-            BoardLike saveBoardLike = BoardLike.createBoardLike(board.get(),member);
+            BoardLike saveBoardLike = BoardLike.createBoardLike(board,member);
 
             boardLikeService.save(saveBoardLike);
 
