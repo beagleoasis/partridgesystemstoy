@@ -39,8 +39,8 @@ public class Comment {
 
     private String state;
 
-    @ColumnDefault("0")
-    private Integer likes;
+    @Builder.Default
+    private Integer likes = 0;
 
     public static Comment createComment(Board board, String name, String content, Long memberid){
         return Comment.builder()
