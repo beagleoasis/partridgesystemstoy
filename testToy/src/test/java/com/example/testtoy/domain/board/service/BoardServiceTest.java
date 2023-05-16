@@ -3,11 +3,8 @@ package com.example.testtoy.domain.board.service;
 import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.board.repository.BoardRepository;
 import com.example.testtoy.domain.member.domain.Member;
-import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.repository.MemberRepository;
 import com.example.testtoy.domain.member.service.MemberService;
-import com.example.testtoy.global.CustomException;
-import com.example.testtoy.global.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -22,6 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -43,11 +44,26 @@ public class BoardServiceTest {
 
     // 게시판 테스트를 위한 member 미리 생성
     @Before
-    void setUpMember(){
-        SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName("kjm");
-        saveMemberDto.setPassword("123");
-        memberService.join(saveMemberDto);
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
+
+        memberRepository.save(member);
+
+        return member;
+    }
+
+    @Before
+    Board setUpBoard(Long memberId, String name, String title, String content){
+        Board board = Board.builder()
+                .memberid(memberId)
+                .name(name)
+                .title(title)
+                .content(content)
+                .build();
+
+        boardRepository.save(board);
+
+        return board;
     }
 
     @Test
@@ -55,8 +71,8 @@ public class BoardServiceTest {
     void testSave(){
 
         //given
-        setUpMember();
-        Member member = memberRepository.findByName("kjm").orElseThrow();
+        Member member = setUpMember("kjm","123");
+
         Board board = Board.builder()
                 .memberid(member.getId())
                 .name(member.getName())
@@ -67,10 +83,11 @@ public class BoardServiceTest {
         //when
         boardService.save(board);
 
-        Board getBoard = boardService.findByIdAndStateIsNull(board.getId());
-
         //then
-        Assertions.assertThat(board).isEqualTo(getBoard); // 확인 필요
+        Optional<Board> foundBoard = boardRepository.findByIdAndStateIsNull(board.getId());
+
+        assertThat(foundBoard).isNotEmpty();
+        assertThat(foundBoard.get().getId()).isEqualTo(board.getId());
 
     }
 
@@ -79,24 +96,16 @@ public class BoardServiceTest {
     void testFindByIdAndStateIsNull(){
 
         //given
-        setUpMember();
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
-        Board board = Board.builder()
-                    .memberid(member.getId())
-                    .name(member.getName())
-                    .title("test")
-                    .content("test")
-                    .build();
-
-        boardRepository.save(board);
+        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
 
         //when
-        Board getBoard = boardService.findByIdAndStateIsNull(board.getId());
+        Board foundBoard = boardService.findByIdAndStateIsNull(board.getId());
 
         //then
-        Assertions.assertThat(board).isEqualTo(getBoard);
+        assertThat(foundBoard).isNotNull();
+        assertThat(foundBoard.getId()).isEqualTo(board.getId());
 
     }
 
@@ -105,6 +114,10 @@ public class BoardServiceTest {
     void testFindAllBoardsBySortType(){
 
         //given
+        Member member = setUpMember("kjm","123");
+
+        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+
         String sortType = "likeBoard";
 
         Pageable pageable = PageRequest.of(0,10);
@@ -113,9 +126,8 @@ public class BoardServiceTest {
         Page<Board> boards = boardService.findAllBoardsBySortType(pageable,sortType);
 
         //then
-        Assertions.assertThat(boards).isNotNull();
-        Assertions.assertThat(boards).isNotEmpty();
-        Assertions.assertThat(boards.getContent()).size().isLessThanOrEqualTo(10);
+        assertThat(boards).isNotNull();
+        assertThat(boards.getContent().size()).isLessThanOrEqualTo(10);
 
     }
 
@@ -124,18 +136,9 @@ public class BoardServiceTest {
     void testDeleteBoard(){
 
         //given
-        setUpMember();
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
-        Board board = Board.builder()
-                .memberid(member.getId())
-                .name(member.getName())
-                .title("test")
-                .content("test")
-                .build();
-
-        boardRepository.save(board);
+        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
 
         //when
         boardService.deleteBoard(board.getId());
@@ -143,7 +146,7 @@ public class BoardServiceTest {
         //then
         Board deletedBoard = boardRepository.findByIdAndStateIsNull(board.getId()).orElse(null);
 
-        Assertions.assertThat(deletedBoard).isNull();
+        assertThat(deletedBoard).isNull();
 
     }
 
@@ -152,28 +155,19 @@ public class BoardServiceTest {
     void testFindByIdAndIncreaseVisit(){
 
         //given
-        setUpMember();
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
-        Board board = Board.builder()
-                .memberid(member.getId())
-                .name(member.getName())
-                .title("test")
-                .content("test")
-                .build();
+        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
 
         int getBoardVisitCount = board.getVisit();
-
-        boardRepository.save(board);
 
         //when
         Board foundBoard = boardService.findByIdAndIncreaseVisit(board.getId());
 
         //then
-        Assertions.assertThat(foundBoard.getName()).isEqualTo(member.getName());
-        Assertions.assertThat(foundBoard.getTitle()).isEqualTo("test");
-        Assertions.assertThat(getBoardVisitCount+Board.INCREMENT).isEqualTo(foundBoard.getVisit());
+        assertThat(foundBoard.getName()).isEqualTo(member.getName());
+        assertThat(foundBoard.getTitle()).isEqualTo("testTitle");
+        assertThat(getBoardVisitCount+Board.INCREMENT).isEqualTo(foundBoard.getVisit());
 
     }
 
@@ -182,26 +176,17 @@ public class BoardServiceTest {
     void testFindById(){
 
         //given
-        setUpMember();
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
-        Board board = Board.builder()
-                .memberid(member.getId())
-                .name(member.getName())
-                .title("test")
-                .content("test")
-                .build();
-
-        boardRepository.save(board);
+        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
 
         //when
         Board foundBoard = boardService.findById(board.getId());
 
         //then
-        Assertions.assertThat(foundBoard).isNotNull();
-        Assertions.assertThat(foundBoard.getTitle()).isEqualTo("test");
-        Assertions.assertThat(foundBoard.getName()).isEqualTo(member.getName());
+        assertThat(foundBoard).isNotNull();
+        assertThat(foundBoard.getTitle()).isEqualTo("test");
+        assertThat(foundBoard.getName()).isEqualTo(member.getName());
 
     }
 

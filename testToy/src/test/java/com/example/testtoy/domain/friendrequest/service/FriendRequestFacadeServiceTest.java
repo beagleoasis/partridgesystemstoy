@@ -54,6 +54,7 @@ public class FriendRequestFacadeServiceTest {
 
         //then
         Optional<FriendRequest> friendRequest = friendRequestRepository.findById(sender.getId(),receiver.getId());
+
         assertThat(friendRequest).isNotEmpty();
         assertThat(friendRequest.get().getState()).isEqualTo(FriendStatus.REQUEST);
 
@@ -62,6 +63,7 @@ public class FriendRequestFacadeServiceTest {
 
         //then
         friendRequest = friendRequestRepository.findById(receiver.getId(),sender.getId());
+
         assertThat(friendRequest).isNotEmpty();
         assertThat(friendRequest.get().getState()).isEqualTo(FriendStatus.FRIEND);
 

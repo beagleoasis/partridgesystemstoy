@@ -22,6 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -43,12 +45,8 @@ public class CommentLikeServiceTest {
     CommentLikeRepository commentLikeRepository;
 
     @Before
-    Member setUpMember(){
-
-        Member member = Member.builder()
-                .name("kjm")
-                .password("123")
-                .build();
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
 
@@ -100,7 +98,7 @@ public class CommentLikeServiceTest {
     void testFindCommentLikeByComment_IdAndMember_Id(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -109,12 +107,12 @@ public class CommentLikeServiceTest {
         CommentLike commentLike = setupCommentLike(member,comment);
 
         //when
-        CommentLike foundCommentLike = commentLikeService.findCommentLikeByComment_IdAndMember_Id(comment.getId(), member.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
+        Optional<CommentLike> foundCommentLike =
+                commentLikeService.findCommentLikeByComment_IdAndMember_Id(comment.getId(), member.getId());
 
         //then
-        Assertions.assertThat(foundCommentLike).isNotNull();
-        Assertions.assertThat(foundCommentLike.getMember().getId()).isEqualTo(member.getId());
+        assertThat(foundCommentLike).isNotNull();
+        assertThat(foundCommentLike.get().getMember().getId()).isEqualTo(member.getId());
 
     }
 
@@ -123,7 +121,7 @@ public class CommentLikeServiceTest {
     void testDeleteCommentLikeByCommentIdAndMemberId(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -135,9 +133,10 @@ public class CommentLikeServiceTest {
         commentLikeService.deleteCommentLikeByCommentIdAndMemberId(comment.getId(),member.getId());
 
         //then
-        Optional<CommentLike> foundCommentLike = commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
+        Optional<CommentLike> foundCommentLike = commentLikeRepository
+                .findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
 
-        Assertions.assertThat(foundCommentLike).isEmpty();
+        assertThat(foundCommentLike).isEmpty();
 
     }
 
@@ -146,7 +145,7 @@ public class CommentLikeServiceTest {
     void testSave(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -158,8 +157,9 @@ public class CommentLikeServiceTest {
         commentLikeService.save(commentLike);
 
         //then
-        Optional<CommentLike> savedCommentLike = commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
-        Assertions.assertThat(savedCommentLike).isNotEmpty();
+        Optional<CommentLike> savedCommentLike = commentLikeRepository
+                .findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
+        assertThat(savedCommentLike).isNotEmpty();
 
     }
 }

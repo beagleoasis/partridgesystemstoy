@@ -23,6 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -47,11 +49,12 @@ public class BoardLikeServiceTest {
     BoardRepository boardRepository;
 
     @Before
-    void setUpMember(){
-        SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName("kjm");
-        saveMemberDto.setPassword("123");
-        memberService.join(saveMemberDto);
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
+
+        memberRepository.save(member);
+
+        return member;
     }
 
     @Before
@@ -66,55 +69,59 @@ public class BoardLikeServiceTest {
         return board;
     }
 
+    @Before
+    BoardLike setUpBoardLike(Board board, Member member){
+        BoardLike boardLike = BoardLike.builder()
+                                .board(board)
+                                .member(member)
+                                .build();
+
+        boardLikeRepository.save(boardLike);
+
+        return boardLike;
+    }
+
     @Test
     @DisplayName("BoardLike-게시글 좋아요 조회")
     void testFindBoardLikeByBoard_IdAndMember_Id(){
 
         //given
-        setUpMember();
-
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
-        BoardLike boardLike = BoardLike.createBoardLike(board,member);
-
-        boardLikeRepository.save(boardLike);
+        BoardLike boardLike = setUpBoardLike(board,member);
 
         //when
-        BoardLike foundBoardLike = boardLikeService.findBoardLikeByBoard_IdAndMember_Id(board.getId(), member.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.BOARD_LIKE_ID_NOT_FOUND));
+        Optional<BoardLike> foundBoardLike = boardLikeService
+                .findBoardLikeByBoard_IdAndMember_Id(board.getId(), member.getId());
 
         //then
-        Assertions.assertThat(foundBoardLike).isNotNull();
-        Assertions.assertThat(foundBoardLike.getMember().getId()).isEqualTo(member.getId());
-        Assertions.assertThat(foundBoardLike.getBoard().getId()).isEqualTo(board.getId());
+        assertThat(foundBoardLike).isNotEmpty();
+        assertThat(foundBoardLike).isNotNull();
+        assertThat(foundBoardLike.get().getMember().getId()).isEqualTo(member.getId());
+        assertThat(foundBoardLike.get().getBoard().getId()).isEqualTo(board.getId());
 
     }
 
     @Test
     @DisplayName("BoardLike-게시글 삭제")
-    void test(){
+    void testDeleteBoardLike(){
 
         //given
-        setUpMember();
-
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
-        BoardLike boardLike = BoardLike.createBoardLike(board,member);
-
-        boardLikeRepository.save(boardLike);
+        BoardLike boardLike = setUpBoardLike(board,member);
 
         //when
         boardLikeService.deleteBoardLike(board.getId(),member.getId());
 
         //then
-        Optional<BoardLike> deletedboardLike = boardLikeRepository.findById(boardLike.getId());
-        Assertions.assertThat(deletedboardLike).isEmpty();
+        Optional<BoardLike> deletedBoardLike = boardLikeRepository.findById(boardLike.getId());
+
+        assertThat(deletedBoardLike).isEmpty();
 
     }
 
@@ -124,10 +131,7 @@ public class BoardLikeServiceTest {
     void testSave(){
 
         //given
-        setUpMember();
-
-        Member member = memberRepository.findByName("kjm")
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -137,12 +141,11 @@ public class BoardLikeServiceTest {
         boardLikeService.save(boardLike);
 
         //then
-        BoardLike savedBoardLike = boardLikeRepository.findById(boardLike.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.BOARD_LIKE_ID_NOT_FOUND));
+        Optional<BoardLike> savedBoardLike = boardLikeRepository.findById(boardLike.getId());
 
-        Assertions.assertThat(savedBoardLike).isNotNull();
-        Assertions.assertThat(savedBoardLike.getBoard().getId()).isEqualTo(board.getId());
-        Assertions.assertThat(savedBoardLike.getMember().getId()).isEqualTo(member.getId());
+        assertThat(savedBoardLike).isNotNull();
+        assertThat(savedBoardLike.get().getBoard().getId()).isEqualTo(board.getId());
+        assertThat(savedBoardLike.get().getMember().getId()).isEqualTo(member.getId());
 
     }
 

@@ -6,6 +6,7 @@ import com.example.testtoy.domain.member.repository.MemberRepository;
 import com.example.testtoy.global.CustomException;
 import com.example.testtoy.global.exception.ErrorCode;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,30 +36,37 @@ public class MemberServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Before
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
+
+        memberRepository.save(member);
+
+        return member;
+    }
+
     @Test
-    @DisplayName("FindOneById Test")
-    //@DisplayName("Member-아이디로 member 객체를 찾는 경우")
-    void testFindOneById(){
+    @DisplayName("Member-아이디로 찾기")
+    void testFindById(){
 
         //given
         String name = "kjm";
         String password = "123";
 
-        Member member = Member.createMember(name,password);
-        memberRepository.save(member);
+        Member member = setUpMember(name,password);
 
         //when
         Member foundMember = memberService.findById(member.getId());
 
         //then
-        Assertions.assertThat(foundMember).isNotNull();
-        Assertions.assertThat(name).isEqualTo(foundMember.getName());
-        Assertions.assertThat(password).isEqualTo(foundMember.getPassword());
+        assertThat(foundMember).isNotNull();
+        assertThat(name).isEqualTo(foundMember.getName());
+        assertThat(password).isEqualTo(foundMember.getPassword());
 
     }
 
     @Test
-    @DisplayName("Join Test")
+    @DisplayName("Member-회원가입")
     void testJoin(){
 
         //given
@@ -65,32 +78,31 @@ public class MemberServiceTest {
         saveMemberDto.setPassword(password);
 
         //when
-        memberService.join(saveMemberDto);
+        Long memberId = memberService.join(saveMemberDto);
 
         //then
-        Assertions.assertThat(saveMemberDto.getName()).isEqualTo(memberRepository.findByName(name)
-                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND)));
+        Optional<Member> member = memberRepository.findByName(name);
+
+        assertThat(member).isNotEmpty();
+        assertThat(member.get().getId()).isEqualTo(memberId);
     }
 
 
     @Test
-    @DisplayName("CheckDuplicateMember Test")
+    @DisplayName("Member-중복회원 확인")
     void testCheckDuplicateMember(){
 
         //given
         String name = "kjm";
         String password = "123";
 
-        SaveMemberDto member1 = new SaveMemberDto();
-        member1.setName(name);
-        member1.setPassword(password);
+        Member member1 = setUpMember(name,password);
 
         SaveMemberDto member2 = new SaveMemberDto();
         member2.setName(name);
         member2.setPassword(password);
 
         //when
-        memberService.join(member1);
 
         try{
             memberService.join(member2);
@@ -99,12 +111,12 @@ public class MemberServiceTest {
         }
 
         //then
-        Assertions.fail("예외 발생");
+        fail("예외 발생");
 
     }
 
     @Test
-    @DisplayName("Authenticate Test")
+    @DisplayName("Member-멤버 인증")
     void testAuthenticate(){
 
         //given
@@ -115,35 +127,31 @@ public class MemberServiceTest {
         saveMemberDto.setName(name);
         saveMemberDto.setPassword(password);
 
-        memberService.join(saveMemberDto);
+        memberService.join(saveMemberDto); // 비밀번호 암호화 처리 때문에 memberService 사용
 
         //when
         Member member = memberService.authenticate(saveMemberDto.getName(),saveMemberDto.getPassword());
 
         //then
-        Assertions.assertThat(member).isNotNull();
+        assertThat(member).isNotNull();
 
     }
 
     @Test
-    @DisplayName("회원 탈퇴 테스트")
+    @DisplayName("Member-회원 탈퇴")
     void testDeleteMember(){
 
         //given
         String name = "kjm";
         String password = "123";
 
-        SaveMemberDto saveMemberDto = new SaveMemberDto();
-        saveMemberDto.setName(name);
-        saveMemberDto.setPassword(password);
-
-        memberService.join(saveMemberDto);
+        Member member = setUpMember(name,password);
 
         //when
-        boolean result = memberService.deleteMember(saveMemberDto.getName());
+        boolean result = memberService.deleteMember(member.getName());
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
 
     }
 

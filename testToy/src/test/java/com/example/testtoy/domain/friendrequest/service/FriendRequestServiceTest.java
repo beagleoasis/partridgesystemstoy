@@ -40,6 +40,15 @@ public class FriendRequestServiceTest {
         return member;
     }
 
+    @Before
+    FriendRequest setUpFriendRequest(Member sender, Member receiver, FriendStatus friendStatus){
+        FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver,friendStatus);
+
+        friendRequestRepository.save(friendRequest);
+
+        return friendRequest;
+    }
+
     @Test
     @DisplayName("FriendRequest-친구 요청 내역 조회")
     void testFindById(){
@@ -48,9 +57,7 @@ public class FriendRequestServiceTest {
         Member sender = setUpMember("kjm1","123");
         Member receiver = setUpMember("kjm2","123");
 
-        FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.REQUEST);
-
-        friendRequestRepository.save(friendRequest);
+        FriendRequest friendRequest = setUpFriendRequest(sender,receiver,FriendStatus.REQUEST);
 
         //when
         Optional<FriendRequest> foundFriendRequest = friendRequestService.findById(sender.getId(),receiver.getId());

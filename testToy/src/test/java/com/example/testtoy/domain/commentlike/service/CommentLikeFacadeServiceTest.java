@@ -21,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -45,12 +47,8 @@ public class CommentLikeFacadeServiceTest {
     CommentLikeRepository commentLikeRepository;
 
     @Before
-    Member setUpMember(){
-
-        Member member = Member.builder()
-                .name("kjm")
-                .password("123")
-                .build();
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
 
@@ -101,7 +99,7 @@ public class CommentLikeFacadeServiceTest {
     void testLikeOrUnlikeComment(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -116,14 +114,14 @@ public class CommentLikeFacadeServiceTest {
 
         //then
         Optional<CommentLike> foundCommentLike = commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
-        Assertions.assertThat(foundCommentLike).isNotEmpty();
+        assertThat(foundCommentLike).isNotEmpty();
 
         //when
         commentLikeFacadeService.likeOrUnlikeComment(saveOrDeleteCommentLikeDto);
 
         //then
         foundCommentLike = commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(comment.getId(),member.getId());
-        Assertions.assertThat(foundCommentLike).isEmpty();
+        assertThat(foundCommentLike).isEmpty();
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.testtoy.domain.comment.service;
 import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.board.repository.BoardRepository;
 import com.example.testtoy.domain.comment.domain.Comment;
+import com.example.testtoy.domain.comment.domain.SaveCommentDto;
 import com.example.testtoy.domain.comment.repository.CommentRepository;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.repository.MemberRepository;
@@ -17,6 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,17 +40,14 @@ public class CommentServiceTest {
     CommentRepository commentRepository;
 
     @Before
-    Member setUpMember(){
-
-        Member member = Member.builder()
-                .name("kjm")
-                .password("123")
-                .build();
+    Member setUpMember(String name, String password){
+        Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
 
         return member;
     }
+
 
     @Before
     Board setUpBoard(Long memberId){
@@ -80,7 +81,7 @@ public class CommentServiceTest {
     void testFindById(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -90,7 +91,8 @@ public class CommentServiceTest {
         Comment foundComment = commentService.findById(comment.getId());
 
         //then
-        Assertions.assertThat(foundComment.getId()).isEqualTo(comment.getId());
+        assertThat(foundComment).isNotNull();
+        assertThat(foundComment.getId()).isEqualTo(comment.getId());
 
     }
 
@@ -99,18 +101,18 @@ public class CommentServiceTest {
     void testFindByBoardIdAndStateIsNull(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
         Comment comment = setUpComment(board,member.getId(),member.getName());
 
         //when
-        List<Comment> commentList = commentRepository.findByBoardIdAndStateIsNull(board.getId());
+        List<Comment> commentList = commentService.findByBoardIdAndStateIsNull(board.getId());
 
         //then
-        Assertions.assertThat(commentList).isNotEmpty();
-        Assertions.assertThat(commentList).anyMatch(comment1 -> comment1.getBoard().getId()==board.getId());
+        assertThat(commentList).isNotNull();
+        assertThat(commentList).matches(list -> list.stream().anyMatch(c -> c.equals(comment)));
 
     }
 
@@ -119,16 +121,22 @@ public class CommentServiceTest {
     void testSave(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
+        SaveCommentDto saveCommentDto = new SaveCommentDto();
+        saveCommentDto.setMemberid(member.getId());
+        saveCommentDto.setName(member.getName());
+        saveCommentDto.setBoard_id(board.getId());
+        saveCommentDto.setContent("test");
+
         //when
-        Comment comment = setUpComment(board, member.getId(), member.getName());
+        Comment comment = commentService.save(saveCommentDto);
 
         //then
-        Assertions.assertThat(comment).isNotNull();
-        Assertions.assertThat(comment.getMemberid()).isEqualTo(member.getId());
+        assertThat(comment).isNotNull();
+        assertThat(comment.getMemberid()).isEqualTo(member.getId());
 
     }
 
@@ -137,7 +145,7 @@ public class CommentServiceTest {
     void testDeleteComment(){
 
         //given
-        Member member = setUpMember();
+        Member member = setUpMember("kjm","123");
 
         Board board = setUpBoard(member.getId());
 
@@ -147,10 +155,10 @@ public class CommentServiceTest {
         commentService.deleteComment(comment.getId());
 
         //then
-        Comment foundComment = commentRepository.findById(comment.getId()).orElse(null);
+        Optional<Comment> foundComment = commentRepository.findById(comment.getId());
 
-        Assertions.assertThat(foundComment).isNotNull();
-        Assertions.assertThat(foundComment.getState()).isEqualTo("d");
+        assertThat(foundComment).isNotNull();
+        assertThat(foundComment.get().getState()).isEqualTo("d");
 
     }
 
