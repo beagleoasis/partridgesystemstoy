@@ -4,16 +4,19 @@ import com.example.testtoy.domain.friend.domain.FriendStatus;
 import com.example.testtoy.domain.friend.domain.Friends;
 import com.example.testtoy.domain.friend.service.FriendService;
 import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
+import com.example.testtoy.domain.friendrequest.domain.FriendRequestStatus;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.service.MemberService;
 import com.example.testtoy.global.CustomException;
 import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -37,51 +40,65 @@ public class FriendRequestFacadeService {
     @Transactional
     public String sendFriendRequest(Long senderId, Long receiverId){
 
+        log.debug("senderId : {}",senderId);
+        log.debug("receiverId : {}",receiverId);
+
         // 응답값
         String result = "";
 
         // 친구 요청을 보내는 유저(로그인한 현재 유저)
-        Member sender = memberService.findOneById(senderId);
+        Member sender = memberService.findById(senderId);
 
         // 친구 요청을 받는 유저
-        Member receiver = memberService.findOneById(receiverId);
+        Member receiver = memberService.findById(receiverId);
 
         // 친구 요청을 했거나, 받은 적이 있는지 확인하기 위한 객체 2개 생성
-        Optional<FriendRequest> fromSenderToReceiver = friendRequestService.getFriendRequest(senderId,receiverId);
+        Optional<FriendRequest> fromSenderToReceiver = friendRequestService.findById(senderId,receiverId);
 
-        Optional<FriendRequest> fromReceiverToSender = friendRequestService.getFriendRequest(receiverId,senderId);
+        FriendRequestStatus fromSenderToReceiverStatus =
+                fromSenderToReceiver.isPresent() ? FriendRequestStatus.PRESENT : FriendRequestStatus.ABSENT;
 
-        if(fromSenderToReceiver.isPresent() && fromReceiverToSender.isPresent()){
+        Optional<FriendRequest> fromReceiverToSender = friendRequestService.findById(receiverId,senderId);
 
-            result = "이미 친구 관계입니다.";
+        FriendRequestStatus fromReceiverToSenderStatus =
+                fromReceiverToSender.isPresent() ? FriendRequestStatus.PRESENT : FriendRequestStatus.ABSENT;
 
-        } else if (fromSenderToReceiver.isPresent() && !fromReceiverToSender.isPresent()) {
+        log.debug("fromSenderToReceiverStatus : {}",fromSenderToReceiverStatus);
 
-            result = "이미 친구 요청을 보냈습니다.";
+        log.debug("fromReceiverToSenderStatus : {}",fromReceiverToSenderStatus);
 
-        } else if (!fromSenderToReceiver.isPresent() && fromReceiverToSender.isPresent()) {
+        switch (fromSenderToReceiverStatus){
+            case PRESENT:
+                if(fromReceiverToSenderStatus==FriendRequestStatus.PRESENT){
+                    result = "이미 친구 관계입니다.";
+                } else{
+                    result = "이미 친구 요청을 보냈습니다.";
+                }
+                break;
 
-            // 친구 수락 후 친구 관계 처리
-            FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.FRIEND);
-            friendRequestService.save(friendRequest);
+            case ABSENT:
+                if(fromReceiverToSenderStatus==FriendRequestStatus.PRESENT){
+                    // 친구 수락 후 친구 관계 처리
+                    FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver, FriendStatus.FRIEND);
+                    friendRequestService.save(friendRequest);
 
-            // 기존 유저 친구 관계 FRIEND로 변경
-            fromReceiverToSender.orElseThrow().updateFriendRequestStatus(FriendStatus.FRIEND);
+                    // 기존 유저 친구 관계 FRIEND로 변경
+                    fromReceiverToSender.get().updateFriendRequestStatus(FriendStatus.FRIEND);
 
-            // Friend 테이블에 친구 생성
-            Friends friends = Friends.createFriend(sender,receiver);
-            friendService.save(friends);
+                    // Friend 테이블에 친구 생성
+                    Friends friends = Friends.createFriend(sender,receiver);
+                    friendService.save(friends);
 
-            result = "친구 요청을 수락했습니다.";
+                    result = "친구 요청을 수락했습니다.";
+                } else{
 
-        } else {
+                    // 친구 요청 생성
+                    FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver,FriendStatus.REQUEST);
+                    friendRequestService.save(friendRequest);
 
-            // 친구 요청 생성
-            FriendRequest friendRequest = FriendRequest.createFriendRequest(sender,receiver,FriendStatus.REQUEST);
-            friendRequestService.save(friendRequest);
-
-            result = "친구 요청을 완료했습니다.";
-
+                    result = "친구 요청을 완료했습니다.";
+                }
+                break;
         }
 
         return result;

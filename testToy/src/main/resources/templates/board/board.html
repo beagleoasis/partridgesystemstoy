@@ -94,108 +94,79 @@
 <!-- script -->
 <script th:inline="javascript">
 
-    $(document).ready(function() {
+        // form 태그
+        let form = document.gotopage;
 
-        // 게시판 정렬 파라미터 전송
-        $('#sortTypeId').on('change', function() {
-            location.href="/boards?sortType=" + $(this).val();
-        });
+        // 게시글 삭제
+        function deleteBoard(id) {
 
-        // url에 따른 메뉴 탭 active 효과 적용
-        let url = window.location.href;
-
-        let menuTapId = "";
-
-        if (url.indexOf("/mbtiBoards") != -1) {
-            menuTapId = "mbtiBoards";
-        } else if (url.indexOf("/mbtiTest") != -1) {
-            menuTapId = "mbtiTest";
-        } else if (url.indexOf("/loginJoin") != -1) {
-            menuTapId = "loginJoin";
-        } else if (url.indexOf("/usedSkills") != -1) {
-            menuTapId = "usedSkills";
-        } else if (url.indexOf("/mypage") != -1){
-            menuTapId = "mypage";
-        }
-
-
-    });
-
-    // form 태그
-    let form = document.gotopage;
-
-    // 게시글 삭제
-    function deleteBoard(id){
-
-        if(confirm("해당 게시글을 삭제하시겠습니까?")){
-
-            $.ajax({
-                url: '/boards/deletion/'+id,
-                method: "PUT",
-                contentType: 'application/json',
-                success: function (response) {
-                    if(response == 0){
-                        alert("게시글 삭제를 실패했습니다.")
-                    }
-                    else{
-                        alert("게시글 삭제를 완료했습니다.");
-                    }
-                    location.reload();
-                },
-                error: function () {
-                    alert("댓글 작성에 실패했습니다.");
-                }
-            });
-
-        }
-
-    }
-
-
-    function addFriend(id){
-        // 현재 로그인한 유저 세션
-        let sessionId = String([[${session.user?.id}]]);
-
-        // 로그인한 경우,
-        if(sessionId){
-            // 로그인한 유저와 친구 요청을 할 유저가 동일한 경우,
-            if(sessionId===String(id)){
-                alert("자기 자신에게 친구 요청을 할 수 없습니다.");
-            }else{
-                // 친구 요청 보내기 로직
-                alert("친구 요청 보내기");
+            if (confirm("해당 게시글을 삭제하시겠습니까?")) {
 
                 $.ajax({
-                    type : 'POST',
-                    url : '/friends/request',
-                    data : JSON.stringify({
-                        senderId : sessionId,
-                        receiverId : id
-                    }),
-                    contentType : 'application/json; charset=utf-8',
-                    dataType : 'json',
-                    success: function(response) {
-                        alert(response);
+                    url: '/boards/deletion/' + id,
+                    method: "PUT",
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (response == 0) {
+                            alert("게시글 삭제를 실패했습니다.")
+                        } else {
+                            alert("게시글 삭제를 완료했습니다.");
+                        }
+                        location.reload();
                     },
-                    error: function(error) {
-                        let message = JSON.parse(error.responseText);
+                    error: function () {
+                        alert("댓글 작성에 실패했습니다.");
                     }
                 });
 
             }
-        }
-        // 로그인하지 않은 경우,
-        else{
-            alert("로그인한 후에 친구 요청이 가능합니다.");
+
         }
 
 
-        // 이미 추가 요청된 경우 -> 알림
+        function addFriend(id) {
+            // 현재 로그인한 유저 세션
+            let sessionId = String([[${session.user?.id}]]);
 
-        // 친구 요청이 와있는 유저인 경우->친구 관계 성립
+            // 로그인한 경우,
+            if (sessionId) {
+                // 로그인한 유저와 친구 요청을 할 유저가 동일한 경우,
+                if (sessionId === String(id)) {
+                    alert("자기 자신에게 친구 요청을 할 수 없습니다.");
+                } else {
+                    // 친구 요청 보내기 로직
+                    alert("친구 요청 보내기");
 
-    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/friends/request',
+                        data: JSON.stringify({
+                            senderId: sessionId,
+                            receiverId: id
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (response) {
+                            alert(response.message);
+                        },
+                        error: function (error) {
+                            let message = JSON.parse(error.responseText);
+                        }
+                    });
 
+                }
+            }
+            // 로그인하지 않은 경우,
+            else {
+                alert("로그인한 후에 친구 요청이 가능합니다.");
+            }
+
+
+            // 이미 추가 요청된 경우 -> 알림
+
+            // 친구 요청이 와있는 유저인 경우->친구 관계 성립
+
+        }
 
 
 </script>

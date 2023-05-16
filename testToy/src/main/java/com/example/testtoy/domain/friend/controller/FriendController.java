@@ -41,7 +41,9 @@ public class FriendController {
 
         String result = friendRequestFacadeService.sendFriendRequest(sendFriendRequestDto.getSenderId(), sendFriendRequestDto.getReceiverId());
 
-        return ResponseEntity.ok(result);
+        String json = "{\"message\": \"" + result + "\"}";
+
+        return ResponseEntity.ok().body(json);
     }
 
 
@@ -51,7 +53,7 @@ public class FriendController {
         // 여기부터 해당 로그인 유저의 친구를 찾아오는 로직 구현 및 타임리프, 페이징 수정
         Member member = (Member)session.getAttribute("user");
 
-        Page<Friends> friends = friendService.findAllFriends(pageable, member.getId());
+        Page<Friends> friends = friendService.findById(pageable, member.getId());
 
 
         if(friends!=null && friends.hasContent()){
