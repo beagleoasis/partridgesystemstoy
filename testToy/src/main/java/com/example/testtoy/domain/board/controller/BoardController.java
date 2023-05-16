@@ -2,10 +2,11 @@ package com.example.testtoy.domain.board.controller;
 
 import com.example.testtoy.domain.board.domain.Board;
 import com.example.testtoy.domain.comment.domain.Comment;
-import com.example.testtoy.domain.boardlike.service.BoardLikeService;
 import com.example.testtoy.domain.board.service.BoardService;
 import com.example.testtoy.domain.comment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
-
     private final BoardService boardService;
-
     private final CommentService commentService;
 
     /**
@@ -62,6 +61,7 @@ public class BoardController {
     * @date : 2023-05-05
     *
     **/
+    @Operation(summary = "게시글 작성 페이지", description = "글쓰기 버튼을 눌러 게시글 작성 페이지로 이동합니다.")
     @GetMapping("post")
     public String getPost(HttpServletRequest request){
         return "board/board_post";
@@ -76,6 +76,7 @@ public class BoardController {
     * @date : 2023-05-05
     *
     **/
+    @Operation(summary = "게시글 작성", description = "게시글 작성페이지에서 게시글을 작성합니다.")
     @PostMapping("post")
     public ModelAndView writePost(Board board){
 
@@ -102,6 +103,11 @@ public class BoardController {
     * @date : 2023-05-06
     *
     **/
+    @Operation(summary = "게시글 삭제", description = "해당 게시글을 삭제(상태값 d로 변경)합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "게시글 삭제가 완료되었습니다."),
+            @ApiResponse(responseCode = "500", description = "게시글 삭제가 실패하였습니다.")
+    })
     @PutMapping("deletion/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id){
 
@@ -119,6 +125,7 @@ public class BoardController {
     * @date : 2023-05-06
     *
     **/
+    @Operation(summary = "게시글 상세 페이지 조회", description = "특정 게시글을 클릭해 상세 페이지를 조회합니다.")
     @GetMapping("/{boardId}")
     public String getBoard(@PathVariable Long boardId, Model model){
 

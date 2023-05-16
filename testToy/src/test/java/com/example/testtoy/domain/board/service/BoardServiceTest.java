@@ -58,6 +58,7 @@ public class BoardServiceTest {
 
     @Before
     Board setUpBoard(Long memberId, String name, String title, String content){
+
         Board board = Board.builder()
                 .memberid(memberId)
                 .name(name)
@@ -95,6 +96,10 @@ public class BoardServiceTest {
 
         assertThat(foundBoard).isNotEmpty();
         assertThat(foundBoard.get().getId()).isEqualTo(board.getId());
+
+        // 어떤 에러가 반환되었는지 체크하는 부분
+        // 성공사례와 예외 사례를 함께 적용해보자.
+
 
     }
 

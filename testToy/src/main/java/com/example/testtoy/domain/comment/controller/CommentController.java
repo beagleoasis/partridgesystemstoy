@@ -4,6 +4,9 @@ import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.comment.domain.SaveCommentDto;
 import com.example.testtoy.domain.commentlike.service.CommentLikeFacadeService;
 import com.example.testtoy.domain.comment.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,7 @@ public class CommentController {
     * @date : 2023-05-07
     *
     **/
+    @Operation(summary = "댓글 작성", description = "게시글 상세 페이지에서 해당 게시글에 대한 댓글을 작성합니다.")
     @PostMapping("")
     @ResponseBody
     public List<Comment> saveComment(@RequestBody SaveCommentDto saveCommentDto){
@@ -48,11 +52,16 @@ public class CommentController {
     * @date : 2023-05-07
     *
     **/
+    @Operation(summary = "댓글 삭제", description = "해당 댓글을 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "댓글 삭제가 완료되었습니다."),
+            @ApiResponse(responseCode = "500", description = "댓글 삭제가 실패하였습니다.")
+    })
     @DeleteMapping("deletion/{id}")
-    public ResponseEntity deleteComment(@PathVariable Long id){
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id){
 
-        Long result = commentService.deleteComment(id);
+        commentService.deleteComment(id);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -80,12 +80,11 @@ public class CommentService {
     *
     **/
     @Transactional
-    public Long deleteComment(Long id){
+    public void deleteComment(Long id){
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         comment.updateCommentState("d");
 
-        return id;
     }
 }

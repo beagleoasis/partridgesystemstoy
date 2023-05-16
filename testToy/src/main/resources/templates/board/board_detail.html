@@ -187,7 +187,6 @@
     }
 
     function recommendComment(commentId){
-        alert("댓글 추천");
 
         let sessionId = String([[${session.user?.id}]]);
 
@@ -201,7 +200,6 @@
             contentType : 'application/json; charset=utf-8',
             dataType : 'json'
         }).done(function(result) {
-            alert(result);
 
             if(result == 0){
                 alert("댓글 추천을 실패했습니다.")
