@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -67,7 +68,7 @@ public class BoardLikeServiceTest {
 
     @Test
     @DisplayName("BoardLike-게시글 좋아요 조회")
-    void testGetBoardLike(){
+    void testFindBoardLikeByBoard_IdAndMember_Id(){
 
         //given
         setUpMember();
@@ -82,13 +83,38 @@ public class BoardLikeServiceTest {
         boardLikeRepository.save(boardLike);
 
         //when
-        BoardLike foundBoardLike = boardLikeService.getBoardLike(board.getId(), member.getId())
+        BoardLike foundBoardLike = boardLikeService.findBoardLikeByBoard_IdAndMember_Id(board.getId(), member.getId())
                 .orElseThrow(()->new CustomException(ErrorCode.BOARD_LIKE_ID_NOT_FOUND));
 
         //then
         Assertions.assertThat(foundBoardLike).isNotNull();
         Assertions.assertThat(foundBoardLike.getMember().getId()).isEqualTo(member.getId());
         Assertions.assertThat(foundBoardLike.getBoard().getId()).isEqualTo(board.getId());
+
+    }
+
+    @Test
+    @DisplayName("BoardLike-게시글 삭제")
+    void test(){
+
+        //given
+        setUpMember();
+
+        Member member = memberRepository.findByName("kjm")
+                .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
+
+        Board board = setUpBoard(member.getId());
+
+        BoardLike boardLike = BoardLike.createBoardLike(board,member);
+
+        boardLikeRepository.save(boardLike);
+
+        //when
+        boardLikeService.deleteBoardLike(board.getId(),member.getId());
+
+        //then
+        Optional<BoardLike> deletedboardLike = boardLikeRepository.findById(boardLike.getId());
+        Assertions.assertThat(deletedboardLike).isEmpty();
 
     }
 

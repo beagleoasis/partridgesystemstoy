@@ -31,16 +31,16 @@ public class FriendService {
 
     /**
     *
-    * @method : findAllFriends
+    * @method : findFriendsByMember_Id
     *
     * @explain : 친구 목록 조회
     * @author : User
     * @date : 2023-05-11
     *
     **/
-    public Page<Friends> findAllFriends(Pageable pageable, Long memberId){
+    public Page<Friends> findById(Pageable pageable, Long memberId){
 
-        return friendRepository.findFriendsByMember_Id(pageable, memberId);
+        return friendRepository.findById(pageable, memberId);
     }
 
 

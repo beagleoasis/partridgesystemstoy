@@ -77,7 +77,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("Comment-댓글 조회")
-    void testGetCommentById(){
+    void testFindById(){
 
         //given
         Member member = setUpMember();
@@ -87,7 +87,7 @@ public class CommentServiceTest {
         Comment comment = setUpComment(board,member.getId(), member.getName());
 
         //when
-        Comment foundComment = commentService.getCommentById(comment.getId());
+        Comment foundComment = commentService.findById(comment.getId());
 
         //then
         Assertions.assertThat(foundComment.getId()).isEqualTo(comment.getId());
@@ -96,7 +96,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("Comment-댓글 리스트 조회")
-    void testGetComments(){
+    void testFindByBoardIdAndStateIsNull(){
 
         //given
         Member member = setUpMember();

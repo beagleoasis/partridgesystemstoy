@@ -43,7 +43,7 @@ public class MemberServiceTest {
         memberRepository.save(member);
 
         //when
-        Member foundMember = memberService.findOneById(member.getId());
+        Member foundMember = memberService.findById(member.getId());
 
         //then
         Assertions.assertThat(foundMember).isNotNull();

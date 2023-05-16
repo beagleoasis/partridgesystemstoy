@@ -2,6 +2,8 @@ package com.example.testtoy.domain.friendrequest.service;
 
 import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
 import com.example.testtoy.domain.friendrequest.repository.FriendRequestRepository;
+import com.example.testtoy.global.CustomException;
+import com.example.testtoy.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,15 @@ public class FriendRequestService {
 
     /**
     *
-    * @method : getFriendRequest
+    * @method : findById
     *
     * @explain : 친구 요청 내역 조회
     * @author : User
     * @date : 2023-05-11
     *
     **/
-    public Optional<FriendRequest> getFriendRequest(Long senderId, Long receiverId){
-        return friendRequestRepository.existsFriendRequestsBySender_IdAndAndReceiver_Id(senderId, receiverId);
+    public Optional<FriendRequest> findById(Long senderId, Long receiverId){
+        return friendRequestRepository.findById(senderId, receiverId);
     }
 
     /**

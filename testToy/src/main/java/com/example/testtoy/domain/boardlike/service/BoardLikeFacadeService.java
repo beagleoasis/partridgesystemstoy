@@ -33,9 +33,9 @@ public class BoardLikeFacadeService {
         Long memberId = saveOrDeleteBoardLikeDto.getMemberid();
 
         // 게시글 좋아요 존재 여부 확인
-        Board board = boardService.getBoard(boardId);
+        Board board = boardService.findByIdAndStateIsNull(boardId);
 
-        Optional<BoardLike> boardLike = boardLikeService.getBoardLike(boardId,memberId);
+        Optional<BoardLike> boardLike = boardLikeService.findBoardLikeByBoard_IdAndMember_Id(boardId,memberId);
 
         // 게시글 좋아요가 존재한다면,
         if(boardLike.isPresent()){
@@ -48,7 +48,7 @@ public class BoardLikeFacadeService {
         }
         // 게시글 좋아요가 존재하지 않는다면,
         else{
-            Member member = memberService.findOneById(memberId);
+            Member member = memberService.findById(memberId);
 
             // 게시글 좋아요 카운트 +1
             board.increaseBoardLikes();

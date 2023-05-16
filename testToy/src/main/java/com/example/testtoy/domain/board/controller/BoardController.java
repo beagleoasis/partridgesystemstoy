@@ -127,10 +127,10 @@ public class BoardController {
     public String getBoard(@PathVariable Long boardId, Model model){
 
         // 게시글 조회
-        Board board = boardService.findBoard(boardId);
+        Board board = boardService.findByIdAndIncreaseVisit(boardId);
 
         // 댓글 리스트
-        List<Comment> comments = commentService.getComments(board.getId());
+        List<Comment> comments = commentService.findByBoardIdAndStateIsNull(board.getId());
 
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);

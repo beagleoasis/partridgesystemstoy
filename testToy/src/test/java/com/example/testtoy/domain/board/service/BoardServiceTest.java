@@ -67,7 +67,7 @@ public class BoardServiceTest {
         //when
         boardService.save(board);
 
-        Board getBoard = boardService.getBoard(board.getId());
+        Board getBoard = boardService.findByIdAndStateIsNull(board.getId());
 
         //then
         Assertions.assertThat(board).isEqualTo(getBoard); // 확인 필요
@@ -76,7 +76,7 @@ public class BoardServiceTest {
 
     @Test
     @DisplayName("Board-단일 게시판 출력")
-    void testGetBoard(){
+    void testFindByIdAndStateIsNull(){
 
         //given
         setUpMember();
@@ -93,7 +93,7 @@ public class BoardServiceTest {
         boardRepository.save(board);
 
         //when
-        Board getBoard = boardService.getBoard(board.getId());
+        Board getBoard = boardService.findByIdAndStateIsNull(board.getId());
 
         //then
         Assertions.assertThat(board).isEqualTo(getBoard);
@@ -149,7 +149,7 @@ public class BoardServiceTest {
 
     @Test
     @DisplayName("Board-게시글 상세 페이지 조회")
-    void testFindBoard(){
+    void testFindByIdAndIncreaseVisit(){
 
         //given
         setUpMember();
@@ -168,7 +168,7 @@ public class BoardServiceTest {
         boardRepository.save(board);
 
         //when
-        Board foundBoard = boardService.findBoard(board.getId());
+        Board foundBoard = boardService.findByIdAndIncreaseVisit(board.getId());
 
         //then
         Assertions.assertThat(foundBoard.getName()).isEqualTo(member.getName());

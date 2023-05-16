@@ -37,14 +37,14 @@ public class BoardService {
 
     /**
     *
-    * @method : getBoard
+    * @method : findByIdAndStateIsNull
     *
     * @explain : 게시글 조회
     * @author : User
     * @date : 2023-05-11
     *
     **/
-    public Board getBoard(Long boardId){
+    public Board findByIdAndStateIsNull(Long boardId){
 
         return boardRepository.findByIdAndStateIsNull(boardId)
                 .orElseThrow(()->new CustomException(ErrorCode.BOARD_ID_NOT_FOUND));
@@ -100,7 +100,7 @@ public class BoardService {
 
     /**
     *
-    * @method : findBoard
+    * @method : findByIdAndIncreaseVisit
     *
     * @explain : 게시글 상세 페이지 조회 및 조회수 +1 처리
     * @author : User
@@ -108,7 +108,7 @@ public class BoardService {
     *
     **/
     @Transactional
-    public Board findBoard(Long id){
+    public Board findByIdAndIncreaseVisit(Long id){
         Board board = boardRepository.findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 

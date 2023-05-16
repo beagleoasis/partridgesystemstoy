@@ -41,10 +41,10 @@ public class CommentLikeFacadeService {
         Long memberId = saveOrDeleteCommentLikeDto.getMemberid();
 
         // 댓글 존재 여부 확인
-        Comment comment = commentService.getCommentById(commentId);
+        Comment comment = commentService.findById(commentId);
 
         // 댓글 좋아요 존재 여부 확인
-        Optional<CommentLike> commentLike = commentLikeService.getCommentLikeByCommentIdAndMemberId(commentId,memberId);
+        Optional<CommentLike> commentLike = commentLikeService.findCommentLikeByComment_IdAndMember_Id(commentId,memberId);
 
 
         // 댓글 좋아요가 존재한다면,
@@ -57,7 +57,7 @@ public class CommentLikeFacadeService {
         }
         // 댓글 좋아요가 존재하지 않는다면,
         else {
-            Member member = memberService.findOneById(memberId);
+            Member member = memberService.findById(memberId);
 
             // 댓글 좋아요 +1 카운트
             comment.increaseCommentLikes();

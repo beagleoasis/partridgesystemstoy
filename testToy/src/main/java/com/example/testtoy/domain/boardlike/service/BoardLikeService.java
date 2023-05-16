@@ -17,14 +17,14 @@ public class BoardLikeService {
 
     /**
     *
-    * @method : getBoardLike
+    * @method : findBoardLikeByBoard_IdAndMember_Id
     *
     * @explain : 게시글 좋아요 조회
     * @author : User
     * @date : 2023-05-11
     *
     **/
-    public Optional<BoardLike> getBoardLike(Long boardId, Long memberId){
+    public Optional<BoardLike> findBoardLikeByBoard_IdAndMember_Id(Long boardId, Long memberId){
         return boardLikeRepository.findBoardLikeByBoard_IdAndMember_Id(boardId,memberId);
     }
 

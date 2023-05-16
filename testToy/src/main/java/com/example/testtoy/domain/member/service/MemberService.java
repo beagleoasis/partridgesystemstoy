@@ -24,7 +24,7 @@ public class MemberService {
 
     /**
     *
-    * @method : findOneById
+    * @method : findById
     *
     * @explain : 멤버 단일 조회
     * @author : User
@@ -32,7 +32,7 @@ public class MemberService {
     *
     **/
     @Transactional
-    public Member findOneById(Long memberId){
+    public Member findById(Long memberId){
         return memberRepository.findById(memberId)
                 .orElseThrow(()->new CustomException(ErrorCode.Member_ID_NOT_FOUND));
     }

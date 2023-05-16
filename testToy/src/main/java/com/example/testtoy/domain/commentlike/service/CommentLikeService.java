@@ -17,7 +17,7 @@ public class CommentLikeService {
 
     /**
     *
-    * @method : getCommentLikeByCommentIdAndMemberId
+    * @method : findCommentLikeByComment_IdAndMember_Id
     *
     * @explain : 댓글 좋아요 조회
     * @author : User
@@ -25,7 +25,7 @@ public class CommentLikeService {
     *
     **/
     @Transactional
-    public Optional<CommentLike> getCommentLikeByCommentIdAndMemberId(Long commentId, Long memberId){
+    public Optional<CommentLike> findCommentLikeByComment_IdAndMember_Id(Long commentId, Long memberId){
         return commentLikeRepository.findCommentLikeByComment_IdAndMember_Id(commentId,memberId);
     }
 

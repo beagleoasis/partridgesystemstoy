@@ -97,7 +97,7 @@ public class CommentLikeServiceTest {
 
     @Test
     @DisplayName("CommentLike-댓글 좋아요 조회")
-    void testGetCommentLikeByCommentIdAndMemberId(){
+    void testFindCommentLikeByComment_IdAndMember_Id(){
 
         //given
         Member member = setUpMember();
@@ -109,7 +109,7 @@ public class CommentLikeServiceTest {
         CommentLike commentLike = setupCommentLike(member,comment);
 
         //when
-        CommentLike foundCommentLike = commentLikeService.getCommentLikeByCommentIdAndMemberId(comment.getId(), member.getId())
+        CommentLike foundCommentLike = commentLikeService.findCommentLikeByComment_IdAndMember_Id(comment.getId(), member.getId())
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
 
         //then

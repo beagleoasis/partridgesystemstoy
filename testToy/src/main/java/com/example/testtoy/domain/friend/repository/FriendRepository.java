@@ -12,7 +12,7 @@ public interface FriendRepository extends JpaRepository<Friends, Long> {
 
     // member_id로 친구 목록 조회
     @Query("SELECT fr FROM Friends fr WHERE fr.friendMember.id = :member_id OR fr.member.id = :member_id")
-    Page<Friends> findFriendsByMember_Id(Pageable pageable, Long member_id);
+    Page<Friends> findById(Pageable pageable, Long member_id);
 
 
 }

@@ -40,7 +40,7 @@ public class CommentController {
 
         Comment savedComment = commentService.save(saveCommentDto);
 
-        return commentService.getComments(saveCommentDto.getBoard_id());
+        return commentService.findByBoardIdAndStateIsNull(saveCommentDto.getBoard_id());
     }
 
     /**

@@ -21,7 +21,7 @@ public class CommentService {
 
     /**
     *
-    * @method : getCommentById
+    * @method : findById
     *
     * @explain : 댓글 조회
     * @author : User
@@ -29,7 +29,7 @@ public class CommentService {
     *
     **/
     @Transactional
-    public Comment getCommentById(Long commentId){
+    public Comment findById(Long commentId){
 
         return commentRepository.findById(commentId)
                 .orElseThrow(()->new CustomException(ErrorCode.ID_NOT_FOUND));
@@ -38,7 +38,7 @@ public class CommentService {
 
     /**
     *
-    * @method : getComments
+    * @method : findByBoardIdAndStateIsNull
     *
     * @explain : 댓글 리스트 조회
     * @author : User
@@ -46,7 +46,7 @@ public class CommentService {
     *
     **/
     @Transactional
-    public List<Comment> getComments(Long boardId){
+    public List<Comment> findByBoardIdAndStateIsNull(Long boardId){
         return commentRepository.findByBoardIdAndStateIsNull(boardId);
     }
 
