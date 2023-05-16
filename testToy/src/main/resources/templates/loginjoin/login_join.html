@@ -39,30 +39,4 @@
 <script th:inline="javascript">
 
 
-
-    $(document).ready(function () {
-
-        // url에 따른 메뉴 탭 active 효과 적용
-        let url = window.location.href;
-
-        let menuTapId = "";
-
-        if (url.indexOf("/mbtiBoards") != -1) {
-            menuTapId = "mbtiBoards";
-        } else if (url.indexOf("/mbtiTest") != -1) {
-            menuTapId = "mbtiTest";
-        } else if (url.indexOf("/loginJoin") != -1) {
-            menuTapId = "loginJoin";
-        } else if (url.indexOf("/usedSkills") != -1) {
-            menuTapId = "usedSkills";
-        } else if (url.indexOf("/mypage") != -1){
-            menuTapId = "mypage";
-        }
-
-
-
-        $("#" + menuTapId).attr("class", "nav-link js-scroll-trigger active");
-
-    });
-
 </script>
