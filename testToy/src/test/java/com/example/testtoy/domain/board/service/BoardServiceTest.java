@@ -44,7 +44,11 @@ public class BoardServiceTest {
 
     // 게시판 테스트를 위한 member 미리 생성
     @Before
-    Member setUpMember(String name, String password){
+    Member setUpMember(){
+
+        String name = "kjm";
+        String password = "123";
+
         Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
@@ -71,13 +75,16 @@ public class BoardServiceTest {
     void testSave(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
+
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
 
         Board board = Board.builder()
                 .memberid(member.getId())
                 .name(member.getName())
-                .title("test")
-                .content("test")
+                .title(boardTitle)
+                .content(boardContent)
                 .build();
 
         //when
@@ -96,9 +103,12 @@ public class BoardServiceTest {
     void testFindByIdAndStateIsNull(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
-        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = setUpBoard(member.getId(),member.getName(),boardTitle,boardContent);
 
         //when
         Board foundBoard = boardService.findByIdAndStateIsNull(board.getId());
@@ -114,9 +124,12 @@ public class BoardServiceTest {
     void testFindAllBoardsBySortType(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
-        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = setUpBoard(member.getId(),member.getName(),boardTitle,boardContent);
 
         String sortType = "likeBoard";
 
@@ -136,9 +149,12 @@ public class BoardServiceTest {
     void testDeleteBoard(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
-        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = setUpBoard(member.getId(),member.getName(),boardTitle,boardContent);
 
         //when
         boardService.deleteBoard(board.getId());
@@ -155,9 +171,12 @@ public class BoardServiceTest {
     void testFindByIdAndIncreaseVisit(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
-        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = setUpBoard(member.getId(),member.getName(),boardTitle,boardContent);
 
         int getBoardVisitCount = board.getVisit();
 
@@ -166,7 +185,7 @@ public class BoardServiceTest {
 
         //then
         assertThat(foundBoard.getName()).isEqualTo(member.getName());
-        assertThat(foundBoard.getTitle()).isEqualTo("testTitle");
+        assertThat(foundBoard.getTitle()).isEqualTo(boardTitle);
         assertThat(getBoardVisitCount+Board.INCREMENT).isEqualTo(foundBoard.getVisit());
 
     }
@@ -176,16 +195,19 @@ public class BoardServiceTest {
     void testFindById(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
-        Board board = setUpBoard(member.getId(),member.getName(),"testTitle","testContent");
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = setUpBoard(member.getId(),member.getName(),boardTitle,boardContent);
 
         //when
         Board foundBoard = boardService.findById(board.getId());
 
         //then
         assertThat(foundBoard).isNotNull();
-        assertThat(foundBoard.getTitle()).isEqualTo("test");
+        assertThat(foundBoard.getTitle()).isEqualTo(boardTitle);
         assertThat(foundBoard.getName()).isEqualTo(member.getName());
 
     }

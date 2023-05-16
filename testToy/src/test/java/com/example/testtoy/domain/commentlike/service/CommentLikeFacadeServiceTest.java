@@ -47,7 +47,11 @@ public class CommentLikeFacadeServiceTest {
     CommentLikeRepository commentLikeRepository;
 
     @Before
-    Member setUpMember(String name, String password){
+    Member setUpMember(){
+
+        String name = "kjm";
+        String password = "123";
+
         Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
@@ -57,10 +61,14 @@ public class CommentLikeFacadeServiceTest {
 
     @Before
     Board setUpBoard(Long memberId){
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
         Board board = Board.builder()
                 .memberid(memberId)
-                .title("test")
-                .content("test")
+                .title(boardTitle)
+                .content(boardContent)
+                .likes(0)
                 .build();
 
         boardRepository.save(board);
@@ -99,7 +107,7 @@ public class CommentLikeFacadeServiceTest {
     void testLikeOrUnlikeComment(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 

@@ -45,9 +45,12 @@ public class BoardLikeFacadeServiceTest {
     @Before
     Member setUpMember(){
 
+        String name = "kjm";
+        String password = "123";
+
         Member member = Member.builder()
-                        .name("kjm")
-                        .password("123")
+                        .name(name)
+                        .password(password)
                         .build();
 
         memberRepository.save(member);
@@ -57,10 +60,13 @@ public class BoardLikeFacadeServiceTest {
 
     @Before
     Board setUpBoard(Long memberId){
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
         Board board = Board.builder()
                 .memberid(memberId)
-                .title("test")
-                .content("test")
+                .title(boardTitle)
+                .content(boardContent)
                 .likes(0)
                 .build();
 

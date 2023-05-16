@@ -40,7 +40,11 @@ public class CommentServiceTest {
     CommentRepository commentRepository;
 
     @Before
-    Member setUpMember(String name, String password){
+    Member setUpMember(){
+
+        String name = "kjm";
+        String password = "123";
+
         Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
@@ -51,10 +55,14 @@ public class CommentServiceTest {
 
     @Before
     Board setUpBoard(Long memberId){
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
         Board board = Board.builder()
                 .memberid(memberId)
-                .title("test")
-                .content("test")
+                .title(boardTitle)
+                .content(boardContent)
+                .likes(0)
                 .build();
 
         boardRepository.save(board);
@@ -81,7 +89,7 @@ public class CommentServiceTest {
     void testFindById(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 
@@ -101,7 +109,7 @@ public class CommentServiceTest {
     void testFindByBoardIdAndStateIsNull(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 
@@ -121,15 +129,17 @@ public class CommentServiceTest {
     void testSave(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
+
+        String commentContent = "test";
 
         SaveCommentDto saveCommentDto = new SaveCommentDto();
         saveCommentDto.setMemberid(member.getId());
         saveCommentDto.setName(member.getName());
         saveCommentDto.setBoard_id(board.getId());
-        saveCommentDto.setContent("test");
+        saveCommentDto.setContent(commentContent);
 
         //when
         Comment comment = commentService.save(saveCommentDto);
@@ -145,7 +155,7 @@ public class CommentServiceTest {
     void testDeleteComment(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 

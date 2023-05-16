@@ -49,7 +49,11 @@ public class BoardLikeServiceTest {
     BoardRepository boardRepository;
 
     @Before
-    Member setUpMember(String name, String password){
+    Member setUpMember(){
+
+        String name = "kjm";
+        String password = "123";
+
         Member member = Member.createMember(name,password);
 
         memberRepository.save(member);
@@ -58,14 +62,20 @@ public class BoardLikeServiceTest {
     }
 
     @Before
-    Board setUpBoard(Long memberid){
-        Board board = Board.builder()
-                        .memberid(memberid)
-                        .title("test")
-                        .content("test")
-                        .build();
+    Board setUpBoard(Long memberId){
 
-        boardService.save(board);
+        String boardTitle = "testTitle";
+        String boardContent = "testContent";
+
+        Board board = Board.builder()
+                .memberid(memberId)
+                .title(boardTitle)
+                .content(boardContent)
+                .likes(0)
+                .build();
+
+        boardRepository.save(board);
+
         return board;
     }
 
@@ -86,7 +96,7 @@ public class BoardLikeServiceTest {
     void testFindBoardLikeByBoard_IdAndMember_Id(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 
@@ -109,7 +119,7 @@ public class BoardLikeServiceTest {
     void testDeleteBoardLike(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 
@@ -131,7 +141,7 @@ public class BoardLikeServiceTest {
     void testSave(){
 
         //given
-        Member member = setUpMember("kjm","123");
+        Member member = setUpMember();
 
         Board board = setUpBoard(member.getId());
 
