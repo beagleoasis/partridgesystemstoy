@@ -5,7 +5,6 @@ import com.example.testtoy.domain.friendrequest.domain.FriendRequest;
 import com.example.testtoy.domain.friendrequest.repository.FriendRequestRepository;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -79,8 +77,8 @@ public class FriendRequestServiceTest {
         //then
         Optional<FriendRequest> savedFriendRequest = friendRequestRepository.findById(friendRequest.getId());
 
-        Assertions.assertThat(savedFriendRequest).isNotEmpty();
-        Assertions.assertThat(savedFriendRequest.get().getSender().getId()).isEqualTo(member1.getId());
+        assertThat(savedFriendRequest).isNotEmpty();
+        assertThat(savedFriendRequest.get().getSender().getId()).isEqualTo(member1.getId());
 
     }
 

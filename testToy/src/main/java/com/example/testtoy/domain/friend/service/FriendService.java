@@ -31,7 +31,7 @@ public class FriendService {
 
     /**
     *
-    * @method : findFriendsByMember_Id
+    * @method : findById
     *
     * @explain : 친구 목록 조회
     * @author : User
