@@ -157,7 +157,7 @@ public class MemberController {
         // 탈퇴 회원의 상태값 변경
         if(memberService.deleteMember(name)){
             session.invalidate();
-            return ResponseEntity.ok(201);
+            return ResponseEntity.noContent().build();
         }else{
             return ResponseEntity.internalServerError().build();
         }
