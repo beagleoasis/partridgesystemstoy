@@ -3,6 +3,7 @@ package com.example.testtoy.domain.member.controller;
 import com.example.testtoy.domain.member.domain.Member;
 import com.example.testtoy.domain.member.domain.SaveMemberDto;
 import com.example.testtoy.domain.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +14,9 @@ import javax.servlet.http.HttpSession;
 
 @RequestMapping("members")
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
 
     /**
     *

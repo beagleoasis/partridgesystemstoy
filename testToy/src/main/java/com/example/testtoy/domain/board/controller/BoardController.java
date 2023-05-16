@@ -5,7 +5,8 @@ import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.boardlike.service.BoardLikeService;
 import com.example.testtoy.domain.board.service.BoardService;
 import com.example.testtoy.domain.comment.service.CommentService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,19 +22,12 @@ import java.util.List;
 
 @RequestMapping("boards")
 @Controller
+@RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
 
     private final CommentService commentService;
-
-    private final BoardLikeService boardLikeService;
-
-    public BoardController(BoardService boardService, CommentService commentService, BoardLikeService boardLikeService) {
-        this.boardService = boardService;
-        this.commentService = commentService;
-        this.boardLikeService = boardLikeService;
-    }
 
     /**
     *
@@ -44,7 +38,7 @@ public class BoardController {
     * @date : 2023-05-04
     *
     **/
-
+    @Operation(summary = "게시판 조회", description = "게시판을 sortType에 따라 정렬해 조회합니다.")
     @GetMapping("")
     public String getBoards(@RequestParam(name = "sortType", required = false, defaultValue = "latest") String sortType, @PageableDefault(page = 0, size = 10) Pageable pageable,
                             Model model){
@@ -109,11 +103,11 @@ public class BoardController {
     *
     **/
     @PutMapping("deletion/{id}")
-    public ResponseEntity deleteBoard(@PathVariable Long id){
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id){
 
         boardService.deleteBoard(id);
 
-        return ResponseEntity.ok(201);
+        return ResponseEntity.noContent().build();
     }
 
     /**

@@ -15,11 +15,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CommentController {
-
     private final CommentService commentService;
-
-    private final CommentLikeFacadeService commentLikeFacadeService;
-
 
 
     /**

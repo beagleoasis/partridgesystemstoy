@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequiredArgsConstructor
 public class BoardLikeController {
-
     private final BoardLikeFacadeService boardLikeFacadeService;
-
 
     /**
      *

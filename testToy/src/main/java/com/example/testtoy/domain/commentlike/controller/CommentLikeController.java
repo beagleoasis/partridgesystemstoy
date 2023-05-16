@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequiredArgsConstructor
 public class CommentLikeController {
-
     private final CommentLikeFacadeService commentLikeFacadeService;
 
     /**
