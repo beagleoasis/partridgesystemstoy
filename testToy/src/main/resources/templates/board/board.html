@@ -94,6 +94,15 @@
 <!-- script -->
 <script th:inline="javascript">
 
+    $(document).ready(function() {
+
+        // 게시판 정렬 파라미터 전송
+        $('#sortTypeId').on('change', function() {
+            location.href="/boards?sortType=" + $(this).val();
+        });
+
+    });
+
         // form 태그
         let form = document.gotopage;
 
