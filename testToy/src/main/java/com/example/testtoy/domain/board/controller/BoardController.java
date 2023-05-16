@@ -5,6 +5,7 @@ import com.example.testtoy.domain.comment.domain.Comment;
 import com.example.testtoy.domain.boardlike.service.BoardLikeService;
 import com.example.testtoy.domain.board.service.BoardService;
 import com.example.testtoy.domain.comment.service.CommentService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -43,6 +44,7 @@ public class BoardController {
     * @date : 2023-05-04
     *
     **/
+
     @GetMapping("")
     public String getBoards(@RequestParam(name = "sortType", required = false, defaultValue = "latest") String sortType, @PageableDefault(page = 0, size = 10) Pageable pageable,
                             Model model){
